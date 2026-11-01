@@ -8,7 +8,7 @@ import {
   Sparkles,
   BookOpen,
 } from 'lucide-react';
-import { CLASS_7_SYLLABUS, ENGINES_META, CurriculumTopic, EngineType } from '../../data/curriculum';
+import { CLASS_7_SYLLABUS, ENGINES_META, type CurriculumTopic, type EngineType } from '../../data/curriculum';
 
 interface MasteryMapViewProps {
   activeTopicId: string;

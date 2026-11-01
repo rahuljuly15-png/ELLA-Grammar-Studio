@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { AlertTriangle, CheckCircle2, RotateCcw, ShieldCheck, Trash2 } from 'lucide-react';
-import { db, ErrorPattern } from '../../db/dexieDb';
+import { db, type ErrorPattern } from '../../db/dexieDb';
 
 interface ErrorVaultViewProps {
   onRetryTopic: (topicId: string, wrongSentence: string) => void;

@@ -14,8 +14,8 @@ import {
   ShieldCheck,
   ChevronDown,
 } from 'lucide-react';
-import { FullTopicData } from '../../data/topicLoader';
-import { RuleCheckResult, RuleError } from '../../engines/offlineRuleEngine';
+import type { FullTopicData } from '../../data/topicLoader';
+import type { RuleCheckResult, RuleError } from '../../engines/offlineRuleEngine';
 
 export type StepKey = 'use' | 'notice' | 'hypothesize' | 'clarify' | 'schedule';
 

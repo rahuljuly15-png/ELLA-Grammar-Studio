@@ -11,8 +11,8 @@ import { ErrorVaultView } from './components/ella/ErrorVaultView';
 import { SettingsView } from './components/ella/SettingsView';
 import { PublishGuideView } from './components/ella/PublishGuideView';
 import { TopicSelectorModal } from './components/ella/TopicSelectorModal';
-import { getTopicById, FullTopicData } from './data/topicLoader';
-import { checkSentenceOffline, recordProductionAttempt, RuleCheckResult } from './engines/offlineRuleEngine';
+import { getTopicById, type FullTopicData } from './data/topicLoader';
+import { checkSentenceOffline, recordProductionAttempt, type RuleCheckResult } from './engines/offlineRuleEngine';
 import { exportDatabaseToJson, importDatabaseFromJson, getOfflineDbCounts, deleteStudentData } from './services/backupService';
 import { Check, GitBranch, ArrowUpRight } from 'lucide-react';
 

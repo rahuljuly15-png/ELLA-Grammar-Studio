@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { X, Search, Check, Blocks, Clock, Repeat, FileText } from 'lucide-react';
-import { CLASS_7_SYLLABUS, ENGINES_META, CurriculumTopic, EngineType } from '../../data/curriculum';
+import { CLASS_7_SYLLABUS, ENGINES_META, type CurriculumTopic, type EngineType } from '../../data/curriculum';
 
 interface TopicSelectorModalProps {
   isOpen: boolean;

@@ -6,11 +6,80 @@ export interface Student {
   current_level: number;
   created_at: Date;
 }
+
+export interface NoticePair {
+  sentence: string;
+  highlightWord: string;
+  soundHintHi: string;
+}
+
+export interface NoticeStep {
+  stepTitleHi: string;
+  instructionHi: string;
+  pairs: NoticePair[];
+}
+
+export interface HypothesizeOption {
+  textHi: string;
+  isCorrect: boolean;
+  feedbackHi: string;
+}
+
+export interface HypothesizeStep {
+  stepTitleHi: string;
+  questionHi: string;
+  options: HypothesizeOption[];
+}
+
+export interface ClarifyExample {
+  word: string;
+  sound: string;
+  reason: string;
+}
+
+export interface ClarifyStep {
+  stepTitleHi: string;
+  goldenRuleHi: string;
+  theRuleHi: string;
+  examples: ClarifyExample[];
+}
+
+export interface FreeProductionStep {
+  stepTitleHi: string;
+  promptHi: string;
+  placeholderHi: string;
+  sampleSolutions: string[];
+}
+
+export interface ReflectionStep {
+  stepTitleHi: string;
+  promptHi: string;
+  recapPointsHi: string[];
+}
+
+export interface LessonSteps {
+  '1_notice': NoticeStep;
+  '2_hypothesize': HypothesizeStep;
+  '3_clarify': ClarifyStep;
+  '5_free_production'?: FreeProductionStep;
+  '6_reflection'?: ReflectionStep;
+}
+
+export interface LessonJson {
+  topicId: string;
+  title: string;
+  level: number;
+  category: string;
+  descriptionHi: string;
+  steps: LessonSteps;
+}
+
 export interface GrammarPoint {
   topic_id: string;
   title: string;
-  lesson_json: any;
+  lesson_json: LessonJson;
 }
+
 export interface ReviewState {
   id?: number;
   student_id: number;
@@ -19,6 +88,7 @@ export interface ReviewState {
   production_accuracy_score: number;
   next_due_date: Date;
 }
+
 export interface SessionLog {
   id?: number;
   student_id: number;
@@ -27,6 +97,7 @@ export interface SessionLog {
   self_explanation_note?: string;
   timestamp: Date;
 }
+
 export interface ErrorPattern {
   id?: number;
   student_id: number;
@@ -45,6 +116,7 @@ const db = new Dexie('ELLAGrammarDB') as Dexie & {
   error_patterns: EntityTable<ErrorPattern, 'id'>;
 };
 
+// Version 1 (Initial schema)
 db.version(1).stores({
   students: '++id, name',
   grammar_points: 'topic_id, title',
@@ -53,5 +125,11 @@ db.version(1).stores({
   error_patterns: '++id, student_id, topic_id'
 });
 
-export { db };
+// Version 2 (Unique compound index, FSRS query index, timestamp indices)
+db.version(2).stores({
+  review_states: '++id, &[student_id+topic_id], student_id, topic_id, next_due_date',
+  session_logs: '++id, student_id, topic_id, timestamp, [student_id+topic_id]',
+  error_patterns: '++id, student_id, topic_id, timestamp, [student_id+topic_id]',
+});
 
+export { db };

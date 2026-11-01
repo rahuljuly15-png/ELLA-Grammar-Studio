@@ -1,15 +1,15 @@
-import { db } from '../db/dexieDb';
+import { db, type Student, type GrammarPoint, type ReviewState, type SessionLog, type ErrorPattern } from '../db/dexieDb';
 
 export interface ExportDataPayload {
   version: number;
   exportedAt: string;
   appName: string;
   data: {
-    students: unknown[];
-    grammar_points: unknown[];
-    review_states: unknown[];
-    session_logs: unknown[];
-    error_patterns: unknown[];
+    students: Student[];
+    grammar_points: GrammarPoint[];
+    review_states: ReviewState[];
+    session_logs: SessionLog[];
+    error_patterns: ErrorPattern[];
   };
 }
 
@@ -17,7 +17,7 @@ export interface ExportDataPayload {
  * 1-Click JSON Database Export
  * Dumps all Dexie.js indexed tables into a formatted JSON file and triggers instant download.
  */
-export async function exportDatabaseToJson(): Promise<void> {
+export async function exportDatabaseToJson(customFilename?: string): Promise<void> {
   const students = await db.students.toArray();
   const grammar_points = await db.grammar_points.toArray();
   const review_states = await db.review_states.toArray();
@@ -25,7 +25,7 @@ export async function exportDatabaseToJson(): Promise<void> {
   const error_patterns = await db.error_patterns.toArray();
 
   const payload: ExportDataPayload = {
-    version: 1,
+    version: 2,
     exportedAt: new Date().toISOString(),
     appName: 'ELLA Grammar Studio v2.1',
     data: {
@@ -44,7 +44,7 @@ export async function exportDatabaseToJson(): Promise<void> {
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
   const anchor = document.createElement('a');
   anchor.href = url;
-  anchor.download = `ella-grammar-backup-${timestamp}.json`;
+  anchor.download = customFilename || `ella-grammar-backup-${timestamp}.json`;
   document.body.appendChild(anchor);
   anchor.click();
   document.body.removeChild(anchor);
@@ -52,47 +52,74 @@ export async function exportDatabaseToJson(): Promise<void> {
 }
 
 /**
- * Restore database from exported JSON
+ * Validates and restores database from exported JSON
+ * Features:
+ * 1. Pre-restore auto safety snapshot
+ * 2. Proper Date object deserialization (string -> Date)
+ * 3. Atomic transaction across all 5 tables
  */
 export async function importDatabaseFromJson(file: File): Promise<{ success: boolean; message: string }> {
   try {
     const text = await file.text();
-    const payload: ExportDataPayload = JSON.parse(text);
+    const payload = JSON.parse(text) as ExportDataPayload;
 
-    if (!payload.data) {
-      return { success: false, message: 'अमान्य बैकअप फ़ाइल प्रारूप (Invalid backup format)' };
+    // Validation
+    if (!payload.data || typeof payload.data !== 'object') {
+      return { success: false, message: 'अमान्य बैकअप फ़ाइल: "data" ऑब्जेक्ट नहीं मिला।' };
     }
 
+    // 1. Safety snapshot before overwriting
+    try {
+      await exportDatabaseToJson(`ella-pre-restore-safety-snapshot-${Date.now()}.json`);
+    } catch {
+      // Continue even if snapshot fails
+    }
+
+    // 2. Deserialize dates properly
+    const students: Student[] = (payload.data.students || []).map((s) => ({
+      ...s,
+      created_at: new Date(s.created_at || Date.now()),
+    }));
+
+    const grammar_points: GrammarPoint[] = payload.data.grammar_points || [];
+
+    const review_states: ReviewState[] = (payload.data.review_states || []).map((r) => ({
+      ...r,
+      next_due_date: new Date(r.next_due_date || Date.now()),
+    }));
+
+    const session_logs: SessionLog[] = (payload.data.session_logs || []).map((sl) => ({
+      ...sl,
+      timestamp: new Date(sl.timestamp || Date.now()),
+    }));
+
+    const error_patterns: ErrorPattern[] = (payload.data.error_patterns || []).map((ep) => ({
+      ...ep,
+      timestamp: new Date(ep.timestamp || Date.now()),
+    }));
+
+    // 3. Atomic Dexie transaction
     await db.transaction(
       'rw',
       [db.students, db.grammar_points, db.review_states, db.session_logs, db.error_patterns],
       async () => {
-        if (payload.data.students?.length) {
-          await db.students.clear();
-          await db.students.bulkAdd(payload.data.students as any);
-        }
-        if (payload.data.grammar_points?.length) {
-          await db.grammar_points.clear();
-          await db.grammar_points.bulkAdd(payload.data.grammar_points as any);
-        }
-        if (payload.data.review_states?.length) {
-          await db.review_states.clear();
-          await db.review_states.bulkAdd(payload.data.review_states as any);
-        }
-        if (payload.data.session_logs?.length) {
-          await db.session_logs.clear();
-          await db.session_logs.bulkAdd(payload.data.session_logs as any);
-        }
-        if (payload.data.error_patterns?.length) {
-          await db.error_patterns.clear();
-          await db.error_patterns.bulkAdd(payload.data.error_patterns as any);
-        }
+        await db.students.clear();
+        await db.grammar_points.clear();
+        await db.review_states.clear();
+        await db.session_logs.clear();
+        await db.error_patterns.clear();
+
+        if (students.length > 0) await db.students.bulkAdd(students);
+        if (grammar_points.length > 0) await db.grammar_points.bulkAdd(grammar_points);
+        if (review_states.length > 0) await db.review_states.bulkAdd(review_states);
+        if (session_logs.length > 0) await db.session_logs.bulkAdd(session_logs);
+        if (error_patterns.length > 0) await db.error_patterns.bulkAdd(error_patterns);
       }
     );
 
     return {
       success: true,
-      message: 'बैकअप सफलतापूर्वक रीस्टोर कर लिया गया! (Database restored successfully)',
+      message: `बैकअप सफलतापूर्वक रीस्टोर हुआ! (${session_logs.length} सत्र, ${review_states.length} रिविज़न रिकॉर्ड)`,
     };
   } catch (error: unknown) {
     const err = error as Error;
@@ -100,6 +127,28 @@ export async function importDatabaseFromJson(file: File): Promise<{ success: boo
       success: false,
       message: `बैकअप आयात करने में विफल: ${err.message || 'अज्ञात त्रुटि'}`,
     };
+  }
+}
+
+/**
+ * DPDP Act 2023 Compliance: Wipe all student data from local device
+ */
+export async function deleteStudentData(studentId: number = 1): Promise<{ success: boolean; message: string }> {
+  try {
+    await db.transaction(
+      'rw',
+      [db.students, db.review_states, db.session_logs, db.error_patterns],
+      async () => {
+        await db.students.where('id').equals(studentId).delete();
+        await db.review_states.where('student_id').equals(studentId).delete();
+        await db.session_logs.where('student_id').equals(studentId).delete();
+        await db.error_patterns.where('student_id').equals(studentId).delete();
+      }
+    );
+    return { success: true, message: 'आपका समस्त डेटा इस डिवाइस से हमेशा के लिए हटा दिया गया है।' };
+  } catch (error: unknown) {
+    const err = error as Error;
+    return { success: false, message: `डेटा हटाने में त्रुटि: ${err.message}` };
   }
 }
 
@@ -119,4 +168,3 @@ export async function getOfflineDbCounts() {
     reviewsCount,
   };
 }
-

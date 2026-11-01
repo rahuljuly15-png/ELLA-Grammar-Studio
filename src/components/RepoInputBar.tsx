@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Search, Loader2, ArrowRight, FileText, Database, ShieldCheck, KeyRound } from 'lucide-react';
 import { SAMPLE_REPOSITORIES } from '../data/sampleRepos';
-import { RepoAnalysis } from '../types';
+import type { RepoAnalysis } from '../types';
 
 interface RepoInputBarProps {
   onAnalyzeUrl: (url: string, token?: string) => Promise<void>;

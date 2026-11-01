@@ -11,7 +11,7 @@ import {
   Check,
   Filter,
 } from 'lucide-react';
-import { EntityDefinition, RepoAnalysis } from '../types';
+import type { EntityDefinition, RepoAnalysis } from '../types';
 
 interface FrontendPreviewProps {
   analysis: RepoAnalysis;

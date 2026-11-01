@@ -1,4 +1,4 @@
-import { RepoAnalysis, EntityDefinition } from '../types';
+import type { RepoAnalysis, EntityDefinition } from '../types';
 
 export function generateReactCode(analysis: RepoAnalysis, activeEntity: EntityDefinition): string {
   const entityName = activeEntity.singular;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Star, GitFork, ExternalLink, Database, Shield, Cpu, BookOpen } from 'lucide-react';
-import { RepoAnalysis } from '../types';
+import type { RepoAnalysis } from '../types';
 
 interface RepoSummaryBannerProps {
   analysis: RepoAnalysis;

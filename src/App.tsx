@@ -4,7 +4,7 @@
  */
 
 import React, { useState, useEffect, useMemo } from 'react';
-import { EllaHeader, EllaView } from './components/ella/EllaHeader';
+import { EllaHeader, type EllaView } from './components/ella/EllaHeader';
 import { PracticeCycleView } from './components/ella/PracticeCycleView';
 import { MasteryMapView } from './components/ella/MasteryMapView';
 import { ErrorVaultView } from './components/ella/ErrorVaultView';

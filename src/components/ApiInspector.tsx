@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Send, Play, CheckCircle, Terminal, Key, Copy, Check } from 'lucide-react';
-import { EndpointDefinition, RepoAnalysis } from '../types';
+import type { EndpointDefinition, RepoAnalysis } from '../types';
 
 interface ApiInspectorProps {
   analysis: RepoAnalysis;

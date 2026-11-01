@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { X, Copy, Check, Send, Sparkles, GitBranch, Terminal } from 'lucide-react';
-import { RepoAnalysis } from '../types';
+import type { RepoAnalysis } from '../types';
 
 interface SharePromptModalProps {
   isOpen: boolean;

@@ -9,7 +9,7 @@ import {
   CheckCircle2,
   GitBranch,
 } from 'lucide-react';
-import { RepoAnalysis } from '../types';
+import type { RepoAnalysis } from '../types';
 
 interface RepoAnalysisViewProps {
   analysis: RepoAnalysis;

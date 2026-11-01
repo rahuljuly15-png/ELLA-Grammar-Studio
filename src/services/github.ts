@@ -1,4 +1,4 @@
-import { BackendFramework, EntityDefinition, EndpointDefinition, RepoAnalysis, RepoMetadata } from '../types';
+import type { BackendFramework, EntityDefinition, EndpointDefinition, RepoAnalysis, RepoMetadata } from '../types';
 
 export function parseGitHubUrl(input: string): { owner: string; repo: string } | null {
   const clean = input.trim();

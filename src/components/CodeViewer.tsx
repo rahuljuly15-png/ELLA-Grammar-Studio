@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Copy, Check, Download, FileCode, CheckCircle2 } from 'lucide-react';
 import { generateReactCode } from '../services/codeGenerator';
-import { EntityDefinition, RepoAnalysis } from '../types';
+import type { EntityDefinition, RepoAnalysis } from '../types';
 
 interface CodeViewerProps {
   analysis: RepoAnalysis;

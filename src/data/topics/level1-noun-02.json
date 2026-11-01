@@ -1,0 +1,92 @@
+{
+  "topicId": "level1-noun-02",
+  "title": "Nouns: Kinds, Number & Gender (संज्ञा)",
+  "level": 1,
+  "category": "Basic Foundations",
+  "descriptionHi": "व्यक्ति, वस्तु, जाति, समूह (Collective) व भाव (Abstract) की पहचान; एकवचन-बहुवचन और लिंग।",
+  "steps": {
+    "1_notice": {
+      "stepTitleHi": "1. ध्यान दें (Notice)",
+      "instructionHi": "इन दो वाक्यों को ध्यान से देखें। रेखांकित शब्दों में क्या अंतर है?",
+      "pairs": [
+        {
+          "sentence": "The boy lives in Delhi.",
+          "highlightWord": "boy vs Delhi",
+          "soundHintHi": "'boy' आम नाम (Common) है, जबकि 'Delhi' एक विशेष शहर का नाम (Proper) है जो हमेशा Capital से शुरू होता है।"
+        },
+        {
+          "sentence": "A team of players showed great bravery.",
+          "highlightWord": "team vs bravery",
+          "soundHintHi": "'team' खिलाड़ियों का समूह (Collective) है, जबकि 'bravery' (बहादुरी) एक ऐसा भाव (Abstract) है जिसे छू नहीं सकते।"
+        }
+      ]
+    },
+    "2_hypothesize": {
+      "stepTitleHi": "2. नियम का अनुमान लगाएँ (Hypothesize)",
+      "questionHi": "ऊपर दिए गए उदाहरणों से संज्ञा के वर्गीकरण के बारे में क्या समझ आया?",
+      "options": [
+        {
+          "textHi": "अंग्रेजी में सभी संज्ञा शब्दों का पहला अक्षर हमेशा कैपिटल लिखा जाता है।",
+          "isCorrect": false,
+          "feedbackHi": "गलत! केवल विशेष नामों (Proper Nouns जैसे Rahul, India) का पहला अक्षर कैपिटल होता है, आम नामों (Common Nouns) का नहीं।"
+        },
+        {
+          "textHi": "नाम कई प्रकार के होते हैं: सामान्य नाम (Common), विशेष नाम (Proper), समूह (Collective) और अदृश्य भाव (Abstract)।",
+          "isCorrect": true,
+          "feedbackHi": "बिल्कुल सही! संज्ञा केवल चीज़ों का नाम नहीं, बल्कि समूह और अमूर्त भावों (Honesty, Happiness) का भी नाम है।"
+        }
+      ]
+    },
+    "3_clarify": {
+      "stepTitleHi": "3. सुनहरा नियम (Clarify - Golden Rule)",
+      "goldenRuleHi": "संज्ञा (Noun) के 4 मुख्य प्रकार: 1. Proper (विशिष्ट नाम - Capital Letter), 2. Common (जाति/सामान्य नाम), 3. Collective (समूह - a team, a flock), 4. Abstract (भाव/विचार जिन्हें छू नहीं सकते - bravery, honesty)।",
+      "theRuleHi": "वचन (Number): एकवचन (child, foot) से बहुवचन (children, feet) में कुछ शब्दों की स्पेलिंग पूरी बदल जाती है। लिंग (Gender): Masculine (king), Feminine (queen), Neuter (table/pen), Common (teacher/doctor)।",
+      "examples": [
+        { "word": "Diwali, Rahul", "sound": "Proper Noun", "reason": "हमेशा बड़े अक्षर (Capital) से शुरू" },
+        { "word": "a flock of birds", "sound": "Collective Noun", "reason": "पक्षियों का पूरा झुंड/समूह" },
+        { "word": "honesty, happiness", "sound": "Abstract Noun", "reason": "अनुभूति या गुण जिसे छुआ नहीं जा सकता" },
+        { "word": "teacher, doctor", "sound": "Common Gender", "reason": "स्त्रीलिंग व पुल्लिंग दोनों के लिए मान्य" }
+      ]
+    },
+    "4_guided_practice": {
+      "stepTitleHi": "4. निर्देशित अभ्यास (Guided Practice)",
+      "instructionHi": "वाक्यों में सही संज्ञा रूप या प्रकार पहचानें:",
+      "questions": [
+        {
+          "id": "np-1",
+          "sentence": "The ___ (child / children) are playing in the garden.",
+          "options": ["child", "children"],
+          "correctAnswer": "children",
+          "explanationHi": "'are' बहुवचन क्रिया है, इसलिए 'children' (बहुवचन) आएगा।"
+        },
+        {
+          "id": "np-2",
+          "sentence": "___ is the best policy. (Honest / Honesty)",
+          "options": ["Honest", "Honesty"],
+          "correctAnswer": "Honesty",
+          "explanationHi": "कर्ता के स्थान पर भाववाचक संज्ञा (Abstract Noun) 'Honesty' (ईमानदारी) आएगी।"
+        }
+      ]
+    },
+    "5_free_production": {
+      "stepTitleHi": "5. स्वयं वाक्य बनाएँ (Production Task)",
+      "promptHi": "एक समूहवाचक संज्ञा (जैसे 'a team' या 'a crowd') या भाववाचक संज्ञा ('happiness') का प्रयोग करके वाक्य लिखें:",
+      "placeholderHi": "उदा. Our cricket team won the match.",
+      "sampleSolutions": [
+        "Our cricket team won the match yesterday.",
+        "True happiness comes from helping others."
+      ]
+    },
+    "6_reflection": {
+      "stepTitleHi": "6. आत्म-मूल्यांकन (Review & Schedule)",
+      "promptHi": "आज संज्ञा के बारे में आपने क्या नया सीखा?",
+      "recapPointsHi": [
+        "Proper Nouns हमेशा Capital letters से शुरू होते हैं।",
+        "Collective Noun समूह को दर्शाता है (a team of players)।",
+        "Abstract Nouns केवल महसूस किए जा सकते हैं (honesty, love)।",
+        "Common Gender दोनों (male/female) के लिए होता है (doctor, student)।"
+      ]
+    }
+  }
+}
+

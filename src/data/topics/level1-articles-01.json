@@ -1,0 +1,129 @@
+{
+  "topicId": "level1-articles-01",
+  "title": "Articles: A, An, The (उपपद)",
+  "level": 1,
+  "category": "Basic Foundations",
+  "descriptionHi": "अंग्रेजी में A, An, और The का सही उपयोग सीखें - ध्वनि (Sound) आधारित नियमों के साथ।",
+  "steps": {
+    "1_notice": {
+      "stepTitleHi": "1. ध्यान दें (Notice)",
+      "instructionHi": "इन वाक्यों को ध्यान से पढ़ें। दोनों में 'U' और 'H' अक्षर हैं, फिर भी 'a' और 'an' अलग क्यों हैं?",
+      "pairs": [
+        {
+          "sentence": "My sister studies in a university.",
+          "highlightWord": "a university",
+          "soundHintHi": "University की पहली आवाज़ = 'य' (व्यंजन ध्वनि)"
+        },
+        {
+          "sentence": "Wait here for an hour.",
+          "highlightWord": "an hour",
+          "soundHintHi": "Hour में 'h' साइलेंट है, पहली आवाज़ = 'आ' (स्वर ध्वनि)"
+        },
+        {
+          "sentence": "He is an honest police officer.",
+          "highlightWord": "an honest",
+          "soundHintHi": "Honest में 'h' साइलेंट है, पहली आवाज़ = 'ऑ' (स्वर ध्वनि)"
+        },
+        {
+          "sentence": "She has a European friend.",
+          "highlightWord": "a European",
+          "soundHintHi": "European 'E' से शुरू होता है पर पहली ध्वनि 'य' (व्यंजन) है"
+        }
+      ]
+    },
+    "2_hypothesize": {
+      "stepTitleHi": "2. नियम का अनुमान लगाएँ (Hypothesize)",
+      "questionHi": "ऊपर दिए गए उदाहरणों को देखकर आपको क्या नियम समझ में आया?",
+      "options": [
+        {
+          "textHi": "हम केवल अंग्रेजी के अक्षर (a, e, i, o, u) देखकर 'an' लगाते हैं।",
+          "isCorrect": false,
+          "feedbackHi": "ध्यान दें! 'university' में 'u' है फिर भी 'a' लगा, और 'hour' में 'h' है फिर भी 'an' लगा। इसलिए केवल अक्षर देखना काफी नहीं है।"
+        },
+        {
+          "textHi": "हम अक्षर नहीं, बल्कि शब्द को बोलते समय आने वाली 'पहली आवाज़ (Sound)' देखते हैं।",
+          "isCorrect": true,
+          "feedbackHi": "बिल्कुल सही! असली नियम स्पेलिंग का नहीं, उच्चारण (Sound) का है।"
+        },
+        {
+          "textHi": "'a' और 'an' का उपयोग वाक्य की लंबाई पर निर्भर करता है।",
+          "isCorrect": false,
+          "feedbackHi": "नहीं, वाक्य की लंबाई से आर्टिकल के नियम का कोई संबंध नहीं है।"
+        }
+      ]
+    },
+    "3_clarify": {
+      "stepTitleHi": "3. सुनहरा नियम (Clarify - Golden Rule)",
+      "goldenRuleHi": "बोलकर देखें: यदि शब्द की पहली आवाज़ हिंदी के स्वर (अ, आ, इ, ई, उ, ऊ, ए, ऐ, ओ, औ) जैसी हो तो 'An' लगाएँ। यदि पहली आवाज़ हिंदी के व्यंजन (क से ज्ञ) जैसी हो तो 'A' लगाएँ।",
+      "theRuleHi": "'The' का उपयोग किसी निश्चित/विशिष्ट (Specific) वस्तु, ब्रह्मांड की अद्वितीय चीजों (The Sun, The Moon), या जब श्रोता और वक्ता दोनों को उस वस्तु का पहले से पता हो तब किया जाता है।",
+      "examples": [
+        {
+          "word": "an umbrella",
+          "sound": "अ (स्वर)",
+          "reason": "स्वर ध्वनि से शुरुआत"
+        },
+        {
+          "word": "a union",
+          "sound": "य (व्यंजन)",
+          "reason": "व्यंजन ध्वनि से शुरुआत"
+        },
+        {
+          "word": "an MLA / an MP",
+          "sound": "एम -> 'ए' (स्वर)",
+          "reason": "संक्षिप्त नाम (Acronym)"
+        },
+        {
+          "word": "the Taj Mahal",
+          "sound": "अद्वितीय स्मारक",
+          "reason": "निश्चित संज्ञा (Definite Noun)"
+        }
+      ]
+    },
+    "4_guided_practice": {
+      "stepTitleHi": "4. निर्देशित अभ्यास (Guided Practice)",
+      "instructionHi": "रिक्त स्थानों में सही आर्टिकल (A, An, The) चुनें:",
+      "questions": [
+        {
+          "id": "gp-1",
+          "sentence": "He bought ___ new car yesterday.",
+          "options": ["a", "an", "the"],
+          "correctAnswer": "a",
+          "explanationHi": "'new' की पहली आवाज़ 'न' (व्यंजन ध्वनि) है, इसलिए 'a' आएगा।"
+        },
+        {
+          "id": "gp-2",
+          "sentence": "She wants to become ___ astronaut.",
+          "options": ["a", "an", "the"],
+          "correctAnswer": "an",
+          "explanationHi": "'astronaut' की पहली आवाज़ 'ऐ/आ' (स्वर ध्वनि) है, इसलिए 'an' आएगा।"
+        },
+        {
+          "id": "gp-3",
+          "sentence": "___ sun rises in the east.",
+          "options": ["A", "An", "The"],
+          "correctAnswer": "The",
+          "explanationHi": "सूर्य ब्रह्मांड में अद्वितीय (unique) है, इसलिए 'The' आएगा।"
+        }
+      ]
+    },
+    "5_free_production": {
+      "stepTitleHi": "5. स्वयं वाक्य बनाएँ (Free Production)",
+      "promptHi": "अब 'an umbrella' या 'a university' का उपयोग करके अपना एक अंग्रेजी वाक्य लिखें:",
+      "placeholderHi": "उदा. I carried an umbrella because it was raining.",
+      "sampleSolutions": [
+        "I need an umbrella today.",
+        "My brother goes to a university in Delhi."
+      ]
+    },
+    "6_reflection": {
+      "stepTitleHi": "6. आत्म-मूल्यांकन (Review & Reflection)",
+      "promptHi": "आज आपने क्या सीखा? मुख्य बातें दोहराएँ:",
+      "recapPointsHi": [
+        "स्पेलिंग (अक्षर) नहीं, बोलने पर आने वाली पहली ध्वनि (Sound) देखें।",
+        "हिंदी स्वर ध्वनि (अ से औ) = 'An'",
+        "हिंदी व्यंजन ध्वनि (क से ज्ञ) = 'A'",
+        "विशिष्ट, अद्वितीय या पूर्व-परिचित = 'The'"
+      ]
+    }
+  }
+}

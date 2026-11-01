@@ -1,0 +1,92 @@
+{
+  "topicId": "level5-active-passive-15",
+  "title": "Active ↔ Passive Voice Switcher",
+  "level": 5,
+  "category": "वाच्य और कथन",
+  "descriptionHi": "स्पॉटलाइट कर्ता से कर्म पर: Ram ate apple → The apple was eaten by Ram (Helping Verb + V3 + by)।",
+  "steps": {
+    "1_notice": {
+      "stepTitleHi": "1. ध्यान दें (Notice)",
+      "instructionHi": "इन दो वाक्यों को देखें। दोनों का अर्थ एक है, पर स्पॉटलाइट किस पर है?",
+      "pairs": [
+        {
+          "sentence": "Ram ate the sweet apple.",
+          "highlightWord": "Ram (Subject Active)",
+          "soundHintHi": "Active Voice: कर्ता (Ram) पहले है, काम करने वाले पर स्पॉटलाइट है।"
+        },
+        {
+          "sentence": "The sweet apple was eaten by Ram.",
+          "highlightWord": "The apple ... eaten by Ram (Passive)",
+          "soundHintHi": "Passive Voice: कर्म (The apple) पहले आ गया, क्रिया 'was eaten' (V3) हो गई और कर्ता 'by Ram' बन गया।"
+        }
+      ]
+    },
+    "2_hypothesize": {
+      "stepTitleHi": "2. नियम का अनुमान लगाएँ (Hypothesize)",
+      "questionHi": "Active से Passive बनाते समय क्रिया में क्या अनिवार्य बदलाव होता है?",
+      "options": [
+        {
+          "textHi": "Passive Voice में क्रिया हमेशा V1 (First Form) में रहती है।",
+          "isCorrect": false,
+          "feedbackHi": "गलत! Passive Voice का सबसे कड़ा नियम है कि क्रिया का रूप हमेशा V3 (Past Participle - जैसे eaten, written, played) ही होता है!"
+        },
+        {
+          "textHi": "कर्म (Object) आगे आता है + काल के अनुसार Helping Verb (is/was/are) + हमेशा V3 + 'by' + कर्ता आता है।",
+          "isCorrect": true,
+          "feedbackHi": "बिल्कुल सही! Passive Voice = [Object] + [Helping Verb] + [V3] + by + [Subject]।"
+        }
+      ]
+    },
+    "3_clarify": {
+      "stepTitleHi": "3. सुनहरा नियम (Clarify - Golden Rule)",
+      "goldenRuleHi": "Passive Voice का अचूक फॉर्मूला: Object + Be Form (is/am/are/was/were) + V3 (हमेशा Third Form) + by + Subject। Present Simple → is/am/are + V3; Past Simple → was/were + V3।",
+      "theRuleHi": "सर्वनाम परिवर्तन (Pronoun Shift): I → by me, He → by him, She → by her, They → by them, We → by us।",
+      "examples": [
+        { "word": "He writes a letter", "sound": "Active (Present)", "reason": "S + V1 + O" },
+        { "word": "A letter is written by him", "sound": "Passive (Present)", "reason": "is + V3 + by him" },
+        { "word": "She cooked food", "sound": "Active (Past)", "reason": "S + V2 + O" },
+        { "word": "Food was cooked by her", "sound": "Passive (Past)", "reason": "was + V3 + by her" }
+      ]
+    },
+    "4_guided_practice": {
+      "stepTitleHi": "4. निर्देशित अभ्यास (Guided Practice)",
+      "instructionHi": "सही Passive रूप चुनें:",
+      "questions": [
+        {
+          "id": "voice-1",
+          "sentence": "The boy broke the glass. → The glass ___ by the boy.",
+          "options": ["is broken", "was broken", "was broke"],
+          "correctAnswer": "was broken",
+          "explanationHi": "'broke' Past Tense (V2) है, इसलिए 'was' + V3 'broken' आएगा।"
+        },
+        {
+          "id": "voice-2",
+          "sentence": "Rohan plays football. → Football ___ by Rohan.",
+          "options": ["is played", "was played"],
+          "correctAnswer": "is played",
+          "explanationHi": "'plays' Present Tense है, इसलिए 'is played' आएगा।"
+        }
+      ]
+    },
+    "5_free_production": {
+      "stepTitleHi": "5. स्वयं वाक्य बनाएँ (Production Task)",
+      "promptHi": "एक Passive Voice वाक्य (was/is + V3 + by ...) लिखें:",
+      "placeholderHi": "उदा. The song was sung by Neha. / A book was read by me.",
+      "sampleSolutions": [
+        "The song was sung by Neha.",
+        "The cricket match was won by our school team."
+      ]
+    },
+    "6_reflection": {
+      "stepTitleHi": "6. आत्म-मूल्यांकन (Review & Schedule)",
+      "promptHi": "Active ↔ Passive Voice का मुख्य नियम याद रखें:",
+      "recapPointsHi": [
+        "Passive Voice में हमेशा V3 (Third Form) आती है।",
+        "Object आगे आ जाता है, Subject अंत में 'by' के साथ जाता है।",
+        "Past Tense (V2) में was/were + V3 लगता है।",
+        "He → him, She → her, I → me, They → them।"
+      ]
+    }
+  }
+}
+

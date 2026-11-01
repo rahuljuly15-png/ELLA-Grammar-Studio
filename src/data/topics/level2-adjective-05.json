@@ -1,0 +1,97 @@
+{
+  "topicId": "level2-adjective-05",
+  "title": "Adjectives & Degrees of Comparison",
+  "level": 2,
+  "category": "वर्णन और संबंध",
+  "descriptionHi": "गुण व परिमाण; दो में तुलना (-er / more) और तीन या अधिक में (-est / most) तथा as...as।",
+  "steps": {
+    "1_notice": {
+      "stepTitleHi": "1. ध्यान दें (Notice)",
+      "instructionHi": "इन तीन वाक्यों को ध्यान से पढ़ें। 'tall' शब्द कैसे बदल रहा है?",
+      "pairs": [
+        {
+          "sentence": "Rohan is a tall boy.",
+          "highlightWord": "tall",
+          "soundHintHi": "Positive Degree: यहाँ कोई तुलना नहीं है, केवल रोहन का गुण बताया गया है।"
+        },
+        {
+          "sentence": "Rohan is taller than Amit.",
+          "highlightWord": "taller than",
+          "soundHintHi": "Comparative Degree: जब 2 लोगों में तुलना हो, तो 'er' + 'than' लगता है।"
+        },
+        {
+          "sentence": "Rohan is the tallest boy in the class.",
+          "highlightWord": "the tallest",
+          "soundHintHi": "Superlative Degree: जब 3 या अधिक में सबसे श्रेष्ठ बताना हो, तो 'the' + 'est' लगता है।"
+        }
+      ]
+    },
+    "2_hypothesize": {
+      "stepTitleHi": "2. नियम का अनुमान लगाएँ (Hypothesize)",
+      "questionHi": "तुलना करते समय कौन सा नियम सही बैठता है?",
+      "options": [
+        {
+          "textHi": "हम 'more taller' या 'most tallest' दोनों एक साथ लगा सकते हैं।",
+          "isCorrect": false,
+          "feedbackHi": "बिल्कुल गलत! 'more' और '-er' को कभी एक साथ नहीं लगाते (डबल कम्पैरेटिव वर्जित है)। केवल 'taller' कहना सही है।"
+        },
+        {
+          "textHi": "2 चीज़ों की तुलना में '-er than' (या 'more') और सबसे श्रेष्ठ बताने के लिए 'the + -est' (या 'the most') लगाते हैं।",
+          "isCorrect": true,
+          "feedbackHi": "बिल्कुल सही! और जब दो चीजें बिल्कुल बराबर हों, तो 'as + adjective + as' लगाते हैं (as smart as an owl)।"
+        }
+      ]
+    },
+    "3_clarify": {
+      "stepTitleHi": "3. सुनहरा नियम (Clarify - Golden Rule)",
+      "goldenRuleHi": "तुलना के 3 रूप: 1. Positive (tall / brave), 2. Comparative (taller than / braver than - दो के बीच), 3. Superlative (the tallest / the bravest - सबके बीच)। बराबर होने पर 'as...as' (as fast as a cheetah)।",
+      "theRuleHi": "लंबे शब्दों (2 या अधिक Syllables) में -er/-est के बजाय 'more' और 'most' लगाते हैं: beautiful → more beautiful than → the most beautiful। कभी भी 'more taller' न बोलें!",
+      "examples": [
+        { "word": "tall → taller → tallest", "sound": "1 Syllable", "reason": "-er और -est जोड़ें" },
+        { "word": "beautiful → more beautiful", "sound": "Multi Syllable", "reason": "more और most जोड़ें" },
+        { "word": "good → better → best", "sound": "Irregular", "reason": "अनियमित रूप (पूरा बदलता है)" },
+        { "word": "as smart as an owl", "sound": "Equality", "reason": "समानता दर्शाने के लिए as...as" }
+      ]
+    },
+    "4_guided_practice": {
+      "stepTitleHi": "4. निर्देशित अभ्यास (Guided Practice)",
+      "instructionHi": "वाक्यों में सही डिग्री चुनें:",
+      "questions": [
+        {
+          "id": "adj-1",
+          "sentence": "Mount Everest is ___ peak in the world.",
+          "options": ["higher than", "the highest"],
+          "correctAnswer": "the highest",
+          "explanationHi": "पूरी दुनिया में सबसे ऊँची (सबमें तुलना) होने के कारण Superlative 'the highest' आएगा।"
+        },
+        {
+          "id": "adj-2",
+          "sentence": "My brother is ___ (tall) than me.",
+          "options": ["taller", "more tall", "more taller"],
+          "correctAnswer": "taller",
+          "explanationHi": "दो लोगों की तुलना में 'taller than' आएगा; 'more taller' गलत होता है।"
+        }
+      ]
+    },
+    "5_free_production": {
+      "stepTitleHi": "5. स्वयं वाक्य बनाएँ (Production Task)",
+      "promptHi": "Comparative degree (taller than / faster than) या 'as...as' का प्रयोग करके एक वाक्य लिखें:",
+      "placeholderHi": "उदा. An airplane is faster than a train.",
+      "sampleSolutions": [
+        "An airplane is faster than a train.",
+        "Rohan is as brave as a lion."
+      ]
+    },
+    "6_reflection": {
+      "stepTitleHi": "6. आत्म-मूल्यांकन (Review & Schedule)",
+      "promptHi": "आज आपने विशेषण और तुलना के बारे में क्या सीखा?",
+      "recapPointsHi": [
+        "दो में तुलना = Comparative (-er than या more)।",
+        "सबमें तुलना = Superlative (the + -est या the most)।",
+        "समानता = as + adjective + as (as smart as an owl)।",
+        "डबल कम्पैरेटिव (more taller) कभी नहीं लगता।"
+      ]
+    }
+  }
+}
+

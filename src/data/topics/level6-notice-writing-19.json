@@ -1,0 +1,88 @@
+{
+  "topicId": "level6-notice-writing-19",
+  "title": "Notice Writing Scaffold (सूचना लेखन)",
+  "level": 6,
+  "category": "लेखन कौशल",
+  "descriptionHi": "चौकोर बॉक्स में School Name, NOTICE, Date, Heading, और Who, What, Where, When के 4 चेक-इंडिकेटर्स।",
+  "steps": {
+    "1_notice": {
+      "stepTitleHi": "1. ध्यान दें (Notice)",
+      "instructionHi": "स्कूल नोटिस बोर्ड पर लगी इस सूचना को देखें। इसकी क्या संरचना (Layout) है?",
+      "pairs": [
+        {
+          "sentence": "[BOX] DELHI PUBLIC SCHOOL \nNOTICE \n05 November 2026 \nLOST CRICKET BAT \nThis is to inform all students that a cricket bat was found in the playground...",
+          "highlightWord": "BOX + NOTICE + 4 Ws",
+          "soundHintHi": "Notice हमेशा एक चौकोर बॉक्स में बंद रहता है। सबसे ऊपर स्कूल का नाम, फिर बड़े अक्षरों में NOTICE और तारीख।"
+        },
+        {
+          "sentence": "Who: All students | What: Lost Cricket Bat | Where: Playground | When: Recess period",
+          "highlightWord": "4 Ws (Who, What, Where, When)",
+          "soundHintHi": "बॉडी में केवल 4 Ws (कौन, क्या, कहाँ, कब) होने चाहिए; फालतू बातें नहीं।"
+        }
+      ]
+    },
+    "2_hypothesize": {
+      "stepTitleHi": "2. नियम का अनुमान लगाएँ (Hypothesize)",
+      "questionHi": "परीक्षा में नोटिस लिखते समय पूरे 5 अंक प्राप्त करने का क्या नियम है?",
+      "options": [
+        {
+          "textHi": "जितना लंबा और 2-3 पन्नों का नोटिस होगा, उतने ज़्यादा अंक मिलेंगे।",
+          "isCorrect": false,
+          "feedbackHi": "बिल्कुल गलत! नोटिस केवल 40-50 शब्दों में एकदम सटीक (To the point) होना चाहिए। बड़ा लिखने पर अंक कटते हैं।"
+        },
+        {
+          "textHi": "चारों तरफ चौकोर बॉक्स (Box), बड़े अक्षरों में 'NOTICE', बायीं ओर Date, स्पष्ट Heading, 4 Ws (Who, What, Where, When) और अंत में नाम/पद।",
+          "isCorrect": true,
+          "feedbackHi": "बिल्कुल सही! यही CBSE/NCERT का आदर्श फॉर्मेट है।"
+        }
+      ]
+    },
+    "3_clarify": {
+      "stepTitleHi": "3. सुनहरा नियम (Clarify - Golden Rule)",
+      "goldenRuleHi": "Notice Writing का 6-पॉइंट ब्लूप्रिंट: 1. चारों ओर पेंसिल से चौकोर बॉक्स (Box), 2. संस्था का नाम (School Name), 3. 'NOTICE' कैपिटल में, 4. बायीं ओर तारीख (Date), 5. आकर्षक शीर्षक (Catchy Heading), 6. मुख्य भाग (4 Ws) + नाम/हस्ताक्षर।",
+      "theRuleHi": "आरंभिक जादुई पंक्ति: 'This is to inform all students that...' (सभी विद्यार्थियों को सूचित किया जाता है कि...)।",
+      "examples": [
+        { "word": "Top line", "sound": "School / Organization Name", "reason": "संस्था का नाम सबसे ऊपर केंद्र में" },
+        { "word": "Second line", "sound": "NOTICE (All Caps)", "reason": "बड़े अक्षरों में 'NOTICE' लिखना अनिवार्य" },
+        { "word": "Left side", "sound": "Date (e.g. 15 Nov 2026)", "reason": "दिनांक बाईं ओर लिखी जाती है" },
+        { "word": "Bottom left", "sound": "Signature & Designation", "reason": "लिखने वाले का नाम व पद (e.g. Head Boy)" }
+      ]
+    },
+    "4_guided_practice": {
+      "stepTitleHi": "4. निर्देशित अभ्यास (Guided Practice)",
+      "instructionHi": "नोटिस के सही घटक चुनें:",
+      "questions": [
+        {
+          "id": "nw-1",
+          "sentence": "नोटिस का मुख्य भाग किस वाक्य से शुरू करना सबसे प्रभावशाली होता है?",
+          "options": [
+            "This is to inform all students that...",
+            "I want to tell you a long story..."
+          ],
+          "correctAnswer": "This is to inform all students that...",
+          "explanationHi": "यह औपचारिक और सबसे प्रामाणिक प्रारंभिक वाक्य है।"
+        }
+      ]
+    },
+    "5_free_production": {
+      "stepTitleHi": "5. स्वयं वाक्य बनाएँ (Production Task)",
+      "promptHi": "नोटिस के लिए एक प्रारंभिक वाक्य (This is to inform all students that...) लिखकर पूरा करें:",
+      "placeholderHi": "उदा. This is to inform all students that our school is organizing an annual sports day on 20th November in the school ground.",
+      "sampleSolutions": [
+        "This is to inform all students that our school is organizing an annual sports day on 20th November.",
+        "This is to inform all students that a blue water bottle was found in the library."
+      ]
+    },
+    "6_reflection": {
+      "stepTitleHi": "6. आत्म-मूल्यांकन (Review & Schedule)",
+      "promptHi": "Notice Writing के 4 अनिवार्य 'W' क्या हैं?",
+      "recapPointsHi": [
+        "Who: किसे सूचित किया जा रहा है (Students/Teachers)।",
+        "What: घटना या वस्तु क्या है (Sports Day / Lost Item)।",
+        "Where: स्थान कहाँ है (School Auditorium / Playground)।",
+        "When: तारीख और समय कब है (On Monday at 10 AM)।"
+      ]
+    }
+  }
+}
+

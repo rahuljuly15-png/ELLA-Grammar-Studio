@@ -1,0 +1,92 @@
+{
+  "topicId": "level3-subject-verb-agreement-10",
+  "title": "Subject-Verb Agreement (कर्ता-क्रिया मेल)",
+  "level": 3,
+  "category": "काल और क्रिया",
+  "descriptionHi": "एकवचन कर्ता के साथ क्रिया में s/es (The dog barks), बहुवचन के साथ मूल रूप (The dogs bark)।",
+  "steps": {
+    "1_notice": {
+      "stepTitleHi": "1. ध्यान दें (Notice)",
+      "instructionHi": "इन दो वाक्यों को ध्यान से देखें। क्रिया (Verb) में कब 's' जुड़ा और कब नहीं?",
+      "pairs": [
+        {
+          "sentence": "The dog barks loudly.",
+          "highlightWord": "The dog barks",
+          "soundHintHi": "एकवचन कर्ता (The dog = 1 कुत्ता) है, इसलिए क्रिया में 's' जुड़कर 'barks' बना।"
+        },
+        {
+          "sentence": "The dogs bark loudly.",
+          "highlightWord": "The dogs bark",
+          "soundHintHi": "बहुवचन कर्ता (The dogs = कई कुत्ते) है, इसलिए क्रिया बिना 's' के 'bark' रही।"
+        }
+      ]
+    },
+    "2_hypothesize": {
+      "stepTitleHi": "2. नियम का अनुमान लगाएँ (Hypothesize)",
+      "questionHi": "संज्ञा और क्रिया में 's' लगने का क्या उल्टा संबंध है?",
+      "options": [
+        {
+          "textHi": "अगर कर्ता में 's' (बहुवचन) लगा है, तो क्रिया में भी 's' लगना चाहिए (जैसे The dogs barks)।",
+          "isCorrect": false,
+          "feedbackHi": "यह छात्रों की सबसे आम गलती है! संज्ञा में 's' लगाने से बहुवचन बनता है, लेकिन क्रिया में 's' लगाने से वह एकवचन बनती है!"
+        },
+        {
+          "textHi": "एकवचन कर्ता (He, She, It, 1 नाम) के साथ क्रिया में 's/es' लगता है, और बहुवचन (They, We, Boys) के साथ क्रिया का मूल रूप (बिना s) आता है।",
+          "isCorrect": true,
+          "feedbackHi": "बिल्कुल सही! कर्ता और क्रिया का तराजू हमेशा संतुलित रहता है: एकवचन कर्ता → Verb + s/es, बहुवचन कर्ता → Verb (Base)।"
+        }
+      ]
+    },
+    "3_clarify": {
+      "stepTitleHi": "3. सुनहरा नियम (Clarify - Golden Rule)",
+      "goldenRuleHi": "सुनहरा फॉर्मूला: Singular Subject (He, She, It, The dog) + Verb+s/es (barks, plays, runs)। Plural Subject (They, We, The dogs) + Verb बिना s (bark, play, run)।",
+      "theRuleHi": "'I' और 'You' अपवाद हैं: 'I play' और 'You play' (इनके साथ s/es नहीं लगता)।",
+      "examples": [
+        { "word": "The boy plays", "sound": "1 लड़का (Singular)", "reason": "Verb में 's' जुड़ेगा" },
+        { "word": "The boys play", "sound": "अनेक लड़के (Plural)", "reason": "Verb बिना 's' के रहेगी" },
+        { "word": "She cooks food", "sound": "वह (Singular)", "reason": "Verb में 's' जुड़ेगा" },
+        { "word": "They cook food", "sound": "वे (Plural)", "reason": "Verb बिना 's' के रहेगी" }
+      ]
+    },
+    "4_guided_practice": {
+      "stepTitleHi": "4. निर्देशित अभ्यास (Guided Practice)",
+      "instructionHi": "सही क्रिया रूप चुनें:",
+      "questions": [
+        {
+          "id": "sva-1",
+          "sentence": "My sister ___ (read / reads) storybooks every evening.",
+          "options": ["read", "reads"],
+          "correctAnswer": "reads",
+          "explanationHi": "'My sister' एकवचन (Singular) कर्ता है, इसलिए 'reads' (Verb + s) आएगा।"
+        },
+        {
+          "id": "sva-2",
+          "sentence": "The birds ___ (fly / flies) in the sky.",
+          "options": ["fly", "flies"],
+          "correctAnswer": "fly",
+          "explanationHi": "'The birds' बहुवचन (Plural) कर्ता है, इसलिए क्रिया का मूल रूप 'fly' आएगा।"
+        }
+      ]
+    },
+    "5_free_production": {
+      "stepTitleHi": "5. स्वयं वाक्य बनाएँ (Production Task)",
+      "promptHi": "एकवचन कर्ता (He/She/The boy) या बहुवचन (They/The boys) के साथ Present Tense का एक वाक्य लिखें:",
+      "placeholderHi": "उदा. The teacher teaches English. / The students listen quietly.",
+      "sampleSolutions": [
+        "The teacher teaches English very well.",
+        "The children play football in the ground."
+      ]
+    },
+    "6_reflection": {
+      "stepTitleHi": "6. आत्म-मूल्यांकन (Review & Schedule)",
+      "promptHi": "Subject-Verb Agreement का मुख्य नियम दोहराएँ:",
+      "recapPointsHi": [
+        "Singular Subject = Verb + s/es (He plays, The dog barks)।",
+        "Plural Subject = Verb बिना s (They play, The dogs bark)।",
+        "संज्ञा में 's' = बहुवचन, क्रिया में 's' = एकवचन!",
+        "I और You के साथ s/es नहीं लगता (I play, You play)।"
+      ]
+    }
+  }
+}
+

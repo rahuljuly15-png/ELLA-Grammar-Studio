@@ -1,0 +1,97 @@
+{
+  "topicId": "level3-tenses-timeline-11",
+  "title": "The Tense Timeline: Present, Past, Future",
+  "level": 3,
+  "category": "काल और क्रिया",
+  "descriptionHi": "एक ही समय-रेखा पर Simple, Continuous, और Perfect काल का स्पष्ट अंतर।",
+  "steps": {
+    "1_notice": {
+      "stepTitleHi": "1. ध्यान दें (Notice)",
+      "instructionHi": "समय-रेखा पर क्रिया कैसे बदल रही है? इन तीन वाक्यों को देखें:",
+      "pairs": [
+        {
+          "sentence": "I play cricket every Sunday.",
+          "highlightWord": "play (Simple Present)",
+          "soundHintHi": "नियमित आदत / दिनचर्या (Routine Action): क्रिया का मूल रूप 'play'।"
+        },
+        {
+          "sentence": "I am playing cricket right now.",
+          "highlightWord": "am playing (Continuous)",
+          "soundHintHi": "इस क्षण जारी काम (Live Now): Helping Verb (is/am/are) + 'playing' (ing)।"
+        },
+        {
+          "sentence": "I have played cricket already.",
+          "highlightWord": "have played (Perfect)",
+          "soundHintHi": "अभी-अभी पूरा हुआ काम (Just Finished): has/have + V3 (played)।"
+        }
+      ]
+    },
+    "2_hypothesize": {
+      "stepTitleHi": "2. नियम का अनुमान लगाएँ (Hypothesize)",
+      "questionHi": "भूतकाल (Past) और भविष्यकाल (Future) में वाक्य कैसे बनते हैं?",
+      "options": [
+        {
+          "textHi": "भूतकाल के लिए केवल 'was' लगाते हैं और क्रिया का रूप नहीं बदलते।",
+          "isCorrect": false,
+          "feedbackHi": "गलत! भूतकाल (Simple Past) में क्रिया का दूसरा रूप V2 आता है (जैसे I played, I went) बिना was के।"
+        },
+        {
+          "textHi": "Simple Past में सीधे V2 (I played), और Future में 'will + V1' (I will play) आता है।",
+          "isCorrect": true,
+          "feedbackHi": "बिल्कुल सही! समय-रेखा पर काल का नियम सीधा है: Past = V2, Future = will + V1।"
+        }
+      ]
+    },
+    "3_clarify": {
+      "stepTitleHi": "3. सुनहरा नियम (Clarify - Golden Rule)",
+      "goldenRuleHi": "काल की त्रिमूर्ति: 1. Present: आदत → V1/s, जारी → is/am/are + V-ing, पूर्ण → has/have + V3। 2. Past: बीता हुआ → V2 (played), जारी था → was/were + V-ing। 3. Future: आगे होगा → will + V1 (will play)।",
+      "theRuleHi": "समय सूचक शब्द (Time Markers): Every day/Usually → Simple Present; Yesterday/Ago → Simple Past; Tomorrow/Next week → Future।",
+      "examples": [
+        { "word": "I write letters", "sound": "आदत (Habit)", "reason": "Simple Present (V1)" },
+        { "word": "I wrote a letter yesterday", "sound": "बीता कल (Past)", "reason": "Simple Past (V2)" },
+        { "word": "I will write tomorrow", "sound": "आने वाला कल (Future)", "reason": "Simple Future (will + V1)" },
+        { "word": "She is writing now", "sound": "लाइव जारी (Ongoing)", "reason": "Present Continuous (is + V-ing)" }
+      ]
+    },
+    "4_guided_practice": {
+      "stepTitleHi": "4. निर्देशित अभ्यास (Guided Practice)",
+      "instructionHi": "समय के अनुसार सही क्रिया रूप चुनें:",
+      "questions": [
+        {
+          "id": "tense-1",
+          "sentence": "He ___ (go / went) to Agra yesterday.",
+          "options": ["go", "went"],
+          "correctAnswer": "went",
+          "explanationHi": "'yesterday' (बीता हुआ कल) है, इसलिए Past Tense V2 'went' आएगा।"
+        },
+        {
+          "id": "tense-2",
+          "sentence": "Look! The baby is ___ (sleep / sleeping).",
+          "options": ["sleep", "sleeping"],
+          "correctAnswer": "sleeping",
+          "explanationHi": "'Look!' काम अभी आँखों के सामने चल रहा है, इसलिए 'is sleeping' आएगा।"
+        }
+      ]
+    },
+    "5_free_production": {
+      "stepTitleHi": "5. स्वयं वाक्य बनाएँ (Production Task)",
+      "promptHi": "Simple Past (V2 जैसे ate/went/played) या Future (will + V1) में अपना एक वाक्य लिखें:",
+      "placeholderHi": "उदा. I visited my grandmother last Sunday.",
+      "sampleSolutions": [
+        "I visited my grandmother last Sunday.",
+        "We will celebrate Diwali next month."
+      ]
+    },
+    "6_reflection": {
+      "stepTitleHi": "6. आत्म-मूल्यांकन (Review & Schedule)",
+      "promptHi": "आज आपने काल चक्र (Tense Timeline) के बारे में क्या सीखा?",
+      "recapPointsHi": [
+        "Present = आदत/सत्य (V1 या is/are + ing)।",
+        "Past = समाप्त कार्य (सीधे V2, जैसे went/played)।",
+        "Future = आने वाला कार्य (will + V1)।",
+        "Yesterday = Past (V2), Tomorrow = Future (will)।"
+      ]
+    }
+  }
+}
+

@@ -1,0 +1,6 @@
+{
+  "name": "ELLA - English Grammar Studio",
+  "description": "Inductive bilingual English grammar learning studio for Class 6-10 students. 100% offline practice with PWA installability.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

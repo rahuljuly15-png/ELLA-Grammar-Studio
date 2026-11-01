@@ -10,6 +10,7 @@ import {
   Sparkles,
   Share2,
 } from 'lucide-react';
+import { PWAInstallButton } from './PWAInstallButton';
 
 export type EllaView = 'cycle' | 'mastery_map' | 'error_vault' | 'publish' | 'settings';
 
@@ -117,17 +118,20 @@ export const EllaHeader: React.FC<EllaHeaderProps> = ({
 
       {/* Zone 3: Primary Action & 100% Offline */}
       <div className="flex items-center gap-2.5 shrink-0 justify-end">
-        <div className="flex items-center gap-1.5 text-xs text-emerald-800 bg-emerald-50 border border-emerald-200/80 px-2.5 py-1.5 rounded-xl font-semibold">
+        <div className="hidden xl:flex items-center gap-1.5 text-xs text-emerald-800 bg-emerald-50 border border-emerald-200/80 px-2.5 py-1.5 rounded-xl font-semibold">
           <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-          <span className="hidden md:inline">100% मुफ़्त व ऑफ़लाइन</span>
+          <span>100% ऑफ़लाइन</span>
         </div>
+
+        <PWAInstallButton />
 
         <button
           onClick={onOpenPublishModal}
-          className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 rounded-xl transition-all shadow-xs shadow-emerald-200 cursor-pointer"
+          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 rounded-xl transition-all shadow-xs shadow-emerald-200 cursor-pointer"
         >
           <Share2 className="w-3.5 h-3.5" />
-          <span>लाइव लिंक देखें</span>
+          <span className="hidden sm:inline">लाइव लिंक देखें</span>
+          <span className="sm:hidden">शेयर</span>
         </button>
       </div>
     </header>

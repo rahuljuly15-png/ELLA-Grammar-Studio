@@ -14,7 +14,7 @@ import { TopicSelectorModal } from './components/ella/TopicSelectorModal';
 import { getTopicById, type FullTopicData } from './data/topicLoader';
 import { checkSentenceOffline, recordProductionAttempt, type RuleCheckResult } from './engines/offlineRuleEngine';
 import { exportDatabaseToJson, importDatabaseFromJson, getOfflineDbCounts, deleteStudentData } from './services/backupService';
-import { Check, GitBranch, ArrowUpRight } from 'lucide-react';
+import { Check } from 'lucide-react';
 
 export default function App() {
   // Navigation View: 'cycle' | 'mastery_map' | 'error_vault' | 'publish' | 'settings'
@@ -195,20 +195,13 @@ export default function App() {
 
       {/* Main Container */}
       <main className="flex-1 max-w-5xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
-        {/* Repo attribution ribbon */}
+        {/* Student progress ribbon */}
         <div className="p-3.5 bg-white border border-slate-200 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs shadow-2xs">
-          <div className="flex items-center gap-2 text-slate-600">
-            <GitBranch className="w-3.5 h-3.5 text-indigo-600" />
-            <span className="font-medium">संबद्ध रिपॉजिटरी:</span>
-            <a
-              href="https://github.com/rahuljuly15-png/ELLA-Grammar-Studio"
-              target="_blank"
-              rel="noreferrer"
-              className="text-indigo-600 font-mono hover:underline flex items-center gap-1 font-bold"
-            >
-              <span>rahuljuly15-png/ELLA-Grammar-Studio</span>
-              <ArrowUpRight className="w-3 h-3" />
-            </a>
+          <div className="flex items-center gap-2 text-slate-700 font-semibold">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span className="text-indigo-700 font-bold">दैनिक व्याकरण अभ्यास</span>
+            <span aria-hidden="true" className="text-slate-300">·</span>
+            <span className="text-slate-500 font-normal">कक्षा 7 पाठ्यक्रम</span>
           </div>
 
           <div className="flex items-center gap-3 text-slate-500 font-medium">

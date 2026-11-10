@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Download, Smartphone, X, Check, HelpCircle } from 'lucide-react';
 import { usePWAInstall } from '../../hooks/usePWAInstall';
+import { useLanguage } from '../../i18n/LanguageContext';
 
 export const PWAInstallButton: React.FC = () => {
   const { isInstallable, isInstalled, isIOS, install } = usePWAInstall();
+  const { language, t } = useLanguage();
   const [showIOSGuide, setShowIOSGuide] = useState(false);
   const [showHelpGuide, setShowHelpGuide] = useState(false);
   const [isInstalling, setIsInstalling] = useState(false);
@@ -13,7 +15,7 @@ export const PWAInstallButton: React.FC = () => {
     return (
       <div className="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-lg">
         <Check className="w-3.5 h-3.5 text-emerald-600" />
-        <span>ऐप स्थापित है</span>
+        <span>{language === 'en' ? 'App Installed' : 'ऐप स्थापित है'}</span>
       </div>
     );
   }
@@ -30,16 +32,22 @@ export const PWAInstallButton: React.FC = () => {
     }
   };
 
+  const buttonLabel = isIOS
+    ? language === 'en'
+      ? 'Add to iPhone'
+      : 'iPhone में जोड़ें'
+    : t('btn_install');
+
   return (
     <>
       <button
         onClick={handleInstallClick}
         disabled={isInstalling}
-        title="मोबाइल में ऐप के रूप में इंस्टॉल करें (Install as Android App)"
+        title={language === 'en' ? 'Install as App on your mobile device' : 'मोबाइल में ऐप के रूप में इंस्टॉल करें (Install as Android App)'}
         className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-white bg-gradient-to-r from-indigo-600 via-indigo-700 to-violet-600 hover:from-indigo-500 hover:to-violet-500 rounded-xl transition-all shadow-sm shadow-indigo-300 active:scale-95 cursor-pointer"
       >
         <Smartphone className="w-3.5 h-3.5 animate-pulse" />
-        <span>{isInstallable ? 'ऐप इंस्टॉल करें' : isIOS ? 'iPhone में जोड़ें' : 'ऐप इंस्टॉल करें'}</span>
+        <span>{buttonLabel}</span>
       </button>
 
       {/* iOS Safari Guide Modal */}

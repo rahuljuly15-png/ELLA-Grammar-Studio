@@ -11,6 +11,7 @@ import { ErrorVaultView } from './components/ella/ErrorVaultView';
 import { SettingsView } from './components/ella/SettingsView';
 import { PublishGuideView } from './components/ella/PublishGuideView';
 import { TopicSelectorModal } from './components/ella/TopicSelectorModal';
+import { StudentOnboardingModal } from './components/ella/StudentOnboardingModal';
 import { getTopicById, type FullTopicData } from './data/topicLoader';
 import { checkSentenceOffline, recordProductionAttempt, type RuleCheckResult } from './engines/offlineRuleEngine';
 import { exportDatabaseToJson, importDatabaseFromJson, getOfflineDbCounts, deleteStudentData } from './services/backupService';
@@ -24,6 +25,8 @@ function AppInner() {
   const [currentView, setCurrentView] = useState<EllaView>('cycle');
   const [activeTopicId, setActiveTopicId] = useState<string>('level1-articles-01');
   const [isTopicModalOpen, setIsTopicModalOpen] = useState(false);
+  const [isTourOpen, setIsTourOpen] = useState(false);
+  const [hasDismissedBackupReminder, setHasDismissedBackupReminder] = useState(false);
 
   // Active topic data
   const activeTopic: FullTopicData = useMemo(() => getTopicById(activeTopicId), [activeTopicId]);
@@ -48,7 +51,7 @@ function AppInner() {
     }
   };
 
-  // Genie motion flight interval: 90s default (60s, 90s, 120s, 150s, 180s, or 0 for stationary)
+  // Genie motion flight interval: 0 default (Stationary / Calm Mode - docked peacefully in corner)
   const [genieFlightInterval, setGenieFlightInterval] = useState<number>(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('ella_genie_flight_interval');
@@ -57,7 +60,7 @@ function AppInner() {
         if (!isNaN(parsed)) return parsed;
       }
     }
-    return 90; // Default: 90 seconds
+    return 0; // Default: Stationary (Calm corner mode - does not disrupt reading)
   });
 
   const handleUpdateFlightInterval = (seconds: number) => {
@@ -104,6 +107,16 @@ function AppInner() {
 
   useEffect(() => {
     refreshStats();
+
+    // Check if first-time student onboarding tour should be presented
+    if (typeof window !== 'undefined') {
+      const hasCompletedTour = localStorage.getItem('ella_onboarding_completed') === 'true';
+      if (!hasCompletedTour) {
+        const timer = setTimeout(() => setIsTourOpen(true), 600);
+        return () => clearTimeout(timer);
+      }
+    }
+
     // Warm up speech synthesis voices cache
     if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
       window.speechSynthesis.getVoices();
@@ -329,10 +342,39 @@ function AppInner() {
         currentView={currentView}
         setCurrentView={setCurrentView}
         errorsCount={dbStats.errorsCount}
+        onOpenTour={() => setIsTourOpen(true)}
       />
 
       {/* Main Container */}
       <main className="flex-1 max-w-5xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
+        {/* Android Storage Cleaner Safety Alert: Proactive Backup Reminder */}
+        {dbStats.sessionsCount >= 5 && !hasDismissedBackupReminder && (
+          <div className="p-3 bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200/90 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs shadow-2xs animate-in fade-in duration-200">
+            <div className="flex items-center gap-2.5">
+              <span className="text-base shrink-0">💾</span>
+              <div>
+                <span className="font-bold text-amber-950">{t('backup_reminder_title')}</span>
+                <p className="text-[11px] text-amber-800 leading-snug">{t('backup_reminder_desc')}</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 shrink-0 self-end sm:self-auto">
+              <button
+                type="button"
+                onClick={handleExportBackup}
+                className="px-3 py-1.5 text-xs font-bold text-white bg-amber-600 hover:bg-amber-700 rounded-xl transition-all shadow-xs cursor-pointer"
+              >
+                {t('backup_reminder_btn')}
+              </button>
+              <button
+                type="button"
+                onClick={() => setHasDismissedBackupReminder(true)}
+                className="px-2.5 py-1.5 text-xs font-bold text-slate-500 hover:text-slate-800 rounded-xl transition-colors cursor-pointer"
+              >
+                {t('backup_reminder_dismiss')} ✕
+              </button>
+            </div>
+          </div>
+        )}
         {/* Student progress ribbon */}
         <div className="p-3.5 bg-white border border-slate-200 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs shadow-2xs">
           <div className="flex items-center gap-2 text-slate-700 font-semibold">
@@ -412,6 +454,12 @@ function AppInner() {
         onClose={() => setIsTopicModalOpen(false)}
         activeTopicId={activeTopicId}
         onSelectTopic={handleSelectTopic}
+      />
+
+      {/* Guided Student Onboarding Tour Modal */}
+      <StudentOnboardingModal
+        isOpen={isTourOpen}
+        onClose={() => setIsTourOpen(false)}
       />
 
       {/* Quiet Footer */}

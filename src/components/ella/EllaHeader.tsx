@@ -7,6 +7,7 @@ import {
   ShieldCheck,
   Sparkles,
   Languages,
+  HelpCircle,
 } from 'lucide-react';
 import { PWAInstallButton } from './PWAInstallButton';
 import { useLanguage } from '../../i18n/LanguageContext';
@@ -20,12 +21,14 @@ interface EllaHeaderProps {
   onOpenPublishModal?: () => void;
   onExportBackup?: () => void;
   sessionsCount?: number;
+  onOpenTour?: () => void;
 }
 
 export const EllaHeader: React.FC<EllaHeaderProps> = ({
   currentView,
   setCurrentView,
   errorsCount,
+  onOpenTour,
 }) => {
   const { language, setLanguage, t } = useLanguage();
 
@@ -100,6 +103,17 @@ export const EllaHeader: React.FC<EllaHeaderProps> = ({
           <Settings className="w-3.5 h-3.5 text-slate-500" />
           <span>{t('nav_settings')}</span>
         </button>
+
+        {onOpenTour && (
+          <button
+            onClick={onOpenTour}
+            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-lg text-indigo-700 bg-indigo-50/70 hover:bg-indigo-100/80 border border-indigo-200/60 transition-all whitespace-nowrap cursor-pointer shadow-2xs"
+            title={language === 'en' ? 'Open 30-Second Student Tour' : '30-सेकंड की स्टूडेंट गाइड खोलें'}
+          >
+            <HelpCircle className="w-3.5 h-3.5 text-indigo-600" />
+            <span>{t('nav_tour_btn')}</span>
+          </button>
+        )}
       </nav>
 
       {/* Zone 3: Language Conversion Toggle, 100% Offline & PWA App Install */}

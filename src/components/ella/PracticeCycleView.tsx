@@ -271,8 +271,8 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
           />
         </div>
 
-        {/* 5-Step Segmented Navigation Pills */}
-        <div className="grid grid-cols-2 sm:grid-cols-5 gap-1.5 pt-1">
+        {/* 5-Step Segmented Navigation Pills (Single sleek horizontal row on mobile 360px) */}
+        <div className="flex items-center sm:grid sm:grid-cols-5 gap-1.5 pt-1 overflow-x-auto no-scrollbar scroll-smooth pb-0.5">
           {cycleStepsList.map((stepItem, idx) => {
             const Icon = stepItem.icon;
             const isActive = currentStep === stepItem.key;
@@ -282,7 +282,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
               <button
                 key={stepItem.key}
                 onClick={() => setCurrentStep(stepItem.key)}
-                className={`flex items-center justify-center gap-1.5 py-2 px-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+                className={`flex items-center justify-center gap-1.5 py-1.5 sm:py-2 px-2.5 sm:px-3 rounded-xl text-xs font-bold transition-all shrink-0 sm:shrink cursor-pointer ${
                   isActive
                     ? 'bg-indigo-600 text-white shadow-xs shadow-indigo-300 ring-2 ring-indigo-500/20'
                     : isCompleted
@@ -316,7 +316,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -14 }}
             transition={{ duration: 0.25, ease: 'easeOut' }}
-            className="bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-8 space-y-6 shadow-xs"
+            className="bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-8 pb-28 sm:pb-8 space-y-6 shadow-xs"
           >
             <div className="space-y-1.5">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold text-indigo-700 bg-indigo-50 border border-indigo-200/60">
@@ -394,7 +394,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -14 }}
             transition={{ duration: 0.25, ease: 'easeOut' }}
-            className="bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-8 space-y-6 shadow-xs"
+            className="bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-8 pb-28 sm:pb-8 space-y-6 shadow-xs"
           >
             <div className="space-y-1.5">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold text-amber-800 bg-amber-50 border border-amber-200/60">
@@ -469,13 +469,30 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
                       <motion.div
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
-                        className={`p-3 rounded-xl text-xs sm:text-sm leading-relaxed font-medium ${
-                          opt.isCorrect
-                            ? 'bg-emerald-100/80 text-emerald-950 border border-emerald-300/60'
-                            : 'bg-amber-100/80 text-amber-950 border border-amber-300/60'
-                        }`}
+                        className="space-y-2.5 mt-2.5"
                       >
-                        {opt.feedbackHi}
+                        <div
+                          className={`p-3 rounded-xl text-xs sm:text-sm leading-relaxed font-medium ${
+                            opt.isCorrect
+                              ? 'bg-emerald-100/80 text-emerald-950 border border-emerald-300/60'
+                              : 'bg-amber-100/80 text-amber-950 border border-amber-300/60'
+                          }`}
+                        >
+                          {opt.feedbackHi}
+                        </div>
+
+                        {/* Socratic Diagnostic Box on Wrong Guess (Anti-Guessing Guardrail) */}
+                        {!opt.isCorrect && (
+                          <div className="p-3 bg-indigo-50/90 border border-indigo-200/80 rounded-xl text-xs text-indigo-950 leading-relaxed space-y-1">
+                            <div className="font-bold flex items-center gap-1.5 text-indigo-800">
+                              <Lightbulb className="w-3.5 h-3.5 text-amber-500 fill-amber-400" />
+                              <span>{t('step2_socratic_why_not')}</span>
+                            </div>
+                            <p className="text-slate-700">
+                              {t('step2_socratic_tip')}
+                            </p>
+                          </div>
+                        )}
                       </motion.div>
                     )}
                   </motion.div>
@@ -483,24 +500,41 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
               })}
             </div>
 
-            {/* Step 2 Footer Navigation */}
-            <div className="flex items-center justify-between pt-4 border-t border-slate-100">
+            {/* Step 2 Footer Navigation (Gated: requires an honest attempt first) */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-4 border-t border-slate-100">
               <button
                 type="button"
                 onClick={() => setCurrentStep('notice')}
-                className="inline-flex items-center gap-1.5 px-4 py-2.5 text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors cursor-pointer"
+                className="inline-flex items-center gap-1.5 px-4 py-2.5 text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors cursor-pointer self-start sm:self-auto"
               >
                 <ArrowLeft className="w-4 h-4" />
                 <span>{language === 'en' ? '← Back to Notice' : '← वापस फर्क देखें'}</span>
               </button>
 
               <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => setCurrentStep('clarify')}
-                className="inline-flex items-center gap-2 px-6 py-3 text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-2xl transition-all shadow-sm shadow-indigo-300 cursor-pointer"
+                whileHover={selectedHypothesis !== null ? { scale: 1.02 } : {}}
+                whileTap={selectedHypothesis !== null ? { scale: 0.98 } : {}}
+                disabled={selectedHypothesis === null}
+                onClick={() => {
+                  if (selectedHypothesis !== null) {
+                    setCurrentStep('clarify');
+                  }
+                }}
+                className={`inline-flex items-center justify-center gap-2 px-6 py-3 text-xs sm:text-sm font-bold rounded-2xl transition-all shadow-sm ${
+                  selectedHypothesis === null
+                    ? 'bg-slate-200 text-slate-500 cursor-not-allowed shadow-none border border-slate-300'
+                    : isHypothesisCorrect
+                    ? 'bg-emerald-600 hover:bg-emerald-700 text-white shadow-emerald-200 cursor-pointer'
+                    : 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-indigo-200 cursor-pointer'
+                }`}
               >
-                <span>{t('step2_next_btn')}</span>
+                <span>
+                  {selectedHypothesis === null
+                    ? `🤔 ${t('step2_choose_first_msg')}`
+                    : isHypothesisCorrect
+                    ? t('step2_unlock_rule_btn')
+                    : t('step2_see_rule_btn')}
+                </span>
                 <ArrowRight className="w-4 h-4" />
               </motion.button>
             </div>
@@ -517,7 +551,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -14 }}
             transition={{ duration: 0.25, ease: 'easeOut' }}
-            className="bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-8 space-y-6 shadow-xs"
+            className="bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-8 pb-28 sm:pb-8 space-y-6 shadow-xs"
           >
             <div className="space-y-1.5">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold text-amber-800 bg-amber-50 border border-amber-200/60">
@@ -673,7 +707,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -14 }}
             transition={{ duration: 0.25, ease: 'easeOut' }}
-            className="bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-8 space-y-6 shadow-xs"
+            className="bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-8 pb-28 sm:pb-8 space-y-6 shadow-xs"
           >
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
               <div className="space-y-1">
@@ -903,7 +937,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -14 }}
             transition={{ duration: 0.25, ease: 'easeOut' }}
-            className="bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-8 space-y-6 shadow-xs"
+            className="bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-8 pb-28 sm:pb-8 space-y-6 shadow-xs"
           >
             <div className="space-y-1.5">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold text-purple-800 bg-purple-50 border border-purple-200/60">

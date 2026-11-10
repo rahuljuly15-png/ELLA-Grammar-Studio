@@ -31,37 +31,27 @@ interface SpotConfig {
   validPlacements: BubblePlacement[];
 }
 
-// 6 Strategic, screen-safe anchors across the screen
+// Strategic, screen-safe anchors along the screen perimeter (never directly over reading content)
 const SPOTS: SpotConfig[] = [
   {
     id: 'bottom-right',
-    getGenieCoords: (w, h) => ({ x: Math.max(16, w - 105), y: Math.max(80, h - 120) }),
+    getGenieCoords: (w, h) => ({ x: Math.max(16, w - 95), y: Math.max(80, h - 130) }),
     validPlacements: ['left', 'top'],
   },
   {
-    id: 'mid-left',
-    getGenieCoords: (w, h) => ({ x: 24, y: Math.max(130, Math.min(h * 0.44, h - 180)) }),
-    validPlacements: ['right', 'top', 'bottom'],
-  },
-  {
-    id: 'bottom-left',
-    getGenieCoords: (w, h) => ({ x: 24, y: Math.max(80, h - 120) }),
-    validPlacements: ['right', 'top'],
-  },
-  {
     id: 'mid-right',
-    getGenieCoords: (w, h) => ({ x: Math.max(16, w - 105), y: Math.max(130, Math.min(h * 0.44, h - 180)) }),
-    validPlacements: ['left', 'top', 'bottom'],
-  },
-  {
-    id: 'top-right',
-    getGenieCoords: (w) => ({ x: Math.max(16, w - 105), y: 88 }),
+    getGenieCoords: (w, h) => ({ x: Math.max(16, w - 95), y: Math.max(140, Math.min(h * 0.45, h - 200)) }),
     validPlacements: ['left', 'bottom'],
   },
   {
-    id: 'top-left',
-    getGenieCoords: () => ({ x: 24, y: 88 }),
-    validPlacements: ['right', 'bottom'],
+    id: 'bottom-left',
+    getGenieCoords: (_w, h) => ({ x: 18, y: Math.max(80, h - 130) }),
+    validPlacements: ['right', 'top'],
+  },
+  {
+    id: 'top-right',
+    getGenieCoords: (w) => ({ x: Math.max(16, w - 95), y: 88 }),
+    validPlacements: ['left', 'bottom'],
   },
 ];
 
@@ -190,11 +180,11 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
 
     let bubbleY = geniePos.y;
     if (isNearTop) {
-      bubbleY = Math.max(75, Math.min(geniePos.y, screenSize.h - 200));
+      bubbleY = Math.max(75, Math.min(geniePos.y, screenSize.h - 220));
     } else if (isNearBottom) {
-      bubbleY = Math.max(75, geniePos.y - 70);
+      bubbleY = Math.max(75, geniePos.y - 120);
     } else {
-      bubbleY = Math.max(75, Math.min(geniePos.y - 15, screenSize.h - 200));
+      bubbleY = Math.max(75, Math.min(geniePos.y - 30, screenSize.h - 220));
     }
 
     return {

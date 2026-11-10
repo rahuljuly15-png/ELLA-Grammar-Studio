@@ -9,6 +9,36 @@ export interface TranslationDictionary {
   nav_map: string;
   nav_vault: string;
   nav_settings: string;
+  // Guided Student Onboarding Tour & Header button
+  nav_tour_btn: string;
+  tour_modal_badge: string;
+  tour_modal_title: string;
+  tour_step1_badge: string;
+  tour_step1_title: string;
+  tour_step1_desc: string;
+  tour_step2_badge: string;
+  tour_step2_title: string;
+  tour_step2_desc: string;
+  tour_step3_badge: string;
+  tour_step3_title: string;
+  tour_step3_desc: string;
+  tour_finish_btn: string;
+  tour_next_btn: string;
+  tour_prev_btn: string;
+  tour_skip_btn: string;
+
+  // Step 2 Socratic Feedback & Anti-guessing
+  step2_choose_first_msg: string;
+  step2_unlock_rule_btn: string;
+  step2_see_rule_btn: string;
+  step2_socratic_why_not: string;
+  step2_socratic_tip: string;
+
+  // Backup Reminder Alert
+  backup_reminder_title: string;
+  backup_reminder_desc: string;
+  backup_reminder_btn: string;
+  backup_reminder_dismiss: string;
   badge_offline: string;
   btn_install: string;
   lang_toggle_btn: string;
@@ -185,9 +215,40 @@ export const TRANSLATIONS: Record<Language, TranslationDictionary> = {
     nav_map: 'लर्निंग मैप (21 टॉपिक्स)',
     nav_vault: 'मिस्टेक वॉल्ट',
     nav_settings: 'सेटिंग्स',
+    nav_tour_btn: 'गाइड',
     badge_offline: '100% ऑफ़लाइन',
     btn_install: 'ऐप इंस्टॉल करें',
     lang_toggle_btn: 'English',
+
+    // Guided Student Onboarding Tour
+    tour_modal_badge: '30-सेकंड गाइड • ELLA कैसे काम करती है?',
+    tour_modal_title: 'बिना रटे इंग्लिश ग्रामर सीखें!',
+    tour_step1_badge: 'कदम 1/3 • आगमन विधि (Inductive Learning)',
+    tour_step1_title: 'नियम रटने की कोई ज़रूरत नहीं!',
+    tour_step1_desc: 'स्कूल में अक्सर कठिन नियमों की परिभाषा रटने को दी जाती है। ELLA में आप पहले असली उदाहरण देखकर खुद पैटर्न खोजते हैं — जैसे एक वैज्ञानिक करता है!',
+    tour_step2_badge: 'कदम 2/3 • 5-स्टेप जादुई चक्र',
+    tour_step2_title: '5 आसान कदमों में पक्की मास्टरी',
+    tour_step2_desc: '1. फर्क पहचानें → 2. अंदाज़ा लगाएँ → 3. सीक्रेट फॉर्मूला समझें → 4. अपना वाक्य बनाएँ (0ms ऑफ़लाइन चेकर) → 5. स्मार्ट FSRS मेमोरी रिवीजन!',
+    tour_step3_badge: 'कदम 3/3 • एला जिनी व जादुई चिराग',
+    tour_step3_title: 'गलतियाँ सीखने का सबसे बड़ा मौका हैं',
+    tour_step3_desc: 'यहाँ गलतियों पर कोई डांट या लाल स्याही नहीं! एला जिनी आपकी दोस्ताना AI टीचर है जो कभी नाराज़ नहीं होती। किसी भी वक्त चिराग पर टैप करके सवाल पूछें।',
+    tour_finish_btn: '🎉 समझ गया! अभ्यास शुरू करें',
+    tour_next_btn: 'आगे बढ़ें →',
+    tour_prev_btn: '← वापस',
+    tour_skip_btn: 'छोड़ें (Skip)',
+
+    // Step 2 Socratic Feedback & Anti-guessing
+    step2_choose_first_msg: 'आगे बढ़ने के लिए ऊपर से एक विकल्प चुनें',
+    step2_unlock_rule_btn: 'शानदार! सीक्रेट नियम खोलें →',
+    step2_see_rule_btn: 'नियम देखें और समझें →',
+    step2_socratic_why_not: '💡 क्यों नहीं? (सोचने का संकेत)',
+    step2_socratic_tip: 'गलत अंदाज़ा भी सीखने का हिस्सा है! ध्यान दें कि क्या आप स्पेलिंग (अक्षर) के चक्कर में उच्चारण (ध्वनि) को भूल रहे हैं?',
+
+    // Backup Reminder Alert
+    backup_reminder_title: '💾 अपनी प्रोग्रेस सुरक्षित रखें',
+    backup_reminder_desc: 'फोन क्लीनर ऐप्स कभी-कभी ब्राउज़र का डेटा साफ़ कर देते हैं। अपनी 100% ऑफ़लाइन पढ़ाई को सुरक्षित रखने के लिए 1-क्लिक बैकअप फ़ाइल डाउनलोड करें।',
+    backup_reminder_btn: 'बैकअप डाउनलोड करें',
+    backup_reminder_dismiss: 'बाद में',
 
     // Ribbon & Footer
     ribbon_title: 'डेली इंग्लिश प्रैक्टिस',
@@ -360,9 +421,40 @@ export const TRANSLATIONS: Record<Language, TranslationDictionary> = {
     nav_map: 'Learning Map (21 Topics)',
     nav_vault: 'Mistake Vault',
     nav_settings: 'Settings',
+    nav_tour_btn: 'Tour',
     badge_offline: '100% Offline',
     btn_install: 'Install App',
     lang_toggle_btn: 'हिन्दी',
+
+    // Guided Student Onboarding Tour
+    tour_modal_badge: '30-Second Tour • How ELLA Works',
+    tour_modal_title: 'Learn English Grammar by Understanding!',
+    tour_step1_badge: 'Step 1/3 • Inductive Learning',
+    tour_step1_title: 'No Need to Memorize Boring Rules!',
+    tour_step1_desc: 'Traditional classrooms force you to memorize dry definitions. In ELLA, you look at real-life examples first and discover patterns yourself — just like a real scientist!',
+    tour_step2_badge: 'Step 2/3 • The 5-Step Magic Cycle',
+    tour_step2_title: 'True Mastery in 5 Simple Steps',
+    tour_step2_desc: '1. Spot Differences → 2. Make a Guess → 3. Unlock the Secret Rule → 4. Build Your Own Sentence (Instant 0ms Checker) → 5. Smart FSRS Memory Review!',
+    tour_step3_badge: 'Step 3/3 • Ella Genie & Her Magic Lamp',
+    tour_step3_title: 'Mistakes are the Best Way to Learn',
+    tour_step3_desc: 'No red pen, no scolding, and zero embarrassment! Ella the Genie is your friendly AI tutor who explains mistakes kindly. Tap the Golden Lamp anytime to ask a question.',
+    tour_finish_btn: "🎉 Got it! Let's Start Practicing",
+    tour_next_btn: 'Next Step →',
+    tour_prev_btn: '← Back',
+    tour_skip_btn: 'Skip Tour',
+
+    // Step 2 Socratic Feedback & Anti-guessing
+    step2_choose_first_msg: 'Make a guess above before continuing',
+    step2_unlock_rule_btn: 'Awesome! Unlock Secret Rule →',
+    step2_see_rule_btn: 'See Rule & Understand →',
+    step2_socratic_why_not: '💡 Why this guess does not work',
+    step2_socratic_tip: 'A wrong guess is an essential part of learning! Notice whether you are focusing on the spelling letter instead of the spoken sound.',
+
+    // Backup Reminder Alert
+    backup_reminder_title: '💾 Save Your Learning Progress',
+    backup_reminder_desc: 'Phone cleaner apps can sometimes wipe browser storage. Download a 1-click JSON backup file to keep your study records 100% safe.',
+    backup_reminder_btn: 'Download Backup',
+    backup_reminder_dismiss: 'Later',
 
     // Ribbon & Footer
     ribbon_title: 'Daily English Practice',

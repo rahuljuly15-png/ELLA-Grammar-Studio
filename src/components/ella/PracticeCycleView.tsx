@@ -190,11 +190,11 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
   };
 
   const cycleStepsList: { key: StepKey; num: number; label: string; icon: any; shortTitle: string }[] = [
-    { key: 'notice', num: 1, label: '1. Notice', icon: BookOpen, shortTitle: 'अवलोकन' },
-    { key: 'hypothesize', num: 2, label: '2. Hypothesize', icon: HelpCircle, shortTitle: 'अनुमान' },
-    { key: 'clarify', num: 3, label: '3. Clarify', icon: Sparkles, shortTitle: 'स्वर्ण नियम' },
-    { key: 'use', num: 4, label: '4. Sentence Builder', icon: PenTool, shortTitle: 'वाक्य रचना' },
-    { key: 'schedule', num: 5, label: '5. Review & FSRS', icon: Calendar, shortTitle: 'स्मृति समीक्षा' },
+    { key: 'notice', num: 1, label: '1. Notice', icon: BookOpen, shortTitle: '1. फर्क पहचानें' },
+    { key: 'hypothesize', num: 2, label: '2. Hypothesize', icon: HelpCircle, shortTitle: '2. अंदाज़ा लगाएँ' },
+    { key: 'clarify', num: 3, label: '3. Clarify', icon: Sparkles, shortTitle: '3. सीक्रेट फॉर्मूला' },
+    { key: 'use', num: 4, label: '4. Sentence Builder', icon: PenTool, shortTitle: '4. वाक्य बनाएँ' },
+    { key: 'schedule', num: 5, label: '5. Review & FSRS', icon: Calendar, shortTitle: '5. सुपर रिवीजन' },
   ];
 
   const stepOrder: StepKey[] = ['notice', 'hypothesize', 'clarify', 'use', 'schedule'];
@@ -307,7 +307,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
             <div className="space-y-1.5">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold text-indigo-700 bg-indigo-50 border border-indigo-200/60">
                 <BookOpen className="w-3.5 h-3.5" />
-                <span>चरण 1 • अवलोकन (Look & Notice)</span>
+                <span>कदम 1 • फर्क पहचानें (Spot the Difference)</span>
               </div>
               <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
                 {steps['1_notice']?.stepTitleHi || 'ध्यान से देखें और अंतर समझें'}
@@ -363,7 +363,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
                 onClick={() => setCurrentStep('hypothesize')}
                 className="inline-flex items-center gap-2.5 px-6 py-3 text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-2xl transition-all shadow-sm shadow-indigo-300 cursor-pointer"
               >
-                <span>अगला कदम: नियम का अनुमान लगाएँ</span>
+                <span>अगला कदम: अंदाज़ा लगाएँ (Take a Guess)</span>
                 <ArrowRight className="w-4 h-4" />
               </motion.button>
             </div>
@@ -385,10 +385,10 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
             <div className="space-y-1.5">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold text-amber-800 bg-amber-50 border border-amber-200/60">
                 <HelpCircle className="w-3.5 h-3.5 text-amber-600" />
-                <span>चरण 2 • सक्रिय अनुमान (Active Discovery)</span>
+                <span>कदम 2 • दिमाग की बत्ती जलाएँ 💡 (Take a Guess)</span>
               </div>
               <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
-                {steps['2_hypothesize']?.stepTitleHi || 'स्वयं नियम का अनुमान लगाएँ'}
+                {steps['2_hypothesize']?.stepTitleHi || 'स्वयं नियम का अंदाज़ा लगाएँ'}
               </h2>
             </div>
 
@@ -477,7 +477,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
                 className="inline-flex items-center gap-1.5 px-4 py-2.5 text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors cursor-pointer"
               >
                 <ArrowLeft className="w-4 h-4" />
-                <span>वापस उदाहरण देखें</span>
+                <span>← वापस फर्क देखें</span>
               </button>
 
               <motion.button
@@ -486,7 +486,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
                 onClick={() => setCurrentStep('clarify')}
                 className="inline-flex items-center gap-2 px-6 py-3 text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-2xl transition-all shadow-sm shadow-indigo-300 cursor-pointer"
               >
-                <span>स्वर्ण नियम अनलॉक करें</span>
+                <span>सीक्रेट फॉर्मूला अनलॉक करें 👑</span>
                 <ArrowRight className="w-4 h-4" />
               </motion.button>
             </div>
@@ -508,10 +508,10 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
             <div className="space-y-1.5">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold text-amber-800 bg-amber-50 border border-amber-200/60">
                 <Sparkles className="w-3.5 h-3.5 text-amber-600" />
-                <span>चरण 3 • नियम स्पष्टीकरण (Golden Formula)</span>
+                <span>कदम 3 • सीक्रेट फॉर्मूला 👑 (The Secret Rule)</span>
               </div>
               <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
-                {steps['3_clarify']?.stepTitleHi || 'स्वर्ण नियम (The Golden Rule)'}
+                {steps['3_clarify']?.stepTitleHi || 'आज का सीक्रेट फॉर्मूला'}
               </h2>
             </div>
 
@@ -519,7 +519,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
             <div className="p-6 bg-gradient-to-br from-amber-50 via-indigo-50/50 to-amber-100/50 border-2 border-amber-200/90 rounded-3xl space-y-3 shadow-xs">
               <div className="flex items-center gap-2 text-xs font-extrabold text-amber-900 uppercase tracking-wider">
                 <Award className="w-4 h-4 text-amber-600" />
-                <span>आज का स्वर्ण नियम (The Secret Rule):</span>
+                <span>आज का सीक्रेट फॉर्मूला (The Secret Rule):</span>
               </div>
               <div className="text-base sm:text-xl font-extrabold text-slate-900 leading-relaxed font-sans">
                 {steps['3_clarify']?.goldenRuleHi}
@@ -631,7 +631,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
                 className="inline-flex items-center gap-1.5 px-4 py-2.5 text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors cursor-pointer"
               >
                 <ArrowLeft className="w-4 h-4" />
-                <span>वापस अनुमान देखें</span>
+                <span>← वापस अंदाज़ा देखें</span>
               </button>
 
               <motion.button
@@ -640,7 +640,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
                 onClick={() => setCurrentStep('use')}
                 className="inline-flex items-center gap-2 px-6 py-3 text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-2xl transition-all shadow-sm shadow-indigo-300 cursor-pointer"
               >
-                <span>वाक्य निर्माण शुरू करें</span>
+                <span>अब अपना वाक्य बनाएँ (Sentence Studio) ✍️</span>
                 <ArrowRight className="w-4 h-4" />
               </motion.button>
             </div>
@@ -663,7 +663,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
               <div className="space-y-1">
                 <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold text-emerald-800 bg-emerald-50 border border-emerald-200/60">
                   <PenTool className="w-3.5 h-3.5 text-emerald-600" />
-                  <span>चरण 4 • जादुई वाक्य निर्माण (Interactive Studio)</span>
+                  <span>कदम 4 • अपना वाक्य बनाएँ (Sentence Studio)</span>
                 </div>
                 <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
                   {steps['5_free_production']?.promptHi || 'अपना एक अंग्रेजी वाक्य लिखें:'}
@@ -673,7 +673,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
               <div className="flex items-center gap-2">
                 <span className="text-[11px] font-bold text-emerald-800 bg-emerald-50/90 border border-emerald-200/80 px-3 py-1 rounded-full flex items-center gap-1.5 shadow-2xs">
                   <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                  <span>तुरंत जांच (0ms Offline Engine)</span>
+                  <span>⚡ सुपरफास्ट ऑफ़लाइन चेकर</span>
                 </span>
               </div>
             </div>
@@ -747,7 +747,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
                   <div className="flex items-center gap-2 text-amber-900 text-xs font-bold">
                     <AlertTriangle className="w-4 h-4 text-amber-600" />
                     <span>
-                      {liveCheckResult.errors.length} प्यारा सा सुधार (Helpful Suggestion):
+                      {liveCheckResult.errors.length} आसान सुधार (Quick Fix):
                     </span>
                   </div>
 
@@ -820,7 +820,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
             {/* Self-Reflection Note */}
             <div className="pt-4 border-t border-slate-100 space-y-3">
               <label className="block text-xs font-bold text-slate-700">
-                आत्म-चिंतन नोट (Self-Explanation Note): आज आपने क्या नया नियम सीखा?
+                मेरा सीक्रेट नोट 📝 (आज मैंने क्या नया सीखा?):
               </label>
               <input
                 type="text"
@@ -835,10 +835,10 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
                   {isSavedToDb ? (
                     <span className="text-emerald-700 font-bold flex items-center gap-1.5">
                       <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                      लोकल डेटाबेस (Dexie) में सेव हुआ! (Session #{savedSessionId})
+                      सुरक्षित सेव हो गया! 💾 (सत्र #{savedSessionId})
                     </span>
                   ) : (
-                    <span>प्रयास को अपनी व्यक्तिगत प्रगति में सुरक्षित करें।</span>
+                    <span>प्रगति को अपनी व्यक्तिगत प्रोफ़ाइल में सुरक्षित करें।</span>
                   )}
                 </div>
 
@@ -849,7 +849,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
                   className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 rounded-xl transition-all shadow-sm shadow-indigo-200 cursor-pointer"
                 >
                   <Check className="w-4 h-4" />
-                  <span>अभ्यास सेव करें (Save to Local DB)</span>
+                  <span>प्रगति सेव करें (Save Progress)</span>
                 </button>
               </div>
             </div>
@@ -862,7 +862,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
                 className="inline-flex items-center gap-1.5 px-4 py-2.5 text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors cursor-pointer"
               >
                 <ArrowLeft className="w-4 h-4" />
-                <span>वापस स्वर्ण नियम देखें</span>
+                <span>← वापस सीक्रेट फॉर्मूला</span>
               </button>
 
               <motion.button
@@ -871,7 +871,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
                 onClick={() => setCurrentStep('schedule')}
                 className="inline-flex items-center gap-2 px-6 py-3 text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-2xl transition-all shadow-sm shadow-indigo-300 cursor-pointer"
               >
-                <span>स्मृति व FSRS समीक्षा</span>
+                <span>सुपर मेमोरी रिवीजन 🧠</span>
                 <ArrowRight className="w-4 h-4" />
               </motion.button>
             </div>
@@ -893,13 +893,13 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
             <div className="space-y-1.5">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold text-purple-800 bg-purple-50 border border-purple-200/60">
                 <Brain className="w-3.5 h-3.5 text-purple-600" />
-                <span>चरण 5 • FSRS स्मृति समीक्षा (Cognitive Spaced Repetition)</span>
+                <span>कदम 5 • सुपर मेमोरी रिवीजन 🧠 (Smart Review)</span>
               </div>
               <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
-                स्मृति स्थायित्व व अगली समीक्षा तालिका
+                मेमोरी स्कोर व अगली रिवीजन तारीख
               </h2>
               <p className="text-xs sm:text-sm text-slate-600">
-                FSRS कलन-विधि द्वारा छात्र के अभ्यास इतिहास के आधार पर वैज्ञानिक रूप से निर्धारित समय।
+                साइंटिफिक AI मेमोरी टाइमर: ताकि आप इस नियम को कभी न भूलें!
               </p>
             </div>
 
@@ -913,7 +913,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
                   शानदार प्रयास! इस विषय का चक्र पूरा हुआ 🎉
                 </h3>
                 <p className="text-xs text-emerald-800 mt-0.5">
-                  अपने अनुभव के आधार पर नीचे रेटिंग दें ताकि FSRS एल्गोरिदम आपकी अगली समीक्षा तिथि तय कर सके।
+                  अपने अनुभव के आधार पर नीचे रेटिंग दें ताकि स्मार्ट टाइमर आपकी अगली रिवीजन तारीख तय कर सके।
                 </p>
               </div>
             </div>
@@ -978,18 +978,18 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
             <div className="space-y-2">
               <h3 className="text-xs font-bold text-slate-600 flex items-center gap-1.5 uppercase tracking-wide">
                 <Clock className="w-3.5 h-3.5 text-indigo-500" />
-                <span>मेमोरी मेट्रिक्स (Cognitive Stability & Difficulty):</span>
+                <span>मेमोरी स्कोरकार्ड (Memory Power & Level):</span>
               </h3>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl space-y-1">
-                  <span className="text-[11px] font-semibold text-slate-500 block">स्मृति स्थायित्व (Stability)</span>
+                  <span className="text-[11px] font-semibold text-slate-500 block">मेमोरी पावर (Stability)</span>
                   <span className="text-base font-bold font-mono text-indigo-700">
                     {reviewState?.stability ? `${reviewState.stability.toFixed(1)} दिन` : '3.5 दिन'}
                   </span>
                 </div>
 
                 <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl space-y-1">
-                  <span className="text-[11px] font-semibold text-slate-500 block">अनुमानित प्रतिधारण (Recall)</span>
+                  <span className="text-[11px] font-semibold text-slate-500 block">याद रहने का चांस (Recall)</span>
                   <span className="text-base font-bold font-mono text-emerald-700">
                     {reviewState?.stability
                       ? `${calculateRetention(reviewState.stability, 0)}%`
@@ -998,14 +998,14 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
                 </div>
 
                 <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl space-y-1">
-                  <span className="text-[11px] font-semibold text-slate-500 block">कठिनाई स्तर (Difficulty)</span>
+                  <span className="text-[11px] font-semibold text-slate-500 block">चुनौती स्तर (Level)</span>
                   <span className="text-base font-bold font-mono text-amber-700">
                     {reviewState?.difficulty ? `${reviewState.difficulty.toFixed(1)} / 10` : '4.5 / 10'}
                   </span>
                 </div>
 
                 <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl space-y-1">
-                  <span className="text-[11px] font-semibold text-slate-500 block">सफल आवृत्तियां (Reps)</span>
+                  <span className="text-[11px] font-semibold text-slate-500 block">प्रैक्टिस राउंड्स (Reps)</span>
                   <span className="text-base font-bold font-mono text-purple-700">
                     {reviewState?.reps ?? 1} बार
                   </span>
@@ -1018,9 +1018,9 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
               <div className="flex items-center justify-between text-xs">
                 <span className="font-bold text-slate-800 flex items-center gap-1.5">
                   <RotateCcw className="w-3.5 h-3.5 text-indigo-600" />
-                  <span>स्व-मूल्यांकन (Self-Rate & Adjust Schedule):</span>
+                  <span>खुद को रेट करें (Rate Your Recall):</span>
                 </span>
-                <span className="text-slate-500 text-[11px]">क्लिक करके समीक्षा अंतराल चुनें</span>
+                <span className="text-slate-500 text-[11px]">क्लिक करके रिवीजन टाइम चुनें</span>
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">

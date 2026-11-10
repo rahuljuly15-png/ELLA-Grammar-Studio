@@ -48,7 +48,7 @@ export const EllaHeader: React.FC<EllaHeaderProps> = ({
             </span>
           </div>
           <p className="text-xs text-slate-500">
-            आगमनात्मक द्विभाषी अंग्रेजी व्याकरण (Inductive Grammar)
+            खेल-खेल में आसान इंग्लिश ग्रामर • बिना रटे समझें
           </p>
         </div>
       </div>
@@ -64,7 +64,7 @@ export const EllaHeader: React.FC<EllaHeaderProps> = ({
           }`}
         >
           <BookOpen className="w-3.5 h-3.5 text-indigo-600" />
-          <span>आज का अभ्यास</span>
+          <span>डेली प्रैक्टिस</span>
         </button>
 
         <button
@@ -76,7 +76,7 @@ export const EllaHeader: React.FC<EllaHeaderProps> = ({
           }`}
         >
           <MapPin className="w-3.5 h-3.5 text-indigo-600" />
-          <span>कौशल मानचित्र (21 विषय)</span>
+          <span>लर्निंग मैप (21 टॉपिक्स)</span>
         </button>
 
         <button
@@ -88,7 +88,7 @@ export const EllaHeader: React.FC<EllaHeaderProps> = ({
           }`}
         >
           <AlertTriangle className="w-3.5 h-3.5 text-amber-500" />
-          <span>त्रुटि बैंक ({errorsCount})</span>
+          <span>मिस्टेक वॉल्ट ({errorsCount})</span>
         </button>
 
         <button
@@ -100,7 +100,7 @@ export const EllaHeader: React.FC<EllaHeaderProps> = ({
           }`}
         >
           <Globe className="w-3.5 h-3.5 text-emerald-600" />
-          <span>₹0 फ्री पब्लिश</span>
+          <span>शेयर व गाइड</span>
         </button>
 
         <button

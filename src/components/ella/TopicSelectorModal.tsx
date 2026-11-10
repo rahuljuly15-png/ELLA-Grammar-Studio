@@ -50,10 +50,10 @@ export const TopicSelectorModal: React.FC<TopicSelectorModalProps> = ({
         <div className="flex items-center justify-between pb-3 border-b border-slate-100">
           <div>
             <h3 className="text-base sm:text-lg font-bold text-slate-900">
-              व्याकरण विषय चुनें (Class 7 Curriculum)
+              विषय चुनें (Topics Library)
             </h3>
             <p className="text-xs text-slate-500">
-              4 शिक्षण इंजन • 6 लेवल्स • 21 आगमनात्मक विषय
+              4 स्मार्ट इंजन • 6 लेवल्स • 21 इंटरैक्टिव विषय
             </p>
           </div>
           <button

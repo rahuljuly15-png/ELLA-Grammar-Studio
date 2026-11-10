@@ -226,10 +226,10 @@ export function checkSentenceOffline(sentence: string, _topicId?: string): RuleC
       matchedText: match[0],
       suggestedText: `${correctArticle} ${match[2]}`,
       index: match.index,
-      explanationHi: `'${match[2]}' अद्वितीय/विशिष्ट है, इसलिए निश्चित उपपद '${correctArticle}' का प्रयोग होता है।`,
+      explanationHi: `'${match[2]}' दुनिया में एक ही और खास (Unique) है, इसलिए हमेशा इसके आगे '${correctArticle}' लगेगा।`,
       severity: 'error',
       confidence: 'high',
-      inductiveHintHi: 'दुनिया में एक ही अद्वितीय चीज़ के साथ The लगता है।',
+      inductiveHintHi: 'दुनिया में एक ही अनोखी चीज़ के साथ The लगता है।',
     });
   }
 
@@ -306,7 +306,7 @@ export function checkSentenceOffline(sentence: string, _topicId?: string): RuleC
       matchedText: match[0],
       suggestedText: verb,
       index: match.index,
-      explanationHi: `'${verb}' का अर्थ ही 'के बारे में चर्चा करना' है, इसके साथ 'about' लगाना अनावश्यक है।`,
+      explanationHi: `'${verb}' का मतलब ही चर्चा करना है, इसके साथ 'about' मत लगाएँ (सीधे 'discuss the problem' कहें)।`,
       severity: 'error',
       confidence: 'high',
       inductiveHintHi: 'Discuss के साथ About नहीं लगाया जाता।',
@@ -323,7 +323,7 @@ export function checkSentenceOffline(sentence: string, _topicId?: string): RuleC
       matchedText: match[0],
       suggestedText: `${base}${suffix}`,
       index: match.index,
-      explanationHi: `'${base}' में 'वापस' का भाव पहले से है, इसलिए साथ में 'back' नहीं लगाते।`,
+      explanationHi: `'${base}' का मतलब ही वापस आना/जवाब देना है, इसलिए साथ में 'back' मत लगाएँ।`,
       severity: 'warning',
       confidence: 'high',
       inductiveHintHi: 'Return या Reply के साथ Back नहीं लगता।',
@@ -338,7 +338,7 @@ export function checkSentenceOffline(sentence: string, _topicId?: string): RuleC
       matchedText: match[0],
       suggestedText: 'married to',
       index: match.index,
-      explanationHi: `विवाह के संदर्भ में अंग्रेजी में 'married with' नहीं, 'married to' कहा जाता है।`,
+      explanationHi: `शादी के संदर्भ में अंग्रेजी में 'married with' नहीं, 'married to' बोला जाता है।`,
       severity: 'error',
       confidence: 'high',
       inductiveHintHi: 'Married के साथ To Preposition आती है।',
@@ -355,10 +355,10 @@ export function checkSentenceOffline(sentence: string, _topicId?: string): RuleC
       matchedText: match[0],
       suggestedText: `${adj} at ${field}`,
       index: match.index,
-      explanationHi: `किसी विषय या कौशल में निपुणता दर्शाने के लिए '${adj} in' नहीं, '${adj} at ${field}' बोलते हैं।`,
+      explanationHi: `किसी विषय या खेल में होशियार बताने के लिए '${adj} in' नहीं, '${adj} at ${field}' बोलते हैं।`,
       severity: 'error',
       confidence: 'high',
-      inductiveHintHi: 'विषय में निपुणता के लिए At लगता है।',
+      inductiveHintHi: 'विषय या खेल में होशियार बताने के लिए At लगता है।',
     });
   }
 
@@ -386,10 +386,10 @@ export function checkSentenceOffline(sentence: string, _topicId?: string): RuleC
       matchedText: match[0],
       suggestedText: `for ${match[2]} ${match[3]}`,
       index: match.index,
-      explanationHi: `कुल समयावधि (Duration: ${match[2]} ${match[3]}) के लिए 'since' नहीं, 'for' का प्रयोग होता है।`,
+      explanationHi: `समय की कुल गिनती (${match[2]} ${match[3]}) के लिए 'since' नहीं, 'for' आता है।`,
       severity: 'error',
       confidence: 'high',
-      inductiveHintHi: 'समय की अवधि के लिए For और शुरुआती बिंदु के लिए Since आता है।',
+      inductiveHintHi: 'समय की कुल गिनती के लिए For और शुरुआती समय के लिए Since आता है।',
     });
   }
 
@@ -401,10 +401,10 @@ export function checkSentenceOffline(sentence: string, _topicId?: string): RuleC
       matchedText: match[0],
       suggestedText: 'cousin',
       index: match.index,
-      explanationHi: `मानक अंग्रेजी में 'cousin brother/sister' नहीं, केवल 'cousin' कहा जाता है।`,
+      explanationHi: `सही अंग्रेजी में 'cousin brother/sister' नहीं, केवल 'cousin' बोला जाता है।`,
       severity: 'warning',
       confidence: 'medium',
-      inductiveHintHi: 'Standard English में सिर्फ Cousin बोला जाता है।',
+      inductiveHintHi: 'सही अंग्रेजी में सिर्फ Cousin बोला जाता है।',
     });
   }
 
@@ -418,7 +418,7 @@ export function checkSentenceOffline(sentence: string, _topicId?: string): RuleC
       matchedText: match[0],
       suggestedText: `${verb} ${place}`,
       index: match.index,
-      explanationHi: `'${verb}' में 'अंदर जाना' का अर्थ पहले से शामिल है, इसलिए भौतिक स्थान के साथ 'into' लगाना अनावश्यक है।`,
+      explanationHi: `'${verb}' का मतलब ही अंदर जाना है, इसलिए साथ में 'into' मत लगाएँ (सीधे 'enter the room' कहें)।`,
       severity: 'error',
       confidence: 'high',
       inductiveHintHi: 'Enter के साथ Into नहीं लगाया जाता (केवल Enter the room)।',
@@ -435,7 +435,7 @@ export function checkSentenceOffline(sentence: string, _topicId?: string): RuleC
       matchedText: match[0],
       suggestedText: `${verb} to ${target}`,
       index: match.index,
-      explanationHi: `'${verb}' के बाद किसी व्यक्ति या श्रोता का उल्लेख होने पर 'to' Preposition (उदा. '${verb} to ${target}') लगाना अनिवार्य है।`,
+      explanationHi: `'${verb}' के बाद किसी व्यक्ति या बात का जिक्र हो तो 'to' (उदा. '${verb} to ${target}') लगाना जरूरी है।`,
       severity: 'error',
       confidence: 'high',
       inductiveHintHi: 'Listen के बाद हमेशा To आता है (Listen to me)।',
@@ -453,7 +453,7 @@ export function checkSentenceOffline(sentence: string, _topicId?: string): RuleC
       matchedText: match[0],
       suggestedText: `${verb} ${item1} to ${item2}`,
       index: match.index,
-      explanationHi: `'${verb}' के साथ दो चीज़ों की पसंद की तुलना में 'than' नहीं, 'to' Preposition लगती है (उदा. '${verb} ${item1} to ${item2}')।`,
+      explanationHi: `'${verb}' के साथ दो चीज़ों की पसंद की तुलना में 'than' नहीं, 'to' लगता है (उदा. '${verb} ${item1} to ${item2}')।`,
       severity: 'error',
       confidence: 'high',
       inductiveHintHi: 'Prefer के साथ Than नहीं, To लगाया जाता है।',
@@ -469,7 +469,7 @@ export function checkSentenceOffline(sentence: string, _topicId?: string): RuleC
       matchedText: match[0],
       suggestedText: `${verb} with`,
       index: match.index,
-      explanationHi: `अंग्रेजी में सही मुहावरा '${verb} with' (सामना करना) है, 'up' लगाना व्याकरण में अमान्य है।`,
+      explanationHi: `अंग्रेजी में सही शब्द '${verb} with' (सामना करना) है, साथ में 'up' लगाना गलत है।`,
       severity: 'error',
       confidence: 'high',
       inductiveHintHi: 'Cope के साथ Up नहीं आता, केवल Cope with होता है।',
@@ -485,7 +485,7 @@ export function checkSentenceOffline(sentence: string, _topicId?: string): RuleC
       matchedText: match[0],
       suggestedText: `${betweenWord} you and me`,
       index: match.index,
-      explanationHi: `'between' एक Preposition है, जिसके बाद Objective Case ('me') आता है, 'I' नहीं।`,
+      explanationHi: `'Between' के बाद हमेशा 'me' आता है, 'I' नहीं (उदा. 'Between you and me')।`,
       severity: 'error',
       confidence: 'high',
       inductiveHintHi: 'Between के बाद me आता है (Between you and me)।',
@@ -504,10 +504,10 @@ export function checkSentenceOffline(sentence: string, _topicId?: string): RuleC
       matchedText: match[0],
       suggestedText: `${capitalizedOther} and I`,
       index: match.index,
-      explanationHi: `अंग्रेजी शिष्टाचार (231 नियम) के अनुसार स्वयं ('I') को हमेशा दूसरे व्यक्ति के बाद रखा जाता है (उदा. '${capitalizedOther} and I')।`,
+      explanationHi: `मैनर्स का गोल्डन रूल: हमेशा दूसरे का नाम पहले और अपना नाम ('I') बाद में रखें (उदा. '${capitalizedOther} and I')।`,
       severity: 'warning',
       confidence: 'high',
-      inductiveHintHi: 'दूसरों का नाम पहले और स्वयं (I) को बाद में रखा जाता है।',
+      inductiveHintHi: 'दूसरों का नाम पहले और अपना नाम (I) बाद में रखें।',
     });
   }
 
@@ -520,7 +520,7 @@ export function checkSentenceOffline(sentence: string, _topicId?: string): RuleC
       matchedText: match[0],
       suggestedText: modalPart,
       index: match.index,
-      explanationHi: `'${modalPart}' और 'able to' दोनों ही क्षमता दर्शाते हैं; दोनों को एक साथ लगाना वर्जित है।`,
+      explanationHi: `'${modalPart}' और 'able to' दोनों का एक ही मतलब है; दोनों को एक साथ इस्तेमाल न करें।`,
       severity: 'error',
       confidence: 'high',
       inductiveHintHi: 'Could के साथ able to नहीं लगाया जाता।',
@@ -536,7 +536,7 @@ export function checkSentenceOffline(sentence: string, _topicId?: string): RuleC
       matchedText: match[0],
       suggestedText: `I am ${name}`,
       index: match.index,
-      explanationHi: `'Myself' एक Reflexive Pronoun है जो वाक्य का कर्ता नहीं बन सकता। परिचय देने के लिए 'I am ${name}' या 'My name is ${name}' कहें।`,
+      explanationHi: `अपना परिचय देते समय 'Myself' न बोलें; सीधे 'I am ${name}' या 'My name is ${name}' कहें।`,
       severity: 'error',
       confidence: 'high',
       inductiveHintHi: 'परिचय देते समय Myself नहीं, I am बोलें।',
@@ -668,7 +668,7 @@ export function checkSentenceOffline(sentence: string, _topicId?: string): RuleC
     correctedSentence: corrected,
     errors,
     positiveFeedbackHi: isValid
-      ? 'शानदार! वाक्य व्याकरण और ध्वनि-नियमों के अनुसार 100% सही है।'
+      ? 'शाबाश! आपका वाक्य 100% सही और परफेक्ट है! 🎉'
       : undefined,
   };
 }

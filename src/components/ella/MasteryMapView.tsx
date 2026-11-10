@@ -76,13 +76,13 @@ export const MasteryMapView: React.FC<MasteryMapViewProps> = ({
         <div>
           <div className="flex items-center gap-2 text-xs text-indigo-600 font-bold mb-1">
             <Sparkles className="w-4 h-4" />
-            <span>कक्षा 7 कौशल प्रगति मानचित्र</span>
+            <span>लर्निंग मैप (21 टॉपिक्स)</span>
           </div>
           <h2 className="text-xl sm:text-2xl font-bold text-slate-900 leading-tight">
-            4 शिक्षण इंजन • 6 लेवल्स • 21 आगमनात्मक विषय
+            4 स्मार्ट इंजन • 6 लेवल्स • 21 इंटरैक्टिव विषय
           </h2>
           <p className="text-xs sm:text-sm text-slate-600 mt-1.5 max-w-2xl leading-relaxed">
-            प्रत्येक विषय को 6-चरणीय आगमनात्मक लूप के अनुसार तैयार किया गया है ताकि आप केवल नियम रटें नहीं, बल्कि सही वाक्य बनाना सीखें।
+            हर विषय को उदाहरणों के साथ तैयार किया गया है ताकि आप नियम रटने के बजाय स्वाभाविक रूप से सही वाक्य बनाना सीखें!
           </p>
         </div>
 
@@ -182,7 +182,7 @@ export const MasteryMapView: React.FC<MasteryMapViewProps> = ({
                     </>
                   ) : (
                     <>
-                      <span>{isSelected ? 'सक्रिय विषय (अभ्यास करें)' : 'अभ्यास शुरू करें'}</span>
+                      <span>{isSelected ? 'सक्रिय विषय (प्रैक्टिस करें)' : 'प्रैक्टिस शुरू करें'}</span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </>
                   )}

@@ -199,17 +199,17 @@ export default function App() {
         <div className="p-3.5 bg-white border border-slate-200 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs shadow-2xs">
           <div className="flex items-center gap-2 text-slate-700 font-semibold">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            <span className="text-indigo-700 font-bold">दैनिक व्याकरण अभ्यास</span>
+            <span className="text-indigo-700 font-bold">डेली इंग्लिश प्रैक्टिस</span>
             <span aria-hidden="true" className="text-slate-300">·</span>
-            <span className="text-slate-500 font-normal">कक्षा 7 पाठ्यक्रम</span>
+            <span className="text-slate-500 font-normal">Class 6–10</span>
           </div>
 
           <div className="flex items-center gap-3 text-slate-500 font-medium">
-            <span>सत्र: <strong className="text-slate-900 font-mono tabular-nums">{dbStats.sessionsCount}</strong></span>
+            <span>प्रैक्टिस राउंड्स: <strong className="text-slate-900 font-mono tabular-nums">{dbStats.sessionsCount}</strong></span>
             <span aria-hidden="true" className="text-slate-300">·</span>
-            <span>सुधारी गलतियाँ: <strong className="text-amber-600 font-mono tabular-nums">{dbStats.errorsCount}</strong></span>
+            <span>फिक्स की गई गलतियाँ: <strong className="text-amber-600 font-mono tabular-nums">{dbStats.errorsCount}</strong></span>
             <span aria-hidden="true" className="text-slate-300">·</span>
-            <span>छात्र: <strong className="text-slate-900">{studentName}</strong></span>
+            <span>स्टूडेंट: <strong className="text-slate-900">{studentName}</strong></span>
           </div>
         </div>
 

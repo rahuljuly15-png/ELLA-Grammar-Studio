@@ -35,13 +35,13 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
         <div>
           <div className="flex items-center gap-2 text-xs text-indigo-600 font-bold mb-1">
             <Settings className="w-4 h-4" />
-            <span>लोकल-फ़र्स्ट सेटिंग्स व प्राइवेसी</span>
+            <span>सेटिंग्स और आपका डेटा</span>
           </div>
           <h2 className="text-xl sm:text-2xl font-bold text-slate-900 leading-tight">
-            डेटा बैकअप, छात्र प्रोफ़ाइल व सुरक्षा
+            स्टूडेंट प्रोफ़ाइल और बैकअप
           </h2>
           <p className="text-xs sm:text-sm text-slate-600 mt-1 max-w-2xl leading-relaxed">
-            ELLA 100% लोकल-फ़र्स्ट है। आपका सारा डेटा केवल आपकी डिवाइस के सुरक्षित IndexedDB में रहता है। आप कभी भी अपना डेटा निर्यात (export) या आयात (import) कर सकते हैं।
+            ELLA 100% ऑफ़लाइन है। आपका सारा डेटा आपकी अपनी डिवाइस में सुरक्षित रहता है। आप कभी भी अपना बैकअप डाउनलोड या रीस्टोर कर सकते हैं।
           </p>
         </div>
 
@@ -56,13 +56,13 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
         <div className="bg-white border border-slate-200/90 rounded-3xl p-6 space-y-4 shadow-xs">
           <div className="flex items-center gap-2 text-sm font-bold text-slate-900">
             <User className="w-4 h-4 text-indigo-600" />
-            <span>छात्र प्रोफ़ाइल (Student Profile)</span>
+            <span>स्टूडेंट प्रोफ़ाइल (Profile)</span>
           </div>
 
           <div className="space-y-3 pt-2">
             <div>
               <label className="block text-xs font-semibold text-slate-700 mb-1">
-                छात्र का नाम (Student Name):
+                स्टूडेंट का नाम (Student Name):
               </label>
               <input
                 type="text"
@@ -74,11 +74,11 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
 
             <div>
               <label className="block text-xs font-semibold text-slate-700 mb-1">
-                लक्षित कक्षा (Target Grade):
+                आपकी कक्षा (Class):
               </label>
               <div className="px-4 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-700 flex items-center justify-between font-medium">
-                <span>कक्षा 7 (Class 7 CBSE/State Board)</span>
-                <span className="text-[11px] font-mono text-indigo-600 font-bold">4 Engines</span>
+                <span>कक्षा 6–10 (CBSE / State Board)</span>
+                <span className="text-[11px] font-mono text-indigo-600 font-bold">21 Topics</span>
               </div>
             </div>
           </div>
@@ -88,7 +88,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
         <div className="bg-white border border-slate-200/90 rounded-3xl p-6 space-y-4 shadow-xs">
           <div className="flex items-center gap-2 text-sm font-bold text-slate-900">
             <Database className="w-4 h-4 text-emerald-600" />
-            <span>लोकल डेटाबेस सांख्यिकी (Dexie IndexedDB)</span>
+            <span>आपकी कुल प्रोग्रेस (Activity Stats)</span>
           </div>
 
           <div className="grid grid-cols-3 gap-3 pt-2">
@@ -96,21 +96,21 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
               <span className="text-2xl font-bold font-mono text-indigo-700 tabular-nums">
                 {dbStats.sessionsCount}
               </span>
-              <div className="text-[11px] text-slate-600 font-medium">सत्र (Sessions)</div>
+              <div className="text-[11px] text-slate-600 font-medium">प्रैक्टिस राउंड्स</div>
             </div>
 
             <div className="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-1 text-center">
               <span className="text-2xl font-bold font-mono text-amber-600 tabular-nums">
                 {dbStats.errorsCount}
               </span>
-              <div className="text-[11px] text-slate-600 font-medium">सुधारी गलतियाँ</div>
+              <div className="text-[11px] text-slate-600 font-medium">फिक्स की गई गलतियाँ</div>
             </div>
 
             <div className="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-1 text-center">
               <span className="text-2xl font-bold font-mono text-emerald-600 tabular-nums">
                 {dbStats.reviewsCount}
               </span>
-              <div className="text-[11px] text-slate-600 font-medium">समीक्षा कार्ड्स</div>
+              <div className="text-[11px] text-slate-600 font-medium">रिवीजन टॉपिक्स</div>
             </div>
           </div>
         </div>
@@ -119,10 +119,10 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
       {/* Backup and Restore Controls */}
       <div className="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-7 space-y-4 shadow-xs">
         <h3 className="text-base font-bold text-slate-900">
-          1-Click बैकअप व डेटा स्थानांतरण (Backup & Restore)
+          1-Click बैकअप व रीस्टोर (Backup & Restore)
         </h3>
         <p className="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-3xl">
-          आप अपने सभी सत्र, लिखे हुए वाक्य और समीक्षा इतिहास को एक सिंगल JSON फ़ाइल में बैकअप कर सकते हैं। किसी दूसरे फ़ोन या कंप्यूटर में इसे 1-क्लिक में रीस्टोर किया जा सकता है।
+          आप अपने सभी लिखे हुए वाक्य और प्रोग्रेस को एक JSON फ़ाइल में बैकअप कर सकते हैं। किसी दूसरे फ़ोन या कंप्यूटर में इसे 1-क्लिक में रीस्टोर किया जा सकता है।
         </p>
 
         <div className="flex flex-wrap items-center gap-3 pt-2">

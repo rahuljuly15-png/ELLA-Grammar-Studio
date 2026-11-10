@@ -27,7 +27,7 @@ export const ErrorVaultView: React.FC<ErrorVaultViewProps> = ({ onRetryTopic }) 
   }, []);
 
   const handleClearErrors = async () => {
-    if (window.confirm('क्या आप वाकई त्रुटि बैंक से सभी रिकॉर्ड हटाना चाहते हैं?')) {
+    if (window.confirm('क्या आप वाकई अपनी सारी पुरानी गलतियाँ साफ़ करना चाहते हैं?')) {
       await db.error_patterns.clear();
       await loadErrors();
     }
@@ -39,13 +39,13 @@ export const ErrorVaultView: React.FC<ErrorVaultViewProps> = ({ onRetryTopic }) 
         <div>
           <div className="flex items-center gap-2 text-xs text-amber-700 font-bold mb-1">
             <AlertTriangle className="w-4 h-4 text-amber-600" />
-            <span>त्रुटि विश्लेषण बैंक (Error Vault)</span>
+            <span>मिस्टेक वॉल्ट (Mistake Vault)</span>
           </div>
           <h2 className="text-xl sm:text-2xl font-bold text-slate-900 leading-tight">
-            व्यक्तिगत व्याकरण कमज़ोरियों का रिकॉर्ड
+            यहाँ आपकी गलतियों से सीखने का मौका है
           </h2>
           <p className="text-xs sm:text-sm text-slate-600 mt-1 max-w-2xl leading-relaxed">
-            आपके द्वारा लिखे गए वाक्यों में पकड़ी गई गलतियों का विश्लेषण। यहाँ से आप सीधे उसी वाक्य का पुनः अभ्यास कर सकते हैं।
+            आपके द्वारा लिखे गए वाक्यों में सुधारी गई गलतियों का रिकॉर्ड। यहाँ से आप सीधे उसी वाक्य की दोबारा प्रैक्टिस कर सकते हैं।
           </p>
         </div>
 
@@ -55,14 +55,14 @@ export const ErrorVaultView: React.FC<ErrorVaultViewProps> = ({ onRetryTopic }) 
             className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200 rounded-xl transition-colors whitespace-nowrap cursor-pointer"
           >
             <Trash2 className="w-3.5 h-3.5" />
-            <span>त्रुटि बैंक खाली करें</span>
+            <span>मिस्टेक वॉल्ट खाली करें</span>
           </button>
         )}
       </div>
 
       {isLoading ? (
         <div className="p-12 text-center text-xs text-slate-500 bg-white border border-slate-200 rounded-3xl">
-          डेटाबेस से त्रुटि रिकॉर्ड लोड हो रहे हैं...
+          डेटाबेस से रिकॉर्ड लोड हो रहे हैं...
         </div>
       ) : errors.length === 0 ? (
         <div className="p-12 text-center bg-white border border-slate-200 rounded-3xl space-y-3 shadow-xs">
@@ -70,10 +70,10 @@ export const ErrorVaultView: React.FC<ErrorVaultViewProps> = ({ onRetryTopic }) 
             <CheckCircle2 className="w-6 h-6" />
           </div>
           <h3 className="text-base sm:text-lg font-bold text-slate-900">
-            त्रुटि बैंक अभी खाली है!
+            शानदार! अभी कोई गलती रिकॉर्ड नहीं है 🎉
           </h3>
           <p className="text-xs text-slate-500 max-w-md mx-auto leading-relaxed">
-            जब आप "आज का अभ्यास" में वाक्य लिखेंगे और ऑफ़लाइन रूल इंजन किसी व्याकरण त्रुटि को पकड़ेगा, तो वह यहाँ दर्ज हो जाएगी ताकि आप उसका दोबारा अभ्यास कर सकें।
+            जब आप "डेली प्रैक्टिस" में वाक्य लिखेंगे और ऑफ़लाइन इंजन किसी गलती को सुधारेगा, तो वह यहाँ दर्ज हो जाएगी ताकि आप उसकी दोबारा प्रैक्टिस कर सकें।
           </p>
         </div>
       ) : (
@@ -129,7 +129,7 @@ export const ErrorVaultView: React.FC<ErrorVaultViewProps> = ({ onRetryTopic }) 
                   className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-500 rounded-xl transition-all shadow-xs shadow-indigo-200 cursor-pointer"
                 >
                   <RotateCcw className="w-3.5 h-3.5" />
-                  <span>पुनः अभ्यास करें</span>
+                  <span>दोबारा प्रैक्टिस करें</span>
                 </button>
               </div>
             </div>

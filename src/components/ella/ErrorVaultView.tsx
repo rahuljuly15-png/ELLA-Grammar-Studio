@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { AlertTriangle, CheckCircle2, RotateCcw, ShieldCheck, Trash2 } from 'lucide-react';
 import { db, type ErrorPattern } from '../../db/dexieDb';
+import { useLanguage } from '../../i18n/LanguageContext';
 
 interface ErrorVaultViewProps {
   onRetryTopic: (topicId: string, wrongSentence: string) => void;
 }
 
 export const ErrorVaultView: React.FC<ErrorVaultViewProps> = ({ onRetryTopic }) => {
+  const { language, t } = useLanguage();
   const [errors, setErrors] = useState<ErrorPattern[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -27,7 +29,7 @@ export const ErrorVaultView: React.FC<ErrorVaultViewProps> = ({ onRetryTopic }) 
   }, []);
 
   const handleClearErrors = async () => {
-    if (window.confirm('क्या आप वाकई अपनी सारी पुरानी गलतियाँ साफ़ करना चाहते हैं?')) {
+    if (window.confirm(t('vault_confirm_clear'))) {
       await db.error_patterns.clear();
       await loadErrors();
     }
@@ -39,13 +41,13 @@ export const ErrorVaultView: React.FC<ErrorVaultViewProps> = ({ onRetryTopic }) 
         <div>
           <div className="flex items-center gap-2 text-xs text-amber-700 font-bold mb-1">
             <AlertTriangle className="w-4 h-4 text-amber-600" />
-            <span>मिस्टेक वॉल्ट (Mistake Vault)</span>
+            <span>{t('vault_title')}</span>
           </div>
           <h2 className="text-xl sm:text-2xl font-bold text-slate-900 leading-tight">
-            यहाँ आपकी गलतियों से सीखने का मौका है
+            {language === 'en' ? 'Learn from Your Mistakes Without Fear' : 'यहाँ आपकी गलतियों से सीखने का मौका है'}
           </h2>
           <p className="text-xs sm:text-sm text-slate-600 mt-1 max-w-2xl leading-relaxed">
-            आपके द्वारा लिखे गए वाक्यों में सुधारी गई गलतियों का रिकॉर्ड। यहाँ से आप सीधे उसी वाक्य की दोबारा प्रैक्टिस कर सकते हैं।
+            {t('vault_subtitle')}
           </p>
         </div>
 
@@ -55,14 +57,14 @@ export const ErrorVaultView: React.FC<ErrorVaultViewProps> = ({ onRetryTopic }) 
             className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-bold text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200 rounded-xl transition-colors whitespace-nowrap cursor-pointer"
           >
             <Trash2 className="w-3.5 h-3.5" />
-            <span>मिस्टेक वॉल्ट खाली करें</span>
+            <span>{t('vault_clear_btn')}</span>
           </button>
         )}
       </div>
 
       {isLoading ? (
         <div className="p-12 text-center text-xs text-slate-500 bg-white border border-slate-200 rounded-3xl">
-          डेटाबेस से रिकॉर्ड लोड हो रहे हैं...
+          {language === 'en' ? 'Loading records from local database...' : 'डेटाबेस से रिकॉर्ड लोड हो रहे हैं...'}
         </div>
       ) : errors.length === 0 ? (
         <div className="p-12 text-center bg-white border border-slate-200 rounded-3xl space-y-3 shadow-xs">
@@ -70,10 +72,10 @@ export const ErrorVaultView: React.FC<ErrorVaultViewProps> = ({ onRetryTopic }) 
             <CheckCircle2 className="w-6 h-6" />
           </div>
           <h3 className="text-base sm:text-lg font-bold text-slate-900">
-            शानदार! अभी कोई गलती रिकॉर्ड नहीं है 🎉
+            {t('vault_empty_title')}
           </h3>
           <p className="text-xs text-slate-500 max-w-md mx-auto leading-relaxed">
-            जब आप "डेली प्रैक्टिस" में वाक्य लिखेंगे और ऑफ़लाइन इंजन किसी गलती को सुधारेगा, तो वह यहाँ दर्ज हो जाएगी ताकि आप उसकी दोबारा प्रैक्टिस कर सकें।
+            {t('vault_empty_desc')}
           </p>
         </div>
       ) : (
@@ -90,32 +92,32 @@ export const ErrorVaultView: React.FC<ErrorVaultViewProps> = ({ onRetryTopic }) 
                   </span>
                   <span aria-hidden="true" className="text-slate-300">·</span>
                   <span className="text-slate-500 font-mono text-[11px] tabular-nums">
-                    {new Date(err.timestamp).toLocaleDateString('hi-IN', {
+                    {new Date(err.timestamp).toLocaleDateString(language === 'en' ? 'en-IN' : 'hi-IN', {
                       hour: '2-digit',
                       minute: '2-digit',
                     })}
                   </span>
                   <span aria-hidden="true" className="text-slate-300">·</span>
                   <span className="text-emerald-700 font-medium text-[11px]">
-                    {err.caught_by === 'offline_rule' ? '0ms Offline Regex' : 'AI Analysis'}
+                    {err.caught_by === 'offline_rule' ? '0ms Offline Engine' : 'AI Analysis'}
                   </span>
                 </div>
 
                 <div className="text-xs space-y-1.5 pt-1">
                   {err.full_sentence && (
                     <div className="text-slate-700 font-mono text-[11px] bg-slate-50 p-2 rounded-lg border border-slate-100">
-                      <span className="text-slate-500 font-sans mr-2">पूरा वाक्य:</span>
+                      <span className="text-slate-500 font-sans mr-2">{t('vault_original_label')}</span>
                       <span>"{err.full_sentence}"</span>
                     </div>
                   )}
                   <div className="text-rose-700 font-mono">
-                    <span className="text-slate-500 font-sans mr-2">गलत अंश:</span>
+                    <span className="text-slate-500 font-sans mr-2">{language === 'en' ? 'Tricky part:' : 'गलत अंश:'}</span>
                     <span className="line-through bg-rose-50 px-2 py-0.5 rounded font-bold">
                       {err.wrong_input}
                     </span>
                   </div>
                   <div className="text-emerald-800 font-mono">
-                    <span className="text-slate-500 font-sans mr-2">सही सुधार:</span>
+                    <span className="text-slate-500 font-sans mr-2">{t('vault_corrected_label')}</span>
                     <span className="bg-emerald-50 px-2 py-0.5 rounded font-bold">
                       {err.corrected_output}
                     </span>
@@ -129,7 +131,7 @@ export const ErrorVaultView: React.FC<ErrorVaultViewProps> = ({ onRetryTopic }) 
                   className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-500 rounded-xl transition-all shadow-xs shadow-indigo-200 cursor-pointer"
                 >
                   <RotateCcw className="w-3.5 h-3.5" />
-                  <span>दोबारा प्रैक्टिस करें</span>
+                  <span>{t('vault_retry_btn')}</span>
                 </button>
               </div>
             </div>

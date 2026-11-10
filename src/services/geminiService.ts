@@ -9,6 +9,7 @@ export interface EllaAIContext {
   errors?: string[];
   selectedHypothesisText?: string;
   isHypothesisCorrect?: boolean | null;
+  language?: 'hi' | 'en';
 }
 
 const STORAGE_KEY = 'ella_gemini_api_key';
@@ -88,13 +89,19 @@ export async function askEllaAI(userQuery: string, context: EllaAIContext): Prom
 
   const name = context.studentName?.trim() || 'Ishu';
 
-  const systemPrompt = `You are "एला जिनी (Ella Genie)", an exceptionally intelligent, caring, and pedagogical AI English Grammar Tutor for Indian students (Classes 6–10 CBSE/State Board).
+  const isEn = context.language === 'en';
+
+  const systemPrompt = `You are "Ella Genie (एला जिनी)", an exceptionally intelligent, caring, and pedagogical AI English Grammar Tutor for Indian students (Classes 6–10 CBSE/State Board).
 
 CORE PERSONA & TEACHING RULES:
 1. Address the student warmly as "${name}".
-2. Language: Natural, conversational Hinglish (Hindi written in Devanagari script mixed with key English grammar terms).
+2. Language: ${
+    isEn
+      ? 'Simple, crystal-clear, encouraging English suitable for Indian school students in Classes 6–10. Keep words simple and friendly.'
+      : 'Natural, conversational Hinglish (Hindi written in Devanagari script mixed with key English grammar terms).'
+  }
 3. Brevity is sacred: Respond in STRICTLY 2 to 3 concise, punchy sentences. NEVER write long paragraphs or bullet lists.
-4. Pedagogical Focus: Explain WHY a rule works through sounds/phonetics (आवाज़/ध्वनि) and real speech rather than rote memorization.
+4. Pedagogical Focus: Explain WHY a rule works through spoken sounds/phonetics and practical usage rather than rote memorization.
 5. Socratic guidance: If the student made an error, point out the specific word, explain the reason kindly, and encourage them to fix it.
 6. Tone: Loving, enthusiastic, magical, never patronizing or overly academic.`;
 

@@ -11,6 +11,8 @@ import {
 } from 'lucide-react';
 import { CLASS_7_SYLLABUS, ENGINES_META, type CurriculumTopic, type EngineType } from '../../data/curriculum';
 import { isTopicAvailable } from '../../data/topicLoader';
+import { useLanguage } from '../../i18n/LanguageContext';
+import { TOPIC_TRANSLATIONS } from '../../i18n/topicTranslations';
 
 interface MasteryMapViewProps {
   activeTopicId: string;
@@ -21,6 +23,7 @@ export const MasteryMapView: React.FC<MasteryMapViewProps> = ({
   activeTopicId,
   onSelectTopic,
 }) => {
+  const { language, t } = useLanguage();
   const [selectedEngineFilter, setSelectedEngineFilter] = useState<EngineType | 'all'>('all');
 
   const getEngineIcon = (engine: EngineType) => {
@@ -65,8 +68,8 @@ export const MasteryMapView: React.FC<MasteryMapViewProps> = ({
     }
   };
 
-  const filteredTopics = CLASS_7_SYLLABUS.filter((t: CurriculumTopic) => {
-    return selectedEngineFilter === 'all' || t.engine === selectedEngineFilter;
+  const filteredTopics = CLASS_7_SYLLABUS.filter((topic: CurriculumTopic) => {
+    return selectedEngineFilter === 'all' || topic.engine === selectedEngineFilter;
   });
 
   return (
@@ -76,13 +79,15 @@ export const MasteryMapView: React.FC<MasteryMapViewProps> = ({
         <div>
           <div className="flex items-center gap-2 text-xs text-indigo-600 font-bold mb-1">
             <Sparkles className="w-4 h-4" />
-            <span>लर्निंग मैप (21 टॉपिक्स)</span>
+            <span>{t('map_title')}</span>
           </div>
           <h2 className="text-xl sm:text-2xl font-bold text-slate-900 leading-tight">
-            4 स्मार्ट इंजन • 6 लेवल्स • 21 इंटरैक्टिव विषय
+            {language === 'en'
+              ? '4 Smart Engines • 6 Levels • 21 Interactive Topics'
+              : '4 स्मार्ट इंजन • 6 लेवल्स • 21 इंटरैक्टिव विषय'}
           </h2>
           <p className="text-xs sm:text-sm text-slate-600 mt-1.5 max-w-2xl leading-relaxed">
-            हर विषय को उदाहरणों के साथ तैयार किया गया है ताकि आप नियम रटने के बजाय स्वाभाविक रूप से सही वाक्य बनाना सीखें!
+            {t('map_subtitle')}
           </p>
         </div>
 
@@ -96,20 +101,22 @@ export const MasteryMapView: React.FC<MasteryMapViewProps> = ({
                 : 'text-slate-600 hover:text-slate-900'
             }`}
           >
-            सभी 21 विषय
+            {t('map_filter_all')}
           </button>
           {Object.values(ENGINES_META).map((meta) => (
             <button
               key={meta.id}
               onClick={() => setSelectedEngineFilter(meta.id)}
-              className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-xl transition-all cursor-pointer ${
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold rounded-xl transition-all cursor-pointer ${
                 selectedEngineFilter === meta.id
                   ? 'bg-white text-indigo-700 shadow-xs'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
               {getEngineIcon(meta.id)}
-              <span className="hidden sm:inline">{meta.titleEn}</span>
+              <span className="hidden sm:inline">
+                {language === 'en' ? meta.titleEn : meta.titleHi}
+              </span>
             </button>
           ))}
         </div>
@@ -120,6 +127,14 @@ export const MasteryMapView: React.FC<MasteryMapViewProps> = ({
         {filteredTopics.map((topic: CurriculumTopic) => {
           const isSelected = activeTopicId === topic.topicId;
           const available = isTopicAvailable(topic.topicId);
+          const trans = TOPIC_TRANSLATIONS[topic.topicId];
+
+          const displayTitle = language === 'en' ? topic.title : topic.titleHi;
+          const displaySub = language === 'en' ? topic.titleHi : topic.title;
+          const displayCat = language === 'en' ? (trans?.categoryEn || topic.categoryHi) : topic.categoryHi;
+          const displayDesc = language === 'en' ? (trans?.descriptionEn || topic.descriptionHi) : topic.descriptionHi;
+          const displayFormula = language === 'en' ? (trans?.formulaEn || topic.formulaHi) : topic.formulaHi;
+
           return (
             <div
               key={topic.topicId}
@@ -140,25 +155,25 @@ export const MasteryMapView: React.FC<MasteryMapViewProps> = ({
                     )}`}
                   >
                     {getEngineIcon(topic.engine)}
-                    <span>{topic.categoryHi}</span>
+                    <span>{displayCat}</span>
                   </span>
                 </div>
 
                 <h3 className="text-base sm:text-lg font-bold text-slate-900 leading-tight">
-                  {topic.titleHi}
+                  {displayTitle}
                 </h3>
                 <p className="text-xs text-slate-500 font-mono font-medium truncate">
-                  {topic.title}
+                  {displaySub}
                 </p>
 
                 <p className="text-xs text-slate-600 leading-relaxed pt-1">
-                  {topic.descriptionHi}
+                  {displayDesc}
                 </p>
               </div>
 
               <div className="space-y-3 pt-3 border-t border-slate-100">
                 <div className="p-2.5 bg-slate-50 border border-slate-200/80 rounded-xl text-xs font-mono text-indigo-700 font-semibold truncate">
-                  ⚡ {topic.formulaHi}
+                  ⚡ {displayFormula}
                 </div>
 
                 <button
@@ -178,11 +193,15 @@ export const MasteryMapView: React.FC<MasteryMapViewProps> = ({
                   {!available ? (
                     <>
                       <Lock className="w-3.5 h-3.5 text-slate-400" />
-                      <span>जल्द आ रहा है (Coming soon)</span>
+                      <span>{language === 'en' ? 'Coming Soon' : 'जल्द आ रहा है'}</span>
                     </>
                   ) : (
                     <>
-                      <span>{isSelected ? 'सक्रिय विषय (प्रैक्टिस करें)' : 'प्रैक्टिस शुरू करें'}</span>
+                      <span>
+                        {isSelected
+                          ? (language === 'en' ? 'Active Topic (Practicing)' : 'सक्रिय विषय (प्रैक्टिस करें)')
+                          : (language === 'en' ? 'Start Topic' : 'प्रैक्टिस शुरू करें')}
+                      </span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </>
                   )}

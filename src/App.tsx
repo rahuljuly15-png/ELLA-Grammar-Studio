@@ -15,8 +15,11 @@ import { getTopicById, type FullTopicData } from './data/topicLoader';
 import { checkSentenceOffline, recordProductionAttempt, type RuleCheckResult } from './engines/offlineRuleEngine';
 import { exportDatabaseToJson, importDatabaseFromJson, getOfflineDbCounts, deleteStudentData } from './services/backupService';
 import { Check } from 'lucide-react';
+import { LanguageProvider, useLanguage } from './i18n/LanguageContext';
 
-export default function App() {
+function AppInner() {
+  const { language, t } = useLanguage();
+
   // Navigation View: 'cycle' | 'mastery_map' | 'error_vault' | 'publish' | 'settings'
   const [currentView, setCurrentView] = useState<EllaView>('cycle');
   const [activeTopicId, setActiveTopicId] = useState<string>('level1-articles-01');
@@ -64,8 +67,8 @@ export default function App() {
     }
     showToast(
       seconds === 0
-        ? 'जिनी को एक जगह रोक दिया गया है (स्थिर मोड)'
-        : `जिनी अब हर ${seconds} सेकंड में अपनी जगह बदलेगी!`
+        ? (language === 'en' ? 'Genie is stationary (No move)' : 'जिनी को एक जगह रोक दिया गया है (स्थिर मोड)')
+        : (language === 'en' ? `Genie will now move every ${seconds} seconds!` : `जिनी अब हर ${seconds} सेकंड में अपनी जगह बदलेगी!`)
     );
   };
 
@@ -253,11 +256,15 @@ export default function App() {
       setSavedSessionId(sessionId);
       setIsSavedToDb(true);
       await refreshStats();
-      showToast(`अभ्यास सत्र #${sessionId} सफलतापूर्वक Dexie डेटाबेस में सेव हुआ!`);
+      showToast(
+        language === 'en'
+          ? `Practice session #${sessionId} saved successfully!`
+          : `अभ्यास सत्र #${sessionId} सफलतापूर्वक Dexie डेटाबेस में सेव हुआ!`
+      );
       setTimeout(() => setIsSavedToDb(false), 3500);
     } catch (err) {
       console.error('Dexie save error:', err);
-      showToast('डेटाबेस में सेव करते समय त्रुटि हुई');
+      showToast(language === 'en' ? 'Error saving to database' : 'डेटाबेस में सेव करते समय त्रुटि हुई');
     }
   };
 
@@ -265,10 +272,10 @@ export default function App() {
   const handleExportBackup = async () => {
     try {
       await exportDatabaseToJson();
-      showToast('बैकअप JSON फ़ाइल डाउनलोड हो गई!');
+      showToast(language === 'en' ? 'Backup JSON file downloaded!' : 'बैकअप JSON फ़ाइल डाउनलोड हो गई!');
     } catch (err) {
       console.error('Backup error:', err);
-      showToast('बैकअप निर्यात में त्रुटि हुई');
+      showToast(language === 'en' ? 'Error exporting backup' : 'बैकअप निर्यात में त्रुटि हुई');
     }
   };
 
@@ -330,17 +337,17 @@ export default function App() {
         <div className="p-3.5 bg-white border border-slate-200 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs shadow-2xs">
           <div className="flex items-center gap-2 text-slate-700 font-semibold">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            <span className="text-indigo-700 font-bold">डेली इंग्लिश प्रैक्टिस</span>
+            <span className="text-indigo-700 font-bold">{t('ribbon_title')}</span>
             <span aria-hidden="true" className="text-slate-300">·</span>
-            <span className="text-slate-500 font-normal">Class 6–10</span>
+            <span className="text-slate-500 font-normal">{t('classBadge')}</span>
           </div>
 
           <div className="flex items-center gap-3 text-slate-500 font-medium">
-            <span>प्रैक्टिस राउंड्स: <strong className="text-slate-900 font-mono tabular-nums">{dbStats.sessionsCount}</strong></span>
+            <span>{t('ribbon_rounds')}: <strong className="text-slate-900 font-mono tabular-nums">{dbStats.sessionsCount}</strong></span>
             <span aria-hidden="true" className="text-slate-300">·</span>
-            <span>फिक्स की गई गलतियाँ: <strong className="text-amber-600 font-mono tabular-nums">{dbStats.errorsCount}</strong></span>
+            <span>{t('ribbon_errors')}: <strong className="text-amber-600 font-mono tabular-nums">{dbStats.errorsCount}</strong></span>
             <span aria-hidden="true" className="text-slate-300">·</span>
-            <span>स्टूडेंट: <strong className="text-slate-900">{studentName}</strong></span>
+            <span>{t('ribbon_student')}: <strong className="text-slate-900">{studentName}</strong></span>
           </div>
         </div>
 
@@ -361,7 +368,7 @@ export default function App() {
             studentName={studentName}
             flightIntervalSeconds={genieFlightInterval}
             onEscapeHatch={() => {
-              showToast('आसान उदाहरण लोड किया गया!');
+              showToast(t('toast_escape'));
               if (activeTopic.steps['5_free_production']?.sampleSolutions?.[0]) {
                 setStudentSentence(activeTopic.steps['5_free_production'].sampleSolutions[0]);
               }
@@ -411,15 +418,23 @@ export default function App() {
       <footer className="mt-auto border-t border-slate-200 bg-white py-6 px-6 text-center text-xs text-slate-500">
         <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <span className="font-bold text-slate-700">ELLA Grammar Studio v3.0</span>
+            <span className="font-bold text-slate-700">{t('footer_brand')}</span>
             <span aria-hidden="true" className="text-slate-300">·</span>
-            <span>100% ऑफ़लाइन PWA • सुरक्षित व मुफ़्त</span>
+            <span>{t('footer_offline')}</span>
           </div>
           <div className="text-slate-600">
-            कक्षा 6–10 के विद्यार्थियों के लिए सरल, आकर्षक व 100% मुफ़्त
+            {t('footer_audience')}
           </div>
         </div>
       </footer>
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <LanguageProvider>
+      <AppInner />
+    </LanguageProvider>
   );
 }

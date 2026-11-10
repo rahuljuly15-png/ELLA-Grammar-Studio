@@ -6,8 +6,10 @@ import {
   Settings,
   ShieldCheck,
   Sparkles,
+  Languages,
 } from 'lucide-react';
 import { PWAInstallButton } from './PWAInstallButton';
+import { useLanguage } from '../../i18n/LanguageContext';
 
 export type EllaView = 'cycle' | 'mastery_map' | 'error_vault' | 'publish' | 'settings';
 
@@ -25,6 +27,8 @@ export const EllaHeader: React.FC<EllaHeaderProps> = ({
   setCurrentView,
   errorsCount,
 }) => {
+  const { language, setLanguage, t } = useLanguage();
+
   return (
     <header className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 px-5 sm:px-8 py-4 border-b border-indigo-100 bg-white/95 backdrop-blur-md sticky top-0 z-40 shadow-xs">
       {/* Zone 1: Wordmark */}
@@ -35,14 +39,14 @@ export const EllaHeader: React.FC<EllaHeaderProps> = ({
         <div>
           <div className="flex items-center gap-2">
             <span className="text-lg font-bold tracking-tight text-slate-900 whitespace-nowrap">
-              ELLA Grammar Studio
+              {t('appName')}
             </span>
             <span className="text-[11px] font-bold text-indigo-700 bg-indigo-50 border border-indigo-200 px-2 py-0.5 rounded-full">
-              Class 6–10
+              {t('classBadge')}
             </span>
           </div>
           <p className="text-xs text-slate-500">
-            खेल-खेल में आसान इंग्लिश ग्रामर • बिना रटे समझें
+            {t('tagline')}
           </p>
         </div>
       </div>
@@ -51,58 +55,92 @@ export const EllaHeader: React.FC<EllaHeaderProps> = ({
       <nav className="flex items-center gap-1 p-1 bg-slate-100/90 border border-slate-200 rounded-xl overflow-x-auto">
         <button
           onClick={() => setCurrentView('cycle')}
-          className={`flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold rounded-lg transition-all whitespace-nowrap ${
+          className={`flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold rounded-lg transition-all whitespace-nowrap cursor-pointer ${
             currentView === 'cycle'
               ? 'bg-white text-indigo-700 shadow-xs'
               : 'text-slate-600 hover:text-slate-900'
           }`}
         >
           <BookOpen className="w-3.5 h-3.5 text-indigo-600" />
-          <span>डेली प्रैक्टिस</span>
+          <span>{t('nav_practice')}</span>
         </button>
 
         <button
           onClick={() => setCurrentView('mastery_map')}
-          className={`flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold rounded-lg transition-all whitespace-nowrap ${
+          className={`flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold rounded-lg transition-all whitespace-nowrap cursor-pointer ${
             currentView === 'mastery_map'
               ? 'bg-white text-indigo-700 shadow-xs'
               : 'text-slate-600 hover:text-slate-900'
           }`}
         >
           <MapPin className="w-3.5 h-3.5 text-indigo-600" />
-          <span>लर्निंग मैप (21 टॉपिक्स)</span>
+          <span>{t('nav_map')}</span>
         </button>
 
         <button
           onClick={() => setCurrentView('error_vault')}
-          className={`flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold rounded-lg transition-all whitespace-nowrap ${
+          className={`flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold rounded-lg transition-all whitespace-nowrap cursor-pointer ${
             currentView === 'error_vault'
               ? 'bg-white text-indigo-700 shadow-xs'
               : 'text-slate-600 hover:text-slate-900'
           }`}
         >
           <AlertTriangle className="w-3.5 h-3.5 text-amber-500" />
-          <span>मिस्टेक वॉल्ट ({errorsCount})</span>
+          <span>{t('nav_vault')} ({errorsCount})</span>
         </button>
 
         <button
           onClick={() => setCurrentView('settings')}
-          className={`flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold rounded-lg transition-all whitespace-nowrap ${
+          className={`flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold rounded-lg transition-all whitespace-nowrap cursor-pointer ${
             currentView === 'settings'
               ? 'bg-white text-indigo-700 shadow-xs'
               : 'text-slate-600 hover:text-slate-900'
           }`}
         >
           <Settings className="w-3.5 h-3.5 text-slate-500" />
-          <span>सेटिंग्स</span>
+          <span>{t('nav_settings')}</span>
         </button>
       </nav>
 
-      {/* Zone 3: 100% Offline & PWA App Install */}
-      <div className="flex items-center gap-2.5 shrink-0 justify-end">
-        <div className="flex items-center gap-1.5 text-xs text-emerald-800 bg-emerald-50 border border-emerald-200/80 px-2.5 py-1.5 rounded-xl font-semibold">
+      {/* Zone 3: Language Conversion Toggle, 100% Offline & PWA App Install */}
+      <div className="flex items-center gap-2 shrink-0 justify-end">
+        {/* Language Conversion Toggle (Small, Top Right Corner) */}
+        <div 
+          className="inline-flex items-center bg-slate-100 p-0.5 rounded-xl border border-slate-200 text-xs font-bold shrink-0 shadow-2xs"
+          role="group"
+          aria-label="Language selection"
+        >
+          <button
+            type="button"
+            onClick={() => setLanguage('hi')}
+            className={`flex items-center gap-1 px-2.5 py-1 rounded-lg transition-all cursor-pointer ${
+              language === 'hi'
+                ? 'bg-white text-indigo-700 shadow-xs ring-1 ring-indigo-200'
+                : 'text-slate-500 hover:text-slate-800'
+            }`}
+            title="हिन्दी में बदलें"
+          >
+            <span className="text-xs">🇮🇳</span>
+            <span className="text-[11px] font-bold">हिन्दी</span>
+          </button>
+          <button
+            type="button"
+            onClick={() => setLanguage('en')}
+            className={`flex items-center gap-1 px-2.5 py-1 rounded-lg transition-all cursor-pointer ${
+              language === 'en'
+                ? 'bg-white text-indigo-700 shadow-xs ring-1 ring-indigo-200'
+                : 'text-slate-500 hover:text-slate-800'
+            }`}
+            title="Switch to English"
+          >
+            <span className="text-xs">🇬🇧</span>
+            <span className="text-[11px] font-bold">English</span>
+          </button>
+        </div>
+
+        <div className="hidden sm:flex items-center gap-1.5 text-xs text-emerald-800 bg-emerald-50 border border-emerald-200/80 px-2.5 py-1.5 rounded-xl font-semibold">
           <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-          <span>100% ऑफ़लाइन</span>
+          <span>{t('badge_offline')}</span>
         </div>
 
         <PWAInstallButton />

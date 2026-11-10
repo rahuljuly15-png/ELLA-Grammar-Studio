@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { X, Search, Check, Blocks, Clock, Repeat, FileText, Lock } from 'lucide-react';
 import { CLASS_7_SYLLABUS, ENGINES_META, type CurriculumTopic, type EngineType } from '../../data/curriculum';
 import { isTopicAvailable } from '../../data/topicLoader';
+import { useLanguage } from '../../i18n/LanguageContext';
+import { TOPIC_TRANSLATIONS } from '../../i18n/topicTranslations';
 
 interface TopicSelectorModalProps {
   isOpen: boolean;
@@ -16,17 +18,18 @@ export const TopicSelectorModal: React.FC<TopicSelectorModalProps> = ({
   activeTopicId,
   onSelectTopic,
 }) => {
+  const { language, t } = useLanguage();
   const [search, setSearch] = useState('');
   const [selectedEngine, setSelectedEngine] = useState<EngineType | 'all'>('all');
 
   if (!isOpen) return null;
 
-  const filteredTopics = CLASS_7_SYLLABUS.filter((t: CurriculumTopic) => {
-    const matchesEngine = selectedEngine === 'all' || t.engine === selectedEngine;
+  const filteredTopics = CLASS_7_SYLLABUS.filter((topic: CurriculumTopic) => {
+    const matchesEngine = selectedEngine === 'all' || topic.engine === selectedEngine;
     const matchesSearch =
-      t.title.toLowerCase().includes(search.toLowerCase()) ||
-      t.titleHi.toLowerCase().includes(search.toLowerCase()) ||
-      t.categoryHi.toLowerCase().includes(search.toLowerCase());
+      topic.title.toLowerCase().includes(search.toLowerCase()) ||
+      topic.titleHi.toLowerCase().includes(search.toLowerCase()) ||
+      topic.categoryHi.toLowerCase().includes(search.toLowerCase());
     return matchesEngine && matchesSearch;
   });
 
@@ -50,15 +53,16 @@ export const TopicSelectorModal: React.FC<TopicSelectorModalProps> = ({
         <div className="flex items-center justify-between pb-3 border-b border-slate-100">
           <div>
             <h3 className="text-base sm:text-lg font-bold text-slate-900">
-              विषय चुनें (Topics Library)
+              {t('modal_title')}
             </h3>
             <p className="text-xs text-slate-500">
-              4 स्मार्ट इंजन • 6 लेवल्स • 21 इंटरैक्टिव विषय
+              {t('modal_subtitle')}
             </p>
           </div>
           <button
             onClick={onClose}
             className="p-1.5 text-slate-400 hover:text-slate-800 rounded-xl hover:bg-slate-100 transition-colors cursor-pointer"
+            title={t('modal_close')}
           >
             <X className="w-5 h-5" />
           </button>
@@ -72,7 +76,7 @@ export const TopicSelectorModal: React.FC<TopicSelectorModalProps> = ({
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="विषय खोजें (e.g. Articles, Tenses, Nouns, Modals)..."
+              placeholder={t('modal_search_placeholder')}
               className="w-full pl-10 pr-4 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500"
             />
           </div>
@@ -80,86 +84,101 @@ export const TopicSelectorModal: React.FC<TopicSelectorModalProps> = ({
           <div className="flex items-center gap-1.5 overflow-x-auto pb-1 text-xs">
             <button
               onClick={() => setSelectedEngine('all')}
-              className={`px-3 py-1.5 rounded-xl font-bold whitespace-nowrap transition-colors cursor-pointer ${
+              className={`px-3 py-1.5 rounded-xl font-bold transition-all whitespace-nowrap cursor-pointer ${
                 selectedEngine === 'all'
                   ? 'bg-indigo-600 text-white shadow-xs'
                   : 'bg-slate-100 text-slate-600 hover:text-slate-900'
               }`}
             >
-              सभी 21 विषय
+              {language === 'en' ? 'All Topics' : 'सभी विषय'}
             </button>
             {Object.values(ENGINES_META).map((meta) => (
               <button
                 key={meta.id}
                 onClick={() => setSelectedEngine(meta.id)}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-bold whitespace-nowrap transition-colors cursor-pointer ${
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-medium transition-all whitespace-nowrap cursor-pointer ${
                   selectedEngine === meta.id
-                    ? 'bg-indigo-600 text-white shadow-xs'
+                    ? 'bg-indigo-600 text-white shadow-xs font-bold'
                     : 'bg-slate-100 text-slate-600 hover:text-slate-900'
                 }`}
               >
                 {getEngineIcon(meta.id)}
-                <span>{meta.titleEn}</span>
+                <span>{language === 'en' ? meta.titleEn : meta.titleHi}</span>
               </button>
             ))}
           </div>
         </div>
 
-        {/* Topics Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 overflow-y-auto pr-1 flex-1">
+        {/* Topics List */}
+        <div className="overflow-y-auto pr-1 flex-1 space-y-2.5">
           {filteredTopics.map((topic: CurriculumTopic) => {
             const isSelected = activeTopicId === topic.topicId;
             const available = isTopicAvailable(topic.topicId);
+            const trans = TOPIC_TRANSLATIONS[topic.topicId];
+
+            const displayTitle = language === 'en' ? topic.title : topic.titleHi;
+            const displayCat = language === 'en' ? (trans?.categoryEn || topic.categoryHi) : topic.categoryHi;
+            const displayDesc = language === 'en' ? (trans?.descriptionEn || topic.descriptionHi) : topic.descriptionHi;
+
             return (
-              <button
+              <div
                 key={topic.topicId}
-                disabled={!available}
                 onClick={() => {
                   if (!available) return;
                   onSelectTopic(topic.topicId);
                   onClose();
                 }}
-                className={`p-4 rounded-2xl border text-left transition-all flex flex-col justify-between gap-2.5 ${
+                className={`p-3.5 sm:p-4 rounded-2xl border transition-all flex items-center justify-between gap-3 ${
                   !available
-                    ? 'bg-slate-100/70 border-slate-200 text-slate-400 cursor-not-allowed opacity-75'
+                    ? 'bg-slate-50 border-slate-200 opacity-60 cursor-not-allowed'
                     : isSelected
-                    ? 'bg-indigo-50/80 border-indigo-400 text-slate-900 ring-2 ring-indigo-400/30 cursor-pointer'
-                    : 'bg-slate-50/60 border-slate-200 hover:border-indigo-200 hover:bg-white text-slate-700 cursor-pointer'
+                    ? 'bg-indigo-50/80 border-indigo-400 ring-2 ring-indigo-400/30 cursor-pointer shadow-xs'
+                    : 'bg-white border-slate-200 hover:border-indigo-300 hover:bg-slate-50/70 cursor-pointer'
                 }`}
               >
-                <div>
-                  <div className="flex items-center justify-between text-[11px] mb-1">
-                    <span className="font-mono tabular-nums text-indigo-700 font-bold bg-white px-1.5 py-0.5 rounded border border-indigo-100">
-                      Level {topic.level}
-                    </span>
-                    <span className="text-slate-500 font-semibold flex items-center gap-1">
-                      {getEngineIcon(topic.engine)}
-                      <span>{topic.categoryHi}</span>
-                    </span>
+                <div className="flex items-center gap-3 min-w-0">
+                  <div
+                    className={`w-9 h-9 rounded-xl flex items-center justify-center font-bold text-xs shrink-0 ${
+                      isSelected
+                        ? 'bg-indigo-600 text-white shadow-xs'
+                        : 'bg-slate-100 text-slate-700'
+                    }`}
+                  >
+                    L{topic.level}
                   </div>
-                  <h4 className="text-sm font-bold text-slate-900 leading-tight">
-                    {topic.titleHi}
-                  </h4>
-                  <p className="text-xs text-slate-500 mt-1 font-mono font-medium">
-                    {topic.title}
-                  </p>
+                  <div className="min-w-0">
+                    <div className="flex items-center gap-2 text-[11px] font-semibold text-slate-500">
+                      <span>{displayCat}</span>
+                      <span aria-hidden="true" className="text-slate-300">·</span>
+                      <span className="font-mono text-slate-400">{topic.topicId}</span>
+                    </div>
+                    <div className="text-xs sm:text-sm font-bold text-slate-900 truncate">
+                      {displayTitle}
+                    </div>
+                    <p className="text-[11px] text-slate-500 truncate mt-0.5">
+                      {displayDesc}
+                    </p>
+                  </div>
                 </div>
 
-                <div className="flex items-center justify-between pt-2 border-t border-slate-200/80 text-[11px] text-slate-600">
-                  <span className="truncate max-w-[180px] font-mono">{topic.formulaHi}</span>
+                <div className="shrink-0">
                   {!available ? (
-                    <span className="text-amber-800 bg-amber-50 border border-amber-200/80 px-2 py-0.5 rounded text-[11px] font-medium flex items-center gap-1 shrink-0">
-                      <Lock className="w-3 h-3 text-amber-600" />
-                      जल्द आ रहा है (Coming soon)
+                    <span className="text-[11px] font-bold text-slate-400 flex items-center gap-1 bg-slate-100 px-2.5 py-1 rounded-lg">
+                      <Lock className="w-3 h-3" />
+                      <span>{language === 'en' ? 'Soon' : 'जल्द'}</span>
                     </span>
                   ) : isSelected ? (
-                    <span className="text-emerald-700 flex items-center gap-1 font-bold shrink-0">
-                      <Check className="w-3.5 h-3.5 text-emerald-600" />
-                      सक्रिय
+                    <span className="text-xs font-bold text-indigo-700 bg-white border border-indigo-200 px-2.5 py-1 rounded-lg flex items-center gap-1">
+                      <Check className="w-3.5 h-3.5 text-indigo-600" />
+                      <span>{language === 'en' ? 'Selected' : 'सक्रिय'}</span>
                     </span>
-                  ) : null}
+                  ) : (
+                    <span className="text-xs font-semibold text-slate-400 group-hover:text-slate-600">
+                      {language === 'en' ? 'Select →' : 'चुनें →'}
+                    </span>
+                  )}
                 </div>
-              </button>
+              </div>
             );
           })}
         </div>

@@ -31,6 +31,7 @@ import {
   testGeminiConnection,
 } from '../../services/geminiService';
 import { PublishGuideView } from './PublishGuideView';
+import { useLanguage } from '../../i18n/LanguageContext';
 
 interface SettingsViewProps {
   studentName: string;
@@ -55,6 +56,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
   flightIntervalSeconds = 90,
   onUpdateFlightInterval,
 }) => {
+  const { language, t } = useLanguage();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [detectedVoiceName, setDetectedVoiceName] = useState<string>('');
   const [hasIndianVoice, setHasIndianVoice] = useState<boolean>(false);
@@ -204,13 +206,13 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
         <div>
           <div className="flex items-center gap-2 text-xs text-indigo-600 font-bold mb-1">
             <Settings className="w-4 h-4" />
-            <span>सेटिंग्स और आपकी प्राथमिकताएँ</span>
+            <span>{t('settings_title')}</span>
           </div>
           <h2 className="text-xl sm:text-2xl font-bold text-slate-900 leading-tight">
-            स्टूडेंट प्रोफ़ाइल और आवाज़ सेटिंग्स
+            {t('settings_title')}
           </h2>
           <p className="text-xs sm:text-sm text-slate-600 mt-1 max-w-2xl leading-relaxed">
-            ELLA 100% ऑफ़लाइन है। आपकी पढ़ाई की प्रोग्रेस आपकी डिवाइस पर सुरक्षित रहती है।
+            {t('settings_subtitle')}
           </p>
         </div>
 
@@ -225,13 +227,13 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
         <div className="bg-white border border-slate-200/90 rounded-3xl p-6 space-y-4 shadow-xs">
           <div className="flex items-center gap-2 text-sm font-bold text-slate-900">
             <User className="w-4 h-4 text-indigo-600" />
-            <span>स्टूडेंट प्रोफ़ाइल (Profile)</span>
+            <span>{t('profile_title')}</span>
           </div>
 
           <div className="space-y-3 pt-2">
             <div>
               <label className="block text-xs font-semibold text-slate-700 mb-1">
-                स्टूडेंट का नाम (Student Name):
+                {t('profile_name_label')}
               </label>
               <input
                 type="text"
@@ -243,10 +245,10 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
 
             <div>
               <label className="block text-xs font-semibold text-slate-700 mb-1">
-                आपकी कक्षा (Class):
+                {t('profile_class_label')}
               </label>
               <div className="px-4 py-2.5 text-xs bg-slate-50 border border-slate-200 rounded-xl text-slate-700 flex items-center justify-between font-medium">
-                <span>कक्षा 6–10 (CBSE / State Board)</span>
+                <span>{t('profile_class_val')}</span>
                 <span className="text-[11px] font-mono text-indigo-600 font-bold">21 Topics</span>
               </div>
             </div>
@@ -257,7 +259,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
         <div className="bg-white border border-slate-200/90 rounded-3xl p-6 space-y-4 shadow-xs">
           <div className="flex items-center gap-2 text-sm font-bold text-slate-900">
             <Database className="w-4 h-4 text-emerald-600" />
-            <span>आपकी कुल प्रोग्रेस (Activity Stats)</span>
+            <span>{t('stats_title')}</span>
           </div>
 
           <div className="grid grid-cols-3 gap-3 pt-2">
@@ -265,21 +267,21 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
               <span className="text-2xl font-bold font-mono text-indigo-700 tabular-nums">
                 {dbStats.sessionsCount}
               </span>
-              <div className="text-[11px] text-slate-600 font-medium">प्रैक्टिस राउंड्स</div>
+              <div className="text-[11px] text-slate-600 font-medium">{t('stats_rounds')}</div>
             </div>
 
             <div className="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-1 text-center">
               <span className="text-2xl font-bold font-mono text-amber-600 tabular-nums">
                 {dbStats.errorsCount}
               </span>
-              <div className="text-[11px] text-slate-600 font-medium">फिक्स की गई गलतियाँ</div>
+              <div className="text-[11px] text-slate-600 font-medium">{t('stats_errors')}</div>
             </div>
 
             <div className="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-1 text-center">
               <span className="text-2xl font-bold font-mono text-emerald-600 tabular-nums">
                 {dbStats.reviewsCount}
               </span>
-              <div className="text-[11px] text-slate-600 font-medium">रिवीजन टॉपिक्स</div>
+              <div className="text-[11px] text-slate-600 font-medium">{t('stats_reviews')}</div>
             </div>
           </div>
         </div>
@@ -290,28 +292,28 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-2 text-sm font-bold text-slate-900">
             <Volume2 className="w-4 h-4 text-indigo-600" />
-            <span>भारतीय अंग्रेज़ी उच्चारण (Indian English Voice Engine)</span>
+            <span>{t('voice_title')}</span>
           </div>
           <span className="text-[11px] font-bold text-indigo-700 bg-indigo-50 border border-indigo-200/70 px-2.5 py-0.5 rounded-full flex items-center gap-1">
             <span>🇮🇳</span>
-            <span>en-IN Priority</span>
+            <span>{t('voice_badge')}</span>
           </span>
         </div>
 
         <p className="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-3xl">
-          ELLA में उदाहरणों और वाक्यों का उच्चारण भारतीय अंग्रेज़ी एक्सेंट (Indian English) में बोला जाता है ताकि विद्यार्थियों को सहज व स्पष्ट समझ आए।
+          {t('voice_desc')}
         </p>
 
         <div className="p-4 bg-slate-50 border border-slate-200 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div className="space-y-1">
             <div className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
               <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-              <span>सक्रिय आवाज़: <strong className="text-indigo-700 font-mono">{detectedVoiceName || 'Indian English (en-IN)'}</strong></span>
+              <span>{t('voice_active_label')} <strong className="text-indigo-700 font-mono">{detectedVoiceName || 'Indian English (en-IN)'}</strong></span>
             </div>
             <div className="text-[11px] text-slate-500">
               {hasIndianVoice
-                ? 'प्राकृतिक भारतीय उच्चारण आवाज़ सक्रिय है।'
-                : 'सिस्टम भारतीय फोनेटिक्स (en-IN locale) का उपयोग कर रहा है।'}
+                ? (language === 'en' ? 'Natural Indian English voice is active.' : 'प्राकृतिक भारतीय उच्चारण आवाज़ सक्रिय है।')
+                : (language === 'en' ? 'Using standard phonetic engine with en-IN tuning.' : 'सिस्टम भारतीय फोनेटिक्स (en-IN locale) का उपयोग कर रहा है।')}
             </div>
           </div>
 
@@ -320,10 +322,10 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
               type="button"
               onClick={() => speakText("Wait here for an hour please. Welcome to ELLA Grammar Studio!")}
               className="inline-flex items-center justify-center gap-2 px-4 py-2 text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 rounded-xl transition-all cursor-pointer shrink-0"
-              title="भारतीय उच्चारण का टेस्ट सैंपल सुनें"
+              title={language === 'en' ? "Listen to Indian accent voice sample" : "भारतीय उच्चारण का टेस्ट सैंपल सुनें"}
             >
               <Volume2 className="w-3.5 h-3.5 text-indigo-600" />
-              <span>भारतीय उच्चारण टेस्ट करें (Test Accent)</span>
+              <span>{t('voice_test_btn')}</span>
             </button>
           )}
         </div>
@@ -346,26 +348,56 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
         <div className="flex items-center justify-between gap-2">
           <div className="flex items-center gap-2 text-sm font-bold text-slate-900">
             <Sparkles className="w-4 h-4 text-purple-600" />
-            <span>एला जिनी मूवमेंट सेटिंग्स (Genie Motion & Flight Interval)</span>
+            <span>{t('motion_title')}</span>
           </div>
           <span className="text-[11px] font-bold text-purple-700 bg-purple-50 border border-purple-200/70 px-2.5 py-0.5 rounded-full flex items-center gap-1">
             <span>🧞‍♀️</span>
-            <span>{flightIntervalSeconds === 0 ? 'स्थिर मोड' : `हर ${flightIntervalSeconds}s में उड़ान`}</span>
+            <span>
+              {flightIntervalSeconds === 0
+                ? t('motion_steady')
+                : language === 'en'
+                ? `Every ${flightIntervalSeconds}s`
+                : `हर ${flightIntervalSeconds}s में उड़ान`}
+            </span>
           </span>
         </div>
 
         <p className="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-3xl">
-          जिनी स्क्रीन पर कितनी देर बाद अपनी जगह बदले, यह आप यहाँ चुन सकते हैं। यदि आप चाहते हैं कि जिनी एक ही जगह रुकी रहे, तो 'एक जगह रोकें' चुनें।
+          {t('motion_desc')}
         </p>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 pt-1">
           {[
-            { sec: 60, label: '60 सेकंड', sub: '1 मिनट' },
-            { sec: 90, label: '90 सेकंड', sub: 'डिफ़ॉल्ट (शांत)' },
-            { sec: 120, label: '120 सेकंड', sub: '2 मिनट' },
-            { sec: 150, label: '150 सेकंड', sub: '2.5 मिनट' },
-            { sec: 180, label: '180 सेकंड', sub: '3 मिनट' },
-            { sec: 0, label: 'रोक कर रखें', sub: 'स्थिर (No Move)' },
+            {
+              sec: 60,
+              label: language === 'en' ? '60 Seconds' : '60 सेकंड',
+              sub: language === 'en' ? '1 minute' : '1 मिनट',
+            },
+            {
+              sec: 90,
+              label: language === 'en' ? '90 Seconds' : '90 सेकंड',
+              sub: language === 'en' ? 'Default (Calm)' : 'डिफ़ॉल्ट (शांत)',
+            },
+            {
+              sec: 120,
+              label: language === 'en' ? '120 Seconds' : '120 सेकंड',
+              sub: language === 'en' ? '2 minutes' : '2 मिनट',
+            },
+            {
+              sec: 150,
+              label: language === 'en' ? '150 Seconds' : '150 सेकंड',
+              sub: language === 'en' ? '2.5 minutes' : '2.5 मिनट',
+            },
+            {
+              sec: 180,
+              label: language === 'en' ? '180 Seconds' : '180 सेकंड',
+              sub: language === 'en' ? '3 minutes' : '3 मिनट',
+            },
+            {
+              sec: 0,
+              label: t('motion_steady'),
+              sub: language === 'en' ? 'Stationary' : 'स्थिर (No Move)',
+            },
           ].map((opt) => {
             const isSelected = flightIntervalSeconds === opt.sec;
             return (
@@ -403,13 +435,13 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
               </div>
               <div>
                 <h3 className="text-base sm:text-lg font-bold text-white flex items-center gap-2">
-                  <span>शिक्षक व डेवलपर मोड (Developer Mode)</span>
+                  <span>{t('dev_gate_title')}</span>
                   <span className="text-[11px] font-mono text-amber-400 bg-amber-950/60 border border-amber-800/80 px-2 py-0.5 rounded-full">
-                    पिन सुरक्षित
+                    {t('dev_gate_badge')}
                   </span>
                 </h3>
                 <p className="text-xs text-slate-400 mt-0.5">
-                  तकनीकी सेटिंग्स (AI Key, बैकअप/रीस्टोर, डेटा वाइप और GitHub डिप्लॉयमेंट) को खोलने के लिए सिक्योरिटी कोड दर्ज करें।
+                  {t('dev_gate_desc')}
                 </p>
               </div>
             </div>
@@ -426,14 +458,14 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                     setPinInput(e.target.value);
                     if (pinError) setPinError(null);
                   }}
-                  placeholder="सिक्योरिटी पिन (Default: 1507)"
+                  placeholder={t('dev_pin_placeholder')}
                   className="w-full pl-10 pr-10 py-2.5 text-xs bg-slate-800/90 border border-slate-700 rounded-xl text-white placeholder-slate-500 font-mono focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400"
                 />
                 <button
                   type="button"
                   onClick={() => setIsPinVisible(!isPinVisible)}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white cursor-pointer"
-                  title={isPinVisible ? 'पिन छुपाएँ' : 'पिन देखें'}
+                  title={isPinVisible ? (language === 'en' ? 'Hide PIN' : 'पिन छुपाएँ') : (language === 'en' ? 'Show PIN' : 'पिन देखें')}
                 >
                   {isPinVisible ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
@@ -444,7 +476,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                 className="inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-gradient-to-r from-indigo-500 to-violet-600 hover:from-indigo-400 hover:to-violet-500 text-white rounded-xl text-xs font-bold transition-all shadow-xs shadow-indigo-900 cursor-pointer shrink-0"
               >
                 <Unlock className="w-3.5 h-3.5" />
-                <span>मोड अनलॉक करें</span>
+                <span>{t('dev_unlock_btn')}</span>
               </button>
             </div>
 
@@ -463,7 +495,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
             )}
 
             <div className="text-[11px] text-slate-500 mt-2">
-              💡 <em>शिक्षक/डेवलपर डिफ़ॉल्ट पिन: <strong className="text-slate-400 font-mono">1507</strong> या <strong className="text-slate-400 font-mono">ella2026</strong></em>
+              💡 <em>{t('dev_hint')}</em>
             </div>
           </form>
         </div>
@@ -481,15 +513,15 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
               <div>
                 <div className="flex items-center gap-2">
                   <h3 className="text-base sm:text-lg font-bold text-white">
-                    डेवलपर व शिक्षक कंसोल (Developer Console)
+                    {t('dev_console_title')}
                   </h3>
                   <span className="text-[11px] font-bold text-emerald-400 bg-emerald-950/70 border border-emerald-800 px-2.5 py-0.5 rounded-full flex items-center gap-1">
                     <CheckCircle2 className="w-3 h-3 text-emerald-400" />
-                    <span>सक्रिय (Unlocked)</span>
+                    <span>{t('dev_active_badge')}</span>
                   </span>
                 </div>
                 <p className="text-xs text-slate-400 mt-0.5">
-                  यहाँ से आप Gemini AI API Key, बैकअप/रीस्टोर, डेटाबेस वाइप और GitHub डिप्लॉयमेंट प्रबंधित कर सकते हैं।
+                  {t('dev_console_desc')}
                 </p>
               </div>
             </div>
@@ -498,10 +530,10 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
               type="button"
               onClick={handleLockDeveloperMode}
               className="inline-flex items-center justify-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-xl text-xs font-bold transition-all cursor-pointer self-start sm:self-auto shrink-0"
-              title="डेवलपर मोड लॉक करें"
+              title={t('dev_lock_btn')}
             >
               <Lock className="w-3.5 h-3.5 text-amber-400" />
-              <span>डेवलपर मोड लॉक करें (Lock)</span>
+              <span>{t('dev_lock_btn')}</span>
             </button>
           </div>
 
@@ -530,7 +562,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
               }`}
             >
               <Database className="w-3.5 h-3.5" />
-              <span>बैकअप, रीस्टोर व डेटा वाइप</span>
+              <span>{language === 'en' ? 'Backup & Data Reset' : 'बैकअप, रीस्टोर व डेटा वाइप'}</span>
             </button>
 
             <button
@@ -543,7 +575,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
               }`}
             >
               <Globe className="w-3.5 h-3.5" />
-              <span>GitHub व डिप्लॉयमेंट गाइड</span>
+              <span>{language === 'en' ? 'GitHub & Deployment' : 'GitHub व डिप्लॉयमेंट गाइड'}</span>
             </button>
 
             <button
@@ -556,7 +588,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
               }`}
             >
               <KeyRound className="w-3.5 h-3.5" />
-              <span>पिन बदलें (Security PIN)</span>
+              <span>{language === 'en' ? 'Change PIN' : 'पिन बदलें (Security PIN)'}</span>
             </button>
           </div>
 

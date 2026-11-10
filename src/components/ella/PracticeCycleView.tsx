@@ -33,6 +33,7 @@ import {
   calculateRetention,
 } from '../../services/fsrsScheduler';
 import { EllaAvatarCompanion } from './EllaAvatarCompanion';
+import { useLanguage } from '../../i18n/LanguageContext';
 
 export type StepKey = 'notice' | 'hypothesize' | 'clarify' | 'use' | 'schedule';
 
@@ -69,6 +70,10 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
   studentName = 'Ishu',
   flightIntervalSeconds = 90,
 }) => {
+  const { language, t, getTopic } = useLanguage();
+  const topic = getTopic(activeTopic);
+  const steps = topic.steps;
+
   // Always default to inductive discovery (Step 1: Notice)
   const [currentStep, setCurrentStep] = useState<StepKey>('notice');
   const [selectedHypothesis, setSelectedHypothesis] = useState<number | null>(null);
@@ -108,7 +113,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
     };
   }, [activeTopic.topicId, isSavedToDb]);
 
-  const steps = activeTopic.steps;
+  // Note: steps is derived from localized topic above
   const isHypothesisCorrect =
     selectedHypothesis !== null
       ? (steps['2_hypothesize']?.options[selectedHypothesis]?.isCorrect ?? null)
@@ -199,11 +204,11 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
   };
 
   const cycleStepsList: { key: StepKey; num: number; label: string; icon: any; shortTitle: string }[] = [
-    { key: 'notice', num: 1, label: '1. Notice', icon: BookOpen, shortTitle: '1. फर्क पहचानें' },
-    { key: 'hypothesize', num: 2, label: '2. Hypothesize', icon: HelpCircle, shortTitle: '2. अंदाज़ा लगाएँ' },
-    { key: 'clarify', num: 3, label: '3. Clarify', icon: Sparkles, shortTitle: '3. सीक्रेट फॉर्मूला' },
-    { key: 'use', num: 4, label: '4. Sentence Builder', icon: PenTool, shortTitle: '4. वाक्य बनाएँ' },
-    { key: 'schedule', num: 5, label: '5. Review & FSRS', icon: Calendar, shortTitle: '5. सुपर रिवीजन' },
+    { key: 'notice', num: 1, label: t('step1_pill'), icon: BookOpen, shortTitle: t('step1_pill') },
+    { key: 'hypothesize', num: 2, label: t('step2_pill'), icon: HelpCircle, shortTitle: t('step2_pill') },
+    { key: 'clarify', num: 3, label: t('step3_pill'), icon: Sparkles, shortTitle: t('step3_pill') },
+    { key: 'use', num: 4, label: t('step4_pill'), icon: PenTool, shortTitle: t('step4_pill') },
+    { key: 'schedule', num: 5, label: t('step5_pill'), icon: Calendar, shortTitle: t('step5_pill') },
   ];
 
   const stepOrder: StepKey[] = ['notice', 'hypothesize', 'clarify', 'use', 'schedule'];
@@ -218,19 +223,19 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
       <div className="p-5 sm:p-6 bg-white/95 backdrop-blur-md border border-indigo-100 rounded-3xl shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-4">
           <div className="w-13 h-13 rounded-2xl bg-gradient-to-tr from-indigo-600 via-indigo-500 to-violet-500 text-white font-extrabold flex items-center justify-center text-lg shadow-sm shadow-indigo-200 shrink-0">
-            L{activeTopic.level}
+            L{topic.level}
           </div>
           <div>
             <div className="flex items-center gap-2 text-xs font-semibold text-slate-500">
-              <span className="text-indigo-600 font-bold tracking-wide uppercase">{activeTopic.category}</span>
+              <span className="text-indigo-600 font-bold tracking-wide uppercase">{topic.category}</span>
               <span aria-hidden="true" className="text-slate-300">·</span>
-              <span className="font-mono text-slate-400">{activeTopic.topicId}</span>
+              <span className="font-mono text-slate-400">{topic.topicId}</span>
             </div>
             <h1 className="text-lg sm:text-xl font-extrabold text-slate-900 tracking-tight mt-0.5">
-              {activeTopic.title}
+              {topic.title}
             </h1>
             <p className="text-xs text-slate-500 mt-1 line-clamp-1 max-w-xl">
-              {activeTopic.descriptionHi}
+              {topic.descriptionHi}
             </p>
           </div>
         </div>
@@ -239,7 +244,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
           onClick={onOpenTopicModal}
           className="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-bold text-indigo-700 bg-indigo-50/80 hover:bg-indigo-100 border border-indigo-200/70 rounded-2xl transition-all cursor-pointer shrink-0"
         >
-          <span>पाठ्यक्रम से दूसरा विषय चुनें</span>
+          <span>{t('topic_choose_another')}</span>
           <ChevronDown className="w-4 h-4 text-indigo-600" />
         </button>
       </div>
@@ -252,9 +257,9 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
         <div className="flex items-center justify-between text-xs font-bold text-slate-500 px-1">
           <span className="flex items-center gap-1.5 text-indigo-700 font-extrabold">
             <Flame className="w-4 h-4 text-amber-500" />
-            <span>कदम {currentStepIndex + 1} / 5: {cycleStepsList[currentStepIndex].shortTitle}</span>
+            <span>{t('step_progress_prefix')} {currentStepIndex + 1} / 5: {cycleStepsList[currentStepIndex].shortTitle}</span>
           </span>
-          <span className="text-slate-400 font-mono">{Math.round(progressPercent)}% पूर्ण</span>
+          <span className="text-slate-400 font-mono">{Math.round(progressPercent)}% {t('step_complete_suffix')}</span>
         </div>
 
         <div className="h-2.5 w-full bg-slate-100 rounded-full overflow-hidden p-0.5 border border-slate-200/60">
@@ -316,10 +321,10 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
             <div className="space-y-1.5">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold text-indigo-700 bg-indigo-50 border border-indigo-200/60">
                 <BookOpen className="w-3.5 h-3.5" />
-                <span>कदम 1 • फर्क पहचानें (Spot the Difference)</span>
+                <span>{t('step1_badge')}</span>
               </div>
               <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
-                {steps['1_notice']?.stepTitleHi || 'ध्यान से देखें और अंतर समझें'}
+                {steps['1_notice']?.stepTitleHi || t('step1_heading')}
               </h2>
               <p className="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-2xl">
                 {steps['1_notice']?.instructionHi}
@@ -335,16 +340,16 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
                 >
                   <div className="flex items-center justify-between">
                     <span className="text-[11px] font-bold font-mono text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-md">
-                      उदाहरण #{idx + 1}
+                      {t('step1_example_label')} #{idx + 1}
                     </span>
                     <button
                       type="button"
                       onClick={() => speakText(pair.sentence)}
                       className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-slate-600 hover:text-indigo-700 hover:bg-indigo-50 border border-slate-200/60 rounded-lg transition-colors cursor-pointer"
-                      title="उच्चारण सुनें (Listen)"
+                      title={language === 'en' ? "Listen pronunciation" : "उच्चारण सुनें (Listen)"}
                     >
                       <Volume2 className="w-3.5 h-3.5 text-indigo-500" />
-                      <span>सुनें</span>
+                      <span>{t('step1_listen_btn')}</span>
                     </button>
                   </div>
 
@@ -357,7 +362,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
                       ✨ {pair.highlightWord}
                     </span>
                     <span className="text-slate-600 text-[11px] font-medium bg-slate-100/80 px-2.5 py-1 rounded-lg">
-                      ध्वनि: <strong className="text-slate-900">{pair.soundHintHi}</strong>
+                      {language === 'en' ? 'Sound: ' : 'ध्वनि: '}<strong className="text-slate-900">{pair.soundHintHi}</strong>
                     </span>
                   </div>
                 </div>
@@ -372,7 +377,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
                 onClick={() => setCurrentStep('hypothesize')}
                 className="inline-flex items-center gap-2.5 px-6 py-3 text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-2xl transition-all shadow-sm shadow-indigo-300 cursor-pointer"
               >
-                <span>अगला कदम: अंदाज़ा लगाएँ (Take a Guess)</span>
+                <span>{t('step1_next_btn')}</span>
                 <ArrowRight className="w-4 h-4" />
               </motion.button>
             </div>
@@ -394,10 +399,10 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
             <div className="space-y-1.5">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold text-amber-800 bg-amber-50 border border-amber-200/60">
                 <HelpCircle className="w-3.5 h-3.5 text-amber-600" />
-                <span>कदम 2 • दिमाग की बत्ती जलाएँ 💡 (Take a Guess)</span>
+                <span>{t('step2_badge')}</span>
               </div>
               <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
-                {steps['2_hypothesize']?.stepTitleHi || 'स्वयं नियम का अंदाज़ा लगाएँ'}
+                {steps['2_hypothesize']?.stepTitleHi || t('step2_heading')}
               </h2>
             </div>
 
@@ -455,7 +460,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
                               : 'bg-amber-200 text-amber-900'
                           }`}
                         >
-                          {opt.isCorrect ? '✓ सही अनुमान!' : '🤔 एक बार फिर सोचें'}
+                          {opt.isCorrect ? (language === 'en' ? '✓ Correct Guess!' : '✓ सही अनुमान!') : (language === 'en' ? '🤔 Think Again' : '🤔 एक बार फिर सोचें')}
                         </span>
                       )}
                     </div>
@@ -486,7 +491,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
                 className="inline-flex items-center gap-1.5 px-4 py-2.5 text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors cursor-pointer"
               >
                 <ArrowLeft className="w-4 h-4" />
-                <span>← वापस फर्क देखें</span>
+                <span>{language === 'en' ? '← Back to Notice' : '← वापस फर्क देखें'}</span>
               </button>
 
               <motion.button
@@ -495,7 +500,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
                 onClick={() => setCurrentStep('clarify')}
                 className="inline-flex items-center gap-2 px-6 py-3 text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-2xl transition-all shadow-sm shadow-indigo-300 cursor-pointer"
               >
-                <span>सीक्रेट फॉर्मूला अनलॉक करें 👑</span>
+                <span>{t('step2_next_btn')}</span>
                 <ArrowRight className="w-4 h-4" />
               </motion.button>
             </div>
@@ -517,10 +522,10 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
             <div className="space-y-1.5">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold text-amber-800 bg-amber-50 border border-amber-200/60">
                 <Sparkles className="w-3.5 h-3.5 text-amber-600" />
-                <span>कदम 3 • सीक्रेट फॉर्मूला 👑 (The Secret Rule)</span>
+                <span>{t('step3_badge')}</span>
               </div>
               <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
-                {steps['3_clarify']?.stepTitleHi || 'आज का सीक्रेट फॉर्मूला'}
+                {steps['3_clarify']?.stepTitleHi || t('step3_heading')}
               </h2>
             </div>
 
@@ -528,7 +533,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
             <div className="p-6 bg-gradient-to-br from-amber-50 via-indigo-50/50 to-amber-100/50 border-2 border-amber-200/90 rounded-3xl space-y-3 shadow-xs">
               <div className="flex items-center gap-2 text-xs font-extrabold text-amber-900 uppercase tracking-wider">
                 <Award className="w-4 h-4 text-amber-600" />
-                <span>आज का सीक्रेट फॉर्मूला (The Secret Rule):</span>
+                <span>{t('step3_golden_rule')}</span>
               </div>
               <div className="text-base sm:text-xl font-extrabold text-slate-900 leading-relaxed font-sans">
                 {steps['3_clarify']?.goldenRuleHi}
@@ -543,7 +548,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
             {/* Sound Examples Grid */}
             <div className="space-y-3 pt-1">
               <h3 className="text-xs font-bold text-slate-600 uppercase tracking-wide">
-                ध्वनि-संकेत और उदाहरण (Sound Examples):
+                {t('step3_quick_examples')}
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
                 {steps['3_clarify']?.examples.map((ex, idx) => (
@@ -559,13 +564,13 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
                         type="button"
                         onClick={() => speakText(ex.word)}
                         className="p-1.5 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors cursor-pointer"
-                        title="उच्चारण सुनें"
+                        title={language === 'en' ? "Listen pronunciation" : "उच्चारण सुनें"}
                       >
                         <Volume2 className="w-4 h-4" />
                       </button>
                     </div>
                     <div className="text-xs text-amber-900 font-bold bg-amber-100/80 px-2 py-0.5 rounded-md inline-block">
-                      ध्वनि: {ex.sound}
+                      {language === 'en' ? 'Sound: ' : 'ध्वनि: '}{ex.sound}
                     </div>
                     <div className="text-xs text-slate-600 leading-snug">
                       {ex.reason}
@@ -581,9 +586,11 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-indigo-900 flex items-center gap-1.5">
                     <CheckCircle2 className="w-3.5 h-3.5 text-indigo-600" />
-                    <span>त्वरित अभ्यास (Quick Check):</span>
+                    <span>{language === 'en' ? 'Quick Warm-up Check:' : 'त्वरित अभ्यास (Quick Check):'}</span>
                   </span>
-                  <span className="text-[11px] text-indigo-600 font-medium">उत्तर पर क्लिक करें</span>
+                  <span className="text-[11px] text-indigo-600 font-medium">
+                    {language === 'en' ? 'Click to select answer' : 'उत्तर पर क्लिक करें'}
+                  </span>
                 </div>
 
                 <div className="space-y-3">
@@ -621,7 +628,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
                               isCorrect ? 'bg-emerald-50 text-emerald-800' : 'bg-rose-50 text-rose-800'
                             }`}
                           >
-                            {isCorrect ? '✓ सही उत्तर! ' : '✗ सही उत्तर: ' + q.correctAnswer + ' · '}
+                            {isCorrect ? (language === 'en' ? '✓ Correct! ' : '✓ सही उत्तर! ') : (language === 'en' ? '✗ Correct answer: ' + q.correctAnswer + ' · ' : '✗ सही उत्तर: ' + q.correctAnswer + ' · ')}
                             {q.explanationHi}
                           </div>
                         )}
@@ -640,7 +647,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
                 className="inline-flex items-center gap-1.5 px-4 py-2.5 text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors cursor-pointer"
               >
                 <ArrowLeft className="w-4 h-4" />
-                <span>← वापस अंदाज़ा देखें</span>
+                <span>{language === 'en' ? '← Back to Guess' : '← वापस अंदाज़ा देखें'}</span>
               </button>
 
               <motion.button
@@ -649,7 +656,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
                 onClick={() => setCurrentStep('use')}
                 className="inline-flex items-center gap-2 px-6 py-3 text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-2xl transition-all shadow-sm shadow-indigo-300 cursor-pointer"
               >
-                <span>अब अपना वाक्य बनाएँ (Sentence Studio) ✍️</span>
+                <span>{t('step3_next_btn')}</span>
                 <ArrowRight className="w-4 h-4" />
               </motion.button>
             </div>
@@ -672,17 +679,17 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
               <div className="space-y-1">
                 <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold text-emerald-800 bg-emerald-50 border border-emerald-200/60">
                   <PenTool className="w-3.5 h-3.5 text-emerald-600" />
-                  <span>कदम 4 • अपना वाक्य बनाएँ (Sentence Studio)</span>
+                  <span>{t('step4_badge')}</span>
                 </div>
                 <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
-                  {steps['5_free_production']?.promptHi || 'अपना एक अंग्रेजी वाक्य लिखें:'}
+                  {steps['5_free_production']?.promptHi || t('step4_heading')}
                 </h2>
               </div>
 
               <div className="flex items-center gap-2">
                 <span className="text-[11px] font-bold text-emerald-800 bg-emerald-50/90 border border-emerald-200/80 px-3 py-1 rounded-full flex items-center gap-1.5 shadow-2xs">
                   <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
-                  <span>⚡ सुपरफास्ट ऑफ़लाइन चेकर</span>
+                  <span>{language === 'en' ? '⚡ Instant Offline Checker' : '⚡ सुपरफास्ट ऑफ़लाइन चेकर'}</span>
                 </span>
               </div>
             </div>
@@ -693,14 +700,14 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
                 <div className="flex items-center justify-between text-xs">
                   <span className="font-bold text-slate-700 flex items-center gap-1.5">
                     <Lightbulb className="w-3.5 h-3.5 text-amber-500" />
-                    <span>परीक्षण के लिए उदाहरण चुनें (Click to Test):</span>
+                    <span>{language === 'en' ? 'Click to Test Example:' : 'परीक्षण के लिए उदाहरण चुनें:'}</span>
                   </span>
                   <button
                     type="button"
                     onClick={onEscapeHatch}
                     className="text-indigo-600 hover:text-indigo-800 text-xs font-medium cursor-pointer"
                   >
-                    आसान उदाहरण (Escape Hatch)
+                    {t('step4_escape_btn')}
                   </button>
                 </div>
                 <div className="flex flex-wrap gap-2">
@@ -722,21 +729,21 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
             <div className="space-y-2">
               <div className="flex items-center justify-between text-xs font-bold text-slate-700">
                 <div className="flex items-center gap-2">
-                  <span>आपका अंग्रेजी वाक्य (Your Sentence):</span>
+                  <span>{language === 'en' ? 'Your English Sentence:' : 'आपका अंग्रेजी वाक्य (Your Sentence):'}</span>
                   {studentSentence.trim() && (
                     <button
                       type="button"
                       onClick={() => speakText(studentSentence)}
                       className="p-1 text-indigo-600 hover:text-indigo-800 hover:bg-indigo-50 rounded-md transition-colors cursor-pointer flex items-center gap-1 text-[11px]"
-                      title="उच्चारण सुनें (Listen Voice)"
+                      title={language === 'en' ? "Listen pronunciation" : "उच्चारण सुनें"}
                     >
                       <Volume2 className="w-3.5 h-3.5" />
-                      <span>सुनें</span>
+                      <span>{t('step1_listen_btn')}</span>
                     </button>
                   )}
                 </div>
                 <span className="text-[11px] text-slate-400 font-normal">
-                  जैसे-जैसे आप टाइप करेंगे, स्वतः जांच होगी
+                  {language === 'en' ? 'Checked in real-time as you type' : 'जैसे-जैसे आप टाइप करेंगे, स्वतः जांच होगी'}
                 </span>
               </div>
 
@@ -744,7 +751,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
                 rows={3}
                 value={studentSentence}
                 onChange={(e) => setStudentSentence(e.target.value)}
-                placeholder={steps['5_free_production']?.placeholderHi || 'e.g. He waited for an hour.'}
+                placeholder={steps['5_free_production']?.placeholderHi || t('step4_placeholder')}
                 className="w-full p-4 text-base font-mono bg-white border border-slate-300 rounded-2xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500 transition-all leading-relaxed shadow-2xs"
               />
             </div>
@@ -756,7 +763,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
                   <div className="flex items-center gap-2 text-amber-900 text-xs font-bold">
                     <AlertTriangle className="w-4 h-4 text-amber-600" />
                     <span>
-                      {liveCheckResult.errors.length} आसान सुधार (Quick Fix):
+                      {liveCheckResult.errors.length} {liveCheckResult.errors.length === 1 ? t('step4_fix_found') : t('step4_fixes_found')}:
                     </span>
                   </div>
 
@@ -783,7 +790,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
                               className="px-2.5 py-1 text-xs font-semibold text-amber-800 bg-amber-100 hover:bg-amber-200 rounded-lg transition-colors flex items-center gap-1 cursor-pointer"
                             >
                               <Lightbulb className="w-3.5 h-3.5 text-amber-600" />
-                              <span>{revealedHints[idx] ? 'संकेत छुपाएँ' : '💡 संकेत (Hint)'}</span>
+                              <span>{revealedHints[idx] ? (language === 'en' ? 'Hide Hint' : 'संकेत छुपाएँ') : (language === 'en' ? '💡 Clue (Hint)' : '💡 संकेत (Hint)')}</span>
                             </button>
 
                             <button
@@ -792,14 +799,14 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
                               className="px-3.5 py-1 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-500 rounded-lg transition-all flex items-center gap-1.5 shadow-xs cursor-pointer"
                             >
                               <Check className="w-3.5 h-3.5" />
-                              <span>सुधारें (Apply Fix)</span>
+                              <span>{t('step4_fix_btn')}</span>
                             </button>
                           </div>
                         </div>
 
                         {revealedHints[idx] && (
                           <div className="p-3 bg-indigo-50/80 border border-indigo-200/80 rounded-xl text-xs text-indigo-900 font-medium leading-relaxed">
-                            <strong>💡 सोचने का संकेत:</strong> {err.inductiveHintHi || err.explanationHi}
+                            <strong>{language === 'en' ? '💡 Thinking Clue: ' : '💡 सोचने का संकेत: '}</strong> {err.inductiveHintHi || err.explanationHi}
                           </div>
                         )}
 
@@ -815,8 +822,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
                   <div className="flex items-center gap-3 text-emerald-950 font-semibold text-sm">
                     <CheckCircle2 className="w-6 h-6 text-emerald-600 shrink-0" />
                     <span>
-                      {liveCheckResult.positiveFeedbackHi ||
-                        'शाबाश! आपका वाक्य व्याकरण के नियमों के अनुसार 100% सही है।'}
+                      {liveCheckResult.positiveFeedbackHi || t('step4_perfect_msg')}
                     </span>
                   </div>
                   <span className="text-xs font-mono text-emerald-800 bg-emerald-100 px-3 py-1 rounded-full font-bold shrink-0 self-start sm:self-center border border-emerald-200">
@@ -829,13 +835,13 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
             {/* Self-Reflection Note */}
             <div className="pt-4 border-t border-slate-100 space-y-3">
               <label className="block text-xs font-bold text-slate-700">
-                मेरा सीक्रेट नोट 📝 (आज मैंने क्या नया सीखा?):
+                {t('step4_note_label')}
               </label>
               <input
                 type="text"
                 value={selfNote}
                 onChange={(e) => setSelfNote(e.target.value)}
-                placeholder="उदा. 'Hour' में 'h' मूक (silent) होता है इसलिए 'An hour' बोलते हैं..."
+                placeholder={t('step4_note_placeholder')}
                 className="w-full px-4 py-2.5 text-xs sm:text-sm bg-slate-50 border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 focus:border-indigo-500"
               />
 
@@ -844,10 +850,10 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
                   {isSavedToDb ? (
                     <span className="text-emerald-700 font-bold flex items-center gap-1.5">
                       <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-                      सुरक्षित सेव हो गया! 💾 (सत्र #{savedSessionId})
+                      {language === 'en' ? `Saved safely! 💾 (Session #${savedSessionId})` : `सुरक्षित सेव हो गया! 💾 (सत्र #${savedSessionId})`}
                     </span>
                   ) : (
-                    <span>प्रगति को अपनी व्यक्तिगत प्रोफ़ाइल में सुरक्षित करें।</span>
+                    <span>{language === 'en' ? 'Save your sentence to your personal study log.' : 'प्रगति को अपनी व्यक्तिगत प्रोफ़ाइल में सुरक्षित करें।'}</span>
                   )}
                 </div>
 
@@ -858,7 +864,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
                   className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 rounded-xl transition-all shadow-sm shadow-indigo-200 cursor-pointer"
                 >
                   <Check className="w-4 h-4" />
-                  <span>प्रगति सेव करें (Save Progress)</span>
+                  <span>{isSavedToDb ? t('step4_saved_btn') : t('step4_save_btn')}</span>
                 </button>
               </div>
             </div>
@@ -871,7 +877,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
                 className="inline-flex items-center gap-1.5 px-4 py-2.5 text-xs font-bold text-slate-600 hover:text-slate-900 transition-colors cursor-pointer"
               >
                 <ArrowLeft className="w-4 h-4" />
-                <span>← वापस सीक्रेट फॉर्मूला</span>
+                <span>{language === 'en' ? '← Back to Secret Rule' : '← वापस सीक्रेट फॉर्मूला'}</span>
               </button>
 
               <motion.button
@@ -880,7 +886,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
                 onClick={() => setCurrentStep('schedule')}
                 className="inline-flex items-center gap-2 px-6 py-3 text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-2xl transition-all shadow-sm shadow-indigo-300 cursor-pointer"
               >
-                <span>सुपर मेमोरी रिवीजन 🧠</span>
+                <span>{t('step4_next_btn')}</span>
                 <ArrowRight className="w-4 h-4" />
               </motion.button>
             </div>
@@ -902,13 +908,13 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
             <div className="space-y-1.5">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold text-purple-800 bg-purple-50 border border-purple-200/60">
                 <Brain className="w-3.5 h-3.5 text-purple-600" />
-                <span>कदम 5 • सुपर मेमोरी रिवीजन 🧠 (Smart Review)</span>
+                <span>{t('step5_badge')}</span>
               </div>
               <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
-                मेमोरी स्कोर व अगली रिवीजन तारीख
+                {t('step5_heading')}
               </h2>
               <p className="text-xs sm:text-sm text-slate-600">
-                साइंटिफिक AI मेमोरी टाइमर: ताकि आप इस नियम को कभी न भूलें!
+                {t('step5_desc')}
               </p>
             </div>
 
@@ -919,10 +925,10 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
               </div>
               <div>
                 <h3 className="text-base font-extrabold text-emerald-950">
-                  शानदार प्रयास! इस विषय का चक्र पूरा हुआ 🎉
+                  {language === 'en' ? 'Awesome effort! Topic cycle complete 🎉' : 'शानदार प्रयास! इस विषय का चक्र पूरा हुआ 🎉'}
                 </h3>
                 <p className="text-xs text-emerald-800 mt-0.5">
-                  अपने अनुभव के आधार पर नीचे रेटिंग दें ताकि स्मार्ट टाइमर आपकी अगली रिवीजन तारीख तय कर सके।
+                  {language === 'en' ? 'Rate how well you recalled this rule so FSRS schedules your next smart review date.' : 'अपने अनुभव के आधार पर नीचे रेटिंग दें ताकि स्मार्ट टाइमर आपकी अगली रिवीजन तारीख तय कर सके।'}
                 </p>
               </div>
             </div>
@@ -932,21 +938,21 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
               <div className="font-bold text-indigo-900 flex items-center justify-between text-xs sm:text-sm">
                 <div className="flex items-center gap-2">
                   <Calendar className="w-4 h-4 text-indigo-600" />
-                  <span>आगामी समीक्षा तिथि (Next Review Date):</span>
+                  <span>{language === 'en' ? 'Next Smart Review Date:' : 'आगामी समीक्षा तिथि (Next Review Date):'}</span>
                 </div>
                 {reviewState?.next_due_date && (
                   <span className="text-xs font-mono font-bold text-indigo-700 bg-white/80 px-2.5 py-0.5 rounded-full border border-indigo-200">
-                    लक्ष्य प्रतिधारण: 90%
+                    {language === 'en' ? 'Target Retention: 90%' : 'लक्ष्य प्रतिधारण: 90%'}
                   </span>
                 )}
               </div>
 
               {isLoadingReview ? (
-                <p className="text-xs text-slate-500">डेटाबेस से समीक्षा लोड हो रही है...</p>
+                <p className="text-xs text-slate-500">{language === 'en' ? 'Loading review state...' : 'डेटाबेस से समीक्षा लोड हो रही है...'}</p>
               ) : reviewState?.next_due_date ? (
                 <div className="space-y-3">
                   <div className="text-xl sm:text-2xl font-bold text-slate-900 font-mono tracking-tight">
-                    {new Date(reviewState.next_due_date).toLocaleDateString('hi-IN', {
+                    {new Date(reviewState.next_due_date).toLocaleDateString(language === 'en' ? 'en-IN' : 'hi-IN', {
                       weekday: 'long',
                       day: 'numeric',
                       month: 'long',
@@ -955,19 +961,19 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
                   </div>
                   <div className="flex flex-wrap items-center gap-3 text-xs text-slate-600">
                     <span>
-                      सटीकता स्तर (Accuracy):{' '}
+                      {language === 'en' ? 'Accuracy Level:' : 'सटीकता स्तर (Accuracy):'}{' '}
                       <strong className="text-emerald-700 font-mono">{reviewState.production_accuracy_score}%</strong>
                     </span>
                     <span aria-hidden="true" className="text-slate-300">·</span>
                     <span>
-                      स्मृति स्कोर (Recall):{' '}
+                      {language === 'en' ? 'Recall Score:' : 'स्मृति स्कोर (Recall):'}{' '}
                       <strong className="text-indigo-700 font-mono">{reviewState.rule_recall_score}%</strong>
                     </span>
                   </div>
                 </div>
               ) : (
                 <div className="text-sm font-semibold text-slate-600">
-                  अभी कोई समीक्षा तय नहीं हुई है। नीचे रेटिंग देकर अपनी पहली समीक्षा तय करें!
+                  {language === 'en' ? 'No review scheduled yet. Rate your recall below to set your first review!' : 'अभी कोई समीक्षा तय नहीं हुई है। नीचे रेटिंग देकर अपनी पहली समीक्षा तय करें!'}
                 </div>
               )}
             </div>
@@ -987,18 +993,18 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
             <div className="space-y-2">
               <h3 className="text-xs font-bold text-slate-600 flex items-center gap-1.5 uppercase tracking-wide">
                 <Clock className="w-3.5 h-3.5 text-indigo-500" />
-                <span>मेमोरी स्कोरकार्ड (Memory Power & Level):</span>
+                <span>{language === 'en' ? 'Memory Scorecard (FSRS Stability & Power):' : 'मेमोरी स्कोरकार्ड (Memory Power & Level):'}</span>
               </h3>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl space-y-1">
-                  <span className="text-[11px] font-semibold text-slate-500 block">मेमोरी पावर (Stability)</span>
+                  <span className="text-[11px] font-semibold text-slate-500 block">{language === 'en' ? 'Memory Power' : 'मेमोरी पावर (Stability)'}</span>
                   <span className="text-base font-bold font-mono text-indigo-700">
-                    {reviewState?.stability ? `${reviewState.stability.toFixed(1)} दिन` : '3.5 दिन'}
+                    {reviewState?.stability ? `${reviewState.stability.toFixed(1)} ${language === 'en' ? 'days' : 'दिन'}` : (language === 'en' ? '3.5 days' : '3.5 दिन')}
                   </span>
                 </div>
 
                 <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl space-y-1">
-                  <span className="text-[11px] font-semibold text-slate-500 block">याद रहने का चांस (Recall)</span>
+                  <span className="text-[11px] font-semibold text-slate-500 block">{language === 'en' ? 'Retention Chance' : 'याद रहने का चांस (Recall)'}</span>
                   <span className="text-base font-bold font-mono text-emerald-700">
                     {reviewState?.stability
                       ? `${calculateRetention(reviewState.stability, 0)}%`
@@ -1007,16 +1013,16 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
                 </div>
 
                 <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl space-y-1">
-                  <span className="text-[11px] font-semibold text-slate-500 block">चुनौती स्तर (Level)</span>
+                  <span className="text-[11px] font-semibold text-slate-500 block">{language === 'en' ? 'Difficulty Level' : 'चुनौती स्तर (Level)'}</span>
                   <span className="text-base font-bold font-mono text-amber-700">
                     {reviewState?.difficulty ? `${reviewState.difficulty.toFixed(1)} / 10` : '4.5 / 10'}
                   </span>
                 </div>
 
                 <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl space-y-1">
-                  <span className="text-[11px] font-semibold text-slate-500 block">प्रैक्टिस राउंड्स (Reps)</span>
+                  <span className="text-[11px] font-semibold text-slate-500 block">{language === 'en' ? 'Practice Reps' : 'प्रैक्टिस राउंड्स (Reps)'}</span>
                   <span className="text-base font-bold font-mono text-purple-700">
-                    {reviewState?.reps ?? 1} बार
+                    {reviewState?.reps ?? 1} {language === 'en' ? 'reps' : 'बार'}
                   </span>
                 </div>
               </div>
@@ -1027,9 +1033,11 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
               <div className="flex items-center justify-between text-xs">
                 <span className="font-bold text-slate-800 flex items-center gap-1.5">
                   <RotateCcw className="w-3.5 h-3.5 text-indigo-600" />
-                  <span>खुद को रेट करें (Rate Your Recall):</span>
+                  <span>{language === 'en' ? 'Rate Your Recall:' : 'खुद को रेट करें (Rate Your Recall):'}</span>
                 </span>
-                <span className="text-slate-500 text-[11px]">क्लिक करके रिवीजन टाइम चुनें</span>
+                <span className="text-slate-500 text-[11px]">
+                  {language === 'en' ? 'Click to schedule next review' : 'क्लिक करके रिवीजन टाइम चुनें'}
+                </span>
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -1038,8 +1046,8 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
                   onClick={() => handleFSRSRating(FSRS_RATINGS.AGAIN)}
                   className="p-3.5 rounded-xl border border-rose-200 bg-white hover:bg-rose-50 text-rose-800 font-bold text-xs flex flex-col items-center justify-center gap-1 shadow-2xs transition-all cursor-pointer hover:border-rose-300"
                 >
-                  <span className="text-sm">🔴 पुनः अभ्यास</span>
-                  <span className="text-[11px] font-normal text-rose-600">कल (1 दिन)</span>
+                  <span className="text-sm">🔴 {t('fsrs_again_label')}</span>
+                  <span className="text-[11px] font-normal text-rose-600">{t('fsrs_again_sub')}</span>
                 </button>
 
                 <button
@@ -1047,8 +1055,8 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
                   onClick={() => handleFSRSRating(FSRS_RATINGS.HARD)}
                   className="p-3.5 rounded-xl border border-amber-200 bg-white hover:bg-amber-50 text-amber-800 font-bold text-xs flex flex-col items-center justify-center gap-1 shadow-2xs transition-all cursor-pointer hover:border-amber-300"
                 >
-                  <span className="text-sm">🟡 थोड़ा कठिन</span>
-                  <span className="text-[11px] font-normal text-amber-600">2 दिन बाद</span>
+                  <span className="text-sm">🟡 {t('fsrs_hard_label')}</span>
+                  <span className="text-[11px] font-normal text-amber-600">{t('fsrs_hard_sub')}</span>
                 </button>
 
                 <button
@@ -1056,8 +1064,8 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
                   onClick={() => handleFSRSRating(FSRS_RATINGS.GOOD)}
                   className="p-3.5 rounded-xl border border-emerald-200 bg-white hover:bg-emerald-50 text-emerald-800 font-bold text-xs flex flex-col items-center justify-center gap-1 shadow-2xs transition-all cursor-pointer hover:border-emerald-300"
                 >
-                  <span className="text-sm">🟢 अच्छा (Good)</span>
-                  <span className="text-[11px] font-normal text-emerald-600">4 दिन बाद</span>
+                  <span className="text-sm">🟢 {t('fsrs_good_label')}</span>
+                  <span className="text-[11px] font-normal text-emerald-600">{t('fsrs_good_sub')}</span>
                 </button>
 
                 <button
@@ -1065,8 +1073,8 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
                   onClick={() => handleFSRSRating(FSRS_RATINGS.EASY)}
                   className="p-3.5 rounded-xl border border-indigo-200 bg-white hover:bg-indigo-50 text-indigo-800 font-bold text-xs flex flex-col items-center justify-center gap-1 shadow-2xs transition-all cursor-pointer hover:border-indigo-300"
                 >
-                  <span className="text-sm">🔵 बहुत सरल</span>
-                  <span className="text-[11px] font-normal text-indigo-600">7+ दिन बाद</span>
+                  <span className="text-sm">🔵 {t('fsrs_easy_label')}</span>
+                  <span className="text-[11px] font-normal text-indigo-600">{t('fsrs_easy_sub')}</span>
                 </button>
               </div>
             </div>
@@ -1079,7 +1087,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors cursor-pointer"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
-                <span>इसी विषय का पुनः अभ्यास करें</span>
+                <span>{language === 'en' ? 'Practice This Topic Again' : 'इसी विषय का पुनः अभ्यास करें'}</span>
               </button>
 
               <button
@@ -1087,7 +1095,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
                 onClick={onOpenTopicModal}
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-2xl transition-all shadow-sm shadow-indigo-300 cursor-pointer"
               >
-                <span>🚀 अगला विषय चुनें (Choose Next Topic)</span>
+                <span>{t('step5_complete_btn')}</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </div>
@@ -1106,7 +1114,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
         isSavedToDb={isSavedToDb}
         speakText={speakText}
         flightIntervalSeconds={flightIntervalSeconds}
-        activeTopic={activeTopic}
+        activeTopic={topic}
       />
     </div>
   );

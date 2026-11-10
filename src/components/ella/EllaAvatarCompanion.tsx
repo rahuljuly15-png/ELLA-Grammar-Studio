@@ -6,6 +6,7 @@ import type { RuleCheckResult } from '../../engines/offlineRuleEngine';
 import type { FullTopicData } from '../../data/topicLoader';
 import { getProactiveTeachingDialogue, generateTutorResponse } from '../../engines/ellaTutorEngine';
 import { askEllaAI, getStoredGeminiKey } from '../../services/geminiService';
+import { useLanguage } from '../../i18n/LanguageContext';
 
 export type EllaMood = 'waving' | 'thinking' | 'cheering' | 'guiding' | 'celebrating';
 
@@ -76,6 +77,7 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
   flightIntervalSeconds = 90,
   activeTopic,
 }) => {
+  const { language, t } = useLanguage();
   const [isMinimized, setIsMinimized] = useState(false);
   const [mood, setMood] = useState<EllaMood>('waving');
   const [dialogue, setDialogue] = useState<string>('');
@@ -239,6 +241,7 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
       liveCheckResult,
       studentSentence,
       isSavedToDb,
+      language,
     });
 
     setDialogue(tutorState.reply);
@@ -261,6 +264,7 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
     displayName,
     autoVoice,
     activeTopic,
+    language,
   ]);
 
   // Two-Way Interactive Dialogue Handler (Uses Google Gemini AI if connected, else Offline Engine)
@@ -286,6 +290,7 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
         errors: liveCheckResult.errors.map((e) => `${e.matchedText} -> ${e.suggestedText} (${e.explanationHi})`),
         selectedHypothesisText: option?.textHi,
         isHypothesisCorrect,
+        language,
       });
 
       setIsGeneratingAI(false);
@@ -309,6 +314,7 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
       isHypothesisCorrect,
       liveCheckResult,
       studentSentence,
+      language,
     });
 
     setDialogue(res.reply);
@@ -338,7 +344,7 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
 
     try {
       const recognition = new SpeechRecognitionClass();
-      recognition.lang = 'hi-IN';
+      recognition.lang = language === 'en' ? 'en-IN' : 'hi-IN';
       recognition.interimResults = false;
       recognition.maxAlternatives = 1;
 
@@ -362,6 +368,20 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
 
   // Step-specific Interactive Quick Reply Chips (1-tap socratic interaction)
   const quickChips = useMemo(() => {
+    if (language === 'en') {
+      switch (currentStep) {
+        case 'notice':
+          return ['👂 What is the sound difference?', '💡 Explain simply', '🔍 One more example'];
+        case 'hypothesize':
+          return ['🔍 Give me a clue', '🤔 Spelling vs Sound?', '💡 Explain rule'];
+        case 'clarify':
+          return ['👑 Give another example', '📖 Repeat the rule', '🔍 I have a doubt'];
+        case 'use':
+          return ['🔍 Check my mistake', '💡 Show correct sentence', '✍️ How do I write it?'];
+        case 'schedule':
+          return ['🧠 Why is review important?', '🏆 What is my score?'];
+      }
+    }
     switch (currentStep) {
       case 'notice':
         return ['👂 उच्चारण में क्या फर्क है?', '💡 सरल शब्दों में समझाओ', '🔍 एक और उदाहरण दो'];
@@ -374,7 +394,7 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
       case 'schedule':
         return ['🧠 रिवीजन क्यों ज़रूरी है?', '🏆 मेरा स्कोर क्या है?'];
     }
-  }, [currentStep]);
+  }, [currentStep, language]);
 
   // Render cartoon speech bubble graduated comic dots
   const renderComicDots = () => {
@@ -456,7 +476,7 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
                 <div className="flex items-center justify-between gap-2 border-b border-indigo-50 pb-1">
                   <div className="flex items-center gap-1.5 text-[11px] font-extrabold text-indigo-700">
                     <Sparkles className="w-3 h-3 text-amber-500 fill-amber-400" />
-                    <span>एला जिनी (AI टीचर)</span>
+                    <span>{t('genie_title')}</span>
                     {hasGeminiKey && (
                       <span className="text-[9.5px] font-bold text-amber-700 bg-amber-50 border border-amber-200/80 px-1.5 py-0.2 rounded-full flex items-center gap-0.5">
                         <Zap className="w-2.5 h-2.5 text-amber-500 fill-amber-400" />
@@ -497,7 +517,7 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
                 {isGeneratingAI ? (
                   <div className="flex items-center gap-1.5 py-1 text-xs text-indigo-600 font-bold animate-pulse">
                     <Zap className="w-3.5 h-3.5 text-amber-500 fill-amber-400" />
-                    <span>एला समझदारी से सोच रही है... ✨</span>
+                    <span>{t('genie_thinking')} ✨</span>
                   </div>
                 ) : (
                   <p className="text-xs sm:text-[13px] text-slate-800 font-semibold leading-snug">
@@ -532,7 +552,7 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
                     type="text"
                     value={userInput}
                     onChange={(e) => setUserInput(e.target.value)}
-                    placeholder="एला से पूछें (उदा. an क्यों?)..."
+                    placeholder={t('genie_input_placeholder')}
                     className="flex-1 px-3 py-1 bg-slate-50 border border-slate-200 rounded-full text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-indigo-400"
                   />
 
@@ -582,11 +602,11 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
             if (isMinimized) {
               setIsMinimized(false);
             } else {
-              handleSendMessage('मुझे एक जादुई टिप दो');
+              handleSendMessage(language === 'en' ? 'Give me a magic tip' : 'मुझे एक जादुई टिप दो');
             }
           }}
           className="pointer-events-auto cursor-pointer relative group flex items-center shrink-0"
-          title={isMinimized ? "एला जिनी से बात करें (क्लिक करें)" : "टैप करें और जादुई टिप पाएँ!"}
+          title={isMinimized ? (language === 'en' ? "Click to talk to Ella" : "एला जिनी से बात करें (क्लिक करें)") : (language === 'en' ? "Tap for a magic tip!" : "टैप करें और जादुई टिप पाएँ!")}
         >
           {isMinimized && (
             <motion.div
@@ -595,7 +615,7 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
               className="px-3 py-1 bg-white border border-indigo-200 shadow-md rounded-full text-xs font-bold text-indigo-700 flex items-center gap-1 mr-2"
             >
               <Sparkles className="w-3 h-3 text-amber-500" />
-              <span>एला</span>
+              <span>{language === 'en' ? 'Ella' : 'एला'}</span>
               <ChevronUp className="w-3 h-3 text-slate-400" />
             </motion.div>
           )}

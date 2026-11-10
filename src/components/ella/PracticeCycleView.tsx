@@ -50,6 +50,7 @@ interface PracticeCycleViewProps {
   speakText: (text: string) => void;
   onEscapeHatch: () => void;
   studentName?: string;
+  flightIntervalSeconds?: number;
 }
 
 export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
@@ -66,6 +67,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
   speakText,
   onEscapeHatch,
   studentName = 'Ishu',
+  flightIntervalSeconds = 90,
 }) => {
   // Always default to inductive discovery (Step 1: Notice)
   const [currentStep, setCurrentStep] = useState<StepKey>('notice');
@@ -1103,6 +1105,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
         studentSentence={studentSentence}
         isSavedToDb={isSavedToDb}
         speakText={speakText}
+        flightIntervalSeconds={flightIntervalSeconds}
       />
     </div>
   );

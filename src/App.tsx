@@ -45,6 +45,30 @@ export default function App() {
     }
   };
 
+  // Genie motion flight interval: 90s default (60s, 90s, 120s, 150s, 180s, or 0 for stationary)
+  const [genieFlightInterval, setGenieFlightInterval] = useState<number>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('ella_genie_flight_interval');
+      if (saved !== null) {
+        const parsed = parseInt(saved, 10);
+        if (!isNaN(parsed)) return parsed;
+      }
+    }
+    return 90; // Default: 90 seconds
+  });
+
+  const handleUpdateFlightInterval = (seconds: number) => {
+    setGenieFlightInterval(seconds);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('ella_genie_flight_interval', String(seconds));
+    }
+    showToast(
+      seconds === 0
+        ? 'जिनी को एक जगह रोक दिया गया है (स्थिर मोड)'
+        : `जिनी अब हर ${seconds} सेकंड में अपनी जगह बदलेगी!`
+    );
+  };
+
   // Database stats
   const [dbStats, setDbStats] = useState<{ sessionsCount: number; errorsCount: number; reviewsCount: number }>({
     sessionsCount: 0,
@@ -338,6 +362,7 @@ export default function App() {
             savedSessionId={savedSessionId}
             speakText={speakText}
             studentName={studentName}
+            flightIntervalSeconds={genieFlightInterval}
             onEscapeHatch={() => {
               showToast('आसान उदाहरण लोड किया गया!');
               if (activeTopic.steps['5_free_production']?.sampleSolutions?.[0]) {
@@ -371,6 +396,8 @@ export default function App() {
             onImportBackup={handleImportBackup}
             onDeleteAllData={handleDeleteAllData}
             speakText={speakText}
+            flightIntervalSeconds={genieFlightInterval}
+            onUpdateFlightInterval={handleUpdateFlightInterval}
           />
         )}
       </main>

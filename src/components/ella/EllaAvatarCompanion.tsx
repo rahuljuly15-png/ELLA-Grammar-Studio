@@ -1,20 +1,12 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Volume2, VolumeX, Sparkles, ChevronDown, ChevronUp, Heart, Wand2, Wind } from 'lucide-react';
+import { Volume2, VolumeX, Sparkles, ChevronDown, ChevronUp } from 'lucide-react';
 import type { StepKey } from './PracticeCycleView';
 import type { RuleCheckResult } from '../../engines/offlineRuleEngine';
 
 export type EllaMood = 'waving' | 'thinking' | 'cheering' | 'guiding' | 'celebrating';
 
-export type FlightZone = 'bottom-right' | 'mid-left' | 'bottom-left' | 'mid-right' | 'top-right' | 'top-left';
-
-interface ZoneCoordinates {
-  x: number;
-  y: number;
-  side: 'left' | 'right';
-  isTop: boolean;
-  nameHi: string;
-}
+export type BubblePlacement = 'left' | 'right' | 'top' | 'bottom';
 
 interface EllaAvatarCompanionProps {
   currentStep: StepKey;
@@ -25,67 +17,48 @@ interface EllaAvatarCompanionProps {
   studentSentence: string;
   isSavedToDb: boolean;
   speakText: (text: string) => void;
+  flightIntervalSeconds?: number;
 }
 
-// Compute safe screen coordinates for each zone
-const getZoneCoordinates = (zone: FlightZone, width: number, height: number): ZoneCoordinates => {
-  const isSmallScreen = width < 640;
-  const marginX = isSmallScreen ? 12 : 28;
-  const marginY = isSmallScreen ? 16 : 24;
-  const avatarWidth = isSmallScreen ? 72 : 84;
-  const avatarHeight = isSmallScreen ? 88 : 96;
+interface SpotConfig {
+  id: string;
+  getGenieCoords: (w: number, h: number) => { x: number; y: number };
+  validPlacements: BubblePlacement[];
+}
 
-  switch (zone) {
-    case 'bottom-right':
-      return {
-        x: Math.max(16, width - avatarWidth - marginX),
-        y: Math.max(16, height - avatarHeight - marginY - 12),
-        side: 'right',
-        isTop: false,
-        nameHi: 'दाएं नीचे',
-      };
-    case 'mid-left':
-      return {
-        x: marginX,
-        y: Math.max(90, Math.min(height * 0.45, height - avatarHeight - 80)),
-        side: 'left',
-        isTop: false,
-        nameHi: 'बाएं बीच में',
-      };
-    case 'bottom-left':
-      return {
-        x: marginX,
-        y: Math.max(16, height - avatarHeight - marginY - 12),
-        side: 'left',
-        isTop: false,
-        nameHi: 'बाएं नीचे',
-      };
-    case 'mid-right':
-      return {
-        x: Math.max(16, width - avatarWidth - marginX),
-        y: Math.max(90, Math.min(height * 0.45, height - avatarHeight - 80)),
-        side: 'right',
-        isTop: false,
-        nameHi: 'दाएं बीच में',
-      };
-    case 'top-right':
-      return {
-        x: Math.max(16, width - avatarWidth - marginX),
-        y: isSmallScreen ? 80 : 96,
-        side: 'right',
-        isTop: true,
-        nameHi: 'दाएं ऊपर',
-      };
-    case 'top-left':
-      return {
-        x: marginX,
-        y: isSmallScreen ? 80 : 96,
-        side: 'left',
-        isTop: true,
-        nameHi: 'बाएं ऊपर',
-      };
-  }
-};
+// 6 Strategic, screen-safe anchors across the screen
+const SPOTS: SpotConfig[] = [
+  {
+    id: 'bottom-right',
+    getGenieCoords: (w, h) => ({ x: Math.max(16, w - 105), y: Math.max(80, h - 120) }),
+    validPlacements: ['left', 'top'],
+  },
+  {
+    id: 'mid-left',
+    getGenieCoords: (w, h) => ({ x: 24, y: Math.max(130, Math.min(h * 0.44, h - 180)) }),
+    validPlacements: ['right', 'top', 'bottom'],
+  },
+  {
+    id: 'bottom-left',
+    getGenieCoords: (w, h) => ({ x: 24, y: Math.max(80, h - 120) }),
+    validPlacements: ['right', 'top'],
+  },
+  {
+    id: 'mid-right',
+    getGenieCoords: (w, h) => ({ x: Math.max(16, w - 105), y: Math.max(130, Math.min(h * 0.44, h - 180)) }),
+    validPlacements: ['left', 'top', 'bottom'],
+  },
+  {
+    id: 'top-right',
+    getGenieCoords: (w) => ({ x: Math.max(16, w - 105), y: 88 }),
+    validPlacements: ['left', 'bottom'],
+  },
+  {
+    id: 'top-left',
+    getGenieCoords: () => ({ x: 24, y: 88 }),
+    validPlacements: ['right', 'bottom'],
+  },
+];
 
 export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
   currentStep,
@@ -96,20 +69,21 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
   studentSentence,
   isSavedToDb,
   speakText,
+  flightIntervalSeconds = 90,
 }) => {
   const [isMinimized, setIsMinimized] = useState(false);
   const [mood, setMood] = useState<EllaMood>('waving');
   const [dialogue, setDialogue] = useState<string>('');
   const [autoVoice, setAutoVoice] = useState(true);
-  const [autoFlight, setAutoFlight] = useState(true);
   const [clickCount, setClickCount] = useState(0);
 
-  // Flying Position State (Autonomous Flight every 20-30 seconds)
-  const [currentZone, setCurrentZone] = useState<FlightZone>('bottom-right');
+  // Flight spot & shifting bubble placement
+  const [currentSpotIndex, setCurrentSpotIndex] = useState(0);
+  const [bubblePlacement, setBubblePlacement] = useState<BubblePlacement>('left');
   const [isFlying, setIsFlying] = useState(false);
   const [flightTilt, setFlightTilt] = useState(0);
 
-  // Screen size tracking for responsive flight anchors
+  // Screen size tracking
   const [screenSize, setScreenSize] = useState({
     w: typeof window !== 'undefined' ? window.innerWidth : 1200,
     h: typeof window !== 'undefined' ? window.innerHeight : 800,
@@ -123,18 +97,56 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Eye Tracking State: (dx, dy) offset for pupils
+  // Eye Tracking State
   const [eyeOffset, setEyeOffset] = useState({ x: 0, y: 0 });
   const avatarRef = useRef<HTMLDivElement>(null);
 
   const displayName = studentName?.trim() || 'Ishu';
 
-  // Compute live coordinates based on currentZone and viewport
-  const coords = useMemo(() => {
-    return getZoneCoordinates(currentZone, screenSize.w, screenSize.h);
-  }, [currentZone, screenSize.w, screenSize.h]);
+  // Current spot configuration
+  const currentSpot = SPOTS[currentSpotIndex % SPOTS.length];
 
-  // Real-time Mouse / Touch Eye Tracking (dynamically follows cursor from current flying spot)
+  // Dynamic calculations for Group Container (clamp strictly to viewport boundaries)
+  const layout = useMemo(() => {
+    const w = screenSize.w;
+    const h = screenSize.h;
+    const isSmall = w < 640;
+
+    const genieW = isSmall ? 68 : 76;
+    const genieH = isSmall ? 82 : 90;
+    const bubbleW = isSmall ? 250 : 290;
+    const bubbleH = 80;
+
+    const geniePos = currentSpot.getGenieCoords(w, h);
+
+    let containerX = geniePos.x;
+    let containerY = geniePos.y;
+
+    if (bubblePlacement === 'left') {
+      containerX = Math.max(16, geniePos.x - bubbleW - 12);
+      containerY = Math.max(75, Math.min(geniePos.y, h - Math.max(genieH, bubbleH) - 16));
+    } else if (bubblePlacement === 'right') {
+      containerX = Math.max(16, Math.min(geniePos.x, w - bubbleW - genieW - 24));
+      containerY = Math.max(75, Math.min(geniePos.y, h - Math.max(genieH, bubbleH) - 16));
+    } else if (bubblePlacement === 'top') {
+      containerX = Math.max(16, Math.min(geniePos.x - bubbleW * 0.4, w - bubbleW - 16));
+      containerY = Math.max(75, geniePos.y - bubbleH - 12);
+    } else if (bubblePlacement === 'bottom') {
+      containerX = Math.max(16, Math.min(geniePos.x - bubbleW * 0.4, w - bubbleW - 16));
+      containerY = Math.max(75, Math.min(geniePos.y, h - bubbleH - genieH - 20));
+    }
+
+    return {
+      containerX,
+      containerY,
+      bubbleW,
+      bubbleH,
+      genieW,
+      genieH,
+    };
+  }, [currentSpot, bubblePlacement, screenSize]);
+
+  // Real-time Mouse / Touch Eye Tracking
   useEffect(() => {
     const handlePointerMove = (e: MouseEvent | TouchEvent) => {
       if (!avatarRef.current) return;
@@ -150,7 +162,6 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
       const distance = Math.hypot(deltaX, deltaY);
 
       if (distance > 0) {
-        // Maximum pupil displacement in pixels
         const maxRadius = 4.8;
         const scale = Math.min(distance / 80, 1);
         const pupilX = (deltaX / distance) * maxRadius * scale;
@@ -168,22 +179,27 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
     };
   }, []);
 
-  // Autonomous Flight: Change spot smoothly every 20-30 seconds!
-  const flyToNextZone = (targetZone?: FlightZone) => {
-    const allZones: FlightZone[] = ['bottom-right', 'mid-left', 'bottom-left', 'mid-right', 'top-right', 'top-left'];
-    const available = allZones.filter((z) => z !== currentZone);
-    const next = targetZone || available[Math.floor(Math.random() * available.length)];
-
+  // Autonomous Flight: Change spot every configured seconds (default: 90s, or 60/120/150/180s)
+  const flyToNextSpot = () => {
     setIsFlying(true);
-    const curr = getZoneCoordinates(currentZone, screenSize.w, screenSize.h);
-    const target = getZoneCoordinates(next, screenSize.w, screenSize.h);
 
-    // Gently tilt towards direction of flight
-    const tilt = target.x > curr.x ? 9 : -9;
+    const nextIndex = (currentSpotIndex + 1) % SPOTS.length;
+    const nextSpot = SPOTS[nextIndex];
+
+    const currentCoords = currentSpot.getGenieCoords(screenSize.w, screenSize.h);
+    const nextCoords = nextSpot.getGenieCoords(screenSize.w, screenSize.h);
+
+    const tilt = nextCoords.x > currentCoords.x ? 8 : -8;
     setFlightTilt(tilt);
-    setCurrentZone(next);
 
-    // Flight animation duration (3.2s of leisurely magical glide)
+    // Pick a safe relative bubble placement for the new spot (Right, Left, Top, or Bottom)
+    const placements = nextSpot.validPlacements;
+    const nextPlacement = placements[Math.floor(Math.random() * placements.length)];
+
+    setCurrentSpotIndex(nextIndex);
+    setBubblePlacement(nextPlacement);
+
+    // 3.2s of leisurely, gentle flight
     setTimeout(() => {
       setIsFlying(false);
       setFlightTilt(0);
@@ -191,25 +207,24 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
   };
 
   useEffect(() => {
-    if (!autoFlight) return;
+    // If flightIntervalSeconds === 0, student chose "रोक कर रखें" (Stationary mode)
+    if (flightIntervalSeconds === 0) return;
 
-    // Pick random delay between 20 and 30 seconds
-    const delay = 20000 + Math.random() * 10000;
+    const intervalMs = Math.max(30, flightIntervalSeconds) * 1000;
     const timer = setTimeout(() => {
-      flyToNextZone();
-    }, delay);
+      flyToNextSpot();
+    }, intervalMs);
 
     return () => clearTimeout(timer);
-  }, [currentZone, autoFlight, screenSize]);
+  }, [currentSpotIndex, flightIntervalSeconds, screenSize]);
 
-  // Random fun motivational tips when Ishu taps on Ella Genie
+  // Fun motivational tips when tapping Ella Genie
   const funTips = [
     `शानदार जा रहे हो ${displayName}! हर गलती से हम एक नया नियम सीखते हैं! 🚀`,
     `पता है ${displayName}? इंग्लिश का असली सीक्रेट है: स्पेलिंग मत रटो, बस आवाज़ (Sound) सुनो! ✨`,
     `तुम्हारा फोकस बहुत कमाल का है ${displayName}! You're a rockstar! 🎸`,
     `जब भी कोई डाउट हो, बस मुझे याद करना! मैं तुम्हारी जादुई इंग्लिश जिनी हूँ! 🧞‍♀️`,
     `तुम बहुत तेजी से सीख रहे हो ${displayName}! Keep shining bright! 🌟`,
-    `देखा ${displayName}! मैं अब स्क्रीन पर इधर-उधर उड़कर तुम्हारी मदद कर रही हूँ! 🎈`,
   ];
 
   // Dynamic dialogue & mood engine based on real-time learner state
@@ -217,7 +232,6 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
     let newDialogue = '';
     let newMood: EllaMood = 'waving';
 
-    // Priority 1: Step 4 (Sentence Builder - Use)
     if (currentStep === 'use') {
       if (isSavedToDb) {
         newMood = 'celebrating';
@@ -233,7 +247,6 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
         newDialogue = `चलो ${displayName}, अब अपनी बारी है! ऊपर दिए बॉक्स में अपना एक प्यारा सा वाक्य लिखो ✍️`;
       }
     } else if (currentStep === 'hypothesize') {
-      // Priority 2: Step 2 (Hypothesize)
       if (selectedHypothesis !== null) {
         if (isHypothesisCorrect) {
           newMood = 'celebrating';
@@ -247,15 +260,12 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
         newDialogue = `सोचो-सोचो ${displayName}! 💡 क्या स्पेलिंग से नियम बनता है या बोलने की आवाज़ (Sound) से?`;
       }
     } else if (currentStep === 'notice') {
-      // Priority 3: Step 1 (Notice)
       newMood = 'waving';
       newDialogue = `हाय ${displayName}! मैं हूँ एला, आपकी जादुई जिनी 🧞‍♀️! इन उदाहरणों को सुनो, तुम्हें क्या फर्क दिखा?`;
     } else if (currentStep === 'clarify') {
-      // Priority 4: Step 3 (Clarify)
       newMood = 'guiding';
       newDialogue = `ये रहा आज का असली सीक्रेट फॉर्मूला, ${displayName}! 👑 इसे याद रखो, कभी गलती नहीं होगी!`;
     } else if (currentStep === 'schedule') {
-      // Priority 5: Step 5 (Schedule & FSRS)
       newMood = 'celebrating';
       newDialogue = `मिशन पूरा हुआ ${displayName}! 🏆 खुद को स्टार रेटिंग दो ताकि मैं सही समय पर रिवीजन याद दिला सकूँ!`;
     }
@@ -263,7 +273,6 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
     setMood(newMood);
     setDialogue(newDialogue);
 
-    // Auto-Speak feature: speak automatically on context change without requiring button press!
     if (autoVoice && newDialogue) {
       const timer = setTimeout(() => {
         speakText(newDialogue);
@@ -281,199 +290,187 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
     speakText(tip);
   };
 
-  const isLeft = coords.side === 'left';
-  const isTop = coords.isTop;
+  // Render cartoon speech bubble graduated comic dots
+  const renderComicDots = () => {
+    if (bubblePlacement === 'left') {
+      return (
+        <div className="flex items-center gap-1 shrink-0">
+          <span className="w-2.5 h-2.5 rounded-full bg-white border-2 border-indigo-200 shadow-2xs" />
+          <span className="w-2 h-2 rounded-full bg-white border-2 border-indigo-200" />
+          <span className="w-1.5 h-1.5 rounded-full bg-white border-2 border-indigo-200" />
+        </div>
+      );
+    }
+    if (bubblePlacement === 'right') {
+      return (
+        <div className="flex items-center gap-1 shrink-0">
+          <span className="w-1.5 h-1.5 rounded-full bg-white border-2 border-indigo-200" />
+          <span className="w-2 h-2 rounded-full bg-white border-2 border-indigo-200" />
+          <span className="w-2.5 h-2.5 rounded-full bg-white border-2 border-indigo-200 shadow-2xs" />
+        </div>
+      );
+    }
+    if (bubblePlacement === 'top') {
+      return (
+        <div className="flex flex-col items-center gap-0.5 shrink-0">
+          <span className="w-2.5 h-2.5 rounded-full bg-white border-2 border-indigo-200 shadow-2xs" />
+          <span className="w-2 h-2 rounded-full bg-white border-2 border-indigo-200" />
+          <span className="w-1.5 h-1.5 rounded-full bg-white border-2 border-indigo-200" />
+        </div>
+      );
+    }
+    // 'bottom'
+    return (
+      <div className="flex flex-col items-center gap-0.5 shrink-0">
+        <span className="w-1.5 h-1.5 rounded-full bg-white border-2 border-indigo-200" />
+        <span className="w-2 h-2 rounded-full bg-white border-2 border-indigo-200" />
+        <span className="w-2.5 h-2.5 rounded-full bg-white border-2 border-indigo-200 shadow-2xs" />
+      </div>
+    );
+  };
+
+  // Orientation flex classes based on bubble placement relative to Genie
+  const getFlexClass = () => {
+    if (bubblePlacement === 'left') return 'flex-row items-center';
+    if (bubblePlacement === 'right') return 'flex-row-reverse items-center';
+    if (bubblePlacement === 'top') return 'flex-col items-center';
+    return 'flex-col-reverse items-center';
+  };
 
   return (
     <div className="fixed inset-0 pointer-events-none z-40 overflow-hidden select-none">
-      {/* Gliding Genie Container: smoothly swoops to new coordinates across the screen */}
+      {/* Gliding Genie Container */}
       <motion.div
         animate={{
-          x: coords.x,
-          y: coords.y,
+          x: layout.containerX,
+          y: layout.containerY,
         }}
         transition={{
           duration: 3.2,
-          ease: [0.34, 1.25, 0.64, 1], // Gentle magical swoop curve
+          ease: [0.34, 1.15, 0.64, 1], // Smooth, gentle swooping flight
         }}
-        className={`absolute pointer-events-auto flex ${
-          isTop ? 'flex-col-reverse justify-end' : 'flex-col justify-end'
-        } ${isLeft ? 'items-start' : 'items-end'}`}
-        style={{ width: isMinimized ? 'auto' : 320 }}
+        className={`absolute pointer-events-auto flex ${getFlexClass()} gap-2`}
       >
-        {/* Friendly Speech Bubble */}
+        {/* Cartoon Oval Speech Bubble */}
         <AnimatePresence>
           {!isMinimized && (
             <motion.div
-              initial={{ opacity: 0, scale: 0.85 }}
-              animate={{
-                opacity: isFlying ? 0.2 : 1,
-                scale: isFlying ? 0.85 : 1,
-              }}
-              exit={{ opacity: 0, scale: 0.85 }}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
               transition={{ duration: 0.25 }}
-              className={`max-w-xs sm:max-w-sm pointer-events-auto ${isTop ? 'mt-2' : 'mb-2'}`}
+              className="flex items-center gap-1.5"
             >
-              <div className="relative p-4 bg-white/95 backdrop-blur-md border-2 border-indigo-200/90 rounded-3xl shadow-2xl shadow-indigo-200/60 space-y-2">
-                <div className="flex items-center justify-between gap-2 border-b border-indigo-50 pb-1.5">
-                  <div className="flex items-center gap-1.5 text-xs font-extrabold text-indigo-700">
-                    <Sparkles className="w-3.5 h-3.5 text-amber-500 fill-amber-400" />
-                    <span>एला जिनी 🧞‍♀️</span>
-                    <span className="text-[10px] font-medium text-purple-700 bg-purple-50 border border-purple-200/60 px-1.5 py-0.2 rounded-full">
-                      {coords.nameHi}
-                    </span>
+              {bubblePlacement === 'right' && renderComicDots()}
+
+              {/* Bubbly Cartoon Oval Container */}
+              <div
+                style={{ maxWidth: layout.bubbleW }}
+                className="relative px-5 py-3.5 bg-white/95 backdrop-blur-md border-2 border-indigo-200/90 rounded-[34px] sm:rounded-[38px] shadow-xl shadow-indigo-100/70"
+              >
+                <div className="flex items-center justify-between gap-2.5">
+                  <div className="flex-1 pr-1">
+                    <div className="flex items-center gap-1 text-[11px] font-extrabold text-indigo-700 mb-0.5">
+                      <Sparkles className="w-3 h-3 text-amber-500 fill-amber-400" />
+                      <span>एला जिनी</span>
+                    </div>
+                    <p className="text-xs sm:text-[13px] text-slate-800 font-semibold leading-snug">
+                      {dialogue}
+                    </p>
                   </div>
 
-                  <div className="flex items-center gap-1">
-                    {/* Manual Fly Button */}
-                    <button
-                      type="button"
-                      onClick={() => flyToNextZone()}
-                      className="p-1 text-purple-600 hover:text-purple-800 hover:bg-purple-50 rounded-lg transition-colors cursor-pointer flex items-center gap-0.5 text-[11px] font-bold"
-                      title="जादुई उड़ान भरें (Fly to next corner)"
-                    >
-                      <Wind className="w-3.5 h-3.5" />
-                    </button>
-
-                    {/* Auto-Flight Toggle */}
-                    <button
-                      type="button"
-                      onClick={() => setAutoFlight(!autoFlight)}
-                      className={`px-1.5 py-0.5 rounded-lg transition-colors cursor-pointer text-[10px] font-bold ${
-                        autoFlight ? 'text-purple-700 bg-purple-100/70' : 'text-slate-400 bg-slate-100'
-                      }`}
-                      title={autoFlight ? "ऑटो-फ़्लाई चालू है (हर 20-30s में नई जगह उड़ना)" : "ऑटो-फ़्लाई बंद है (क्लिक करके चालू करें)"}
-                    >
-                      {autoFlight ? 'उड़ती' : 'स्थिर'}
-                    </button>
-
-                    {/* Auto Voice Toggle */}
+                  {/* Clean, minimalist actions */}
+                  <div className="flex items-center gap-1 shrink-0">
                     <button
                       type="button"
                       onClick={() => {
                         const next = !autoVoice;
                         setAutoVoice(next);
-                        if (next) speakText("ऑटो-वॉइस चालू है!");
+                        if (next) speakText(dialogue);
                       }}
-                      className={`p-1 rounded-lg transition-colors cursor-pointer flex items-center gap-1 text-[11px] font-bold ${
+                      className={`p-1.5 rounded-full transition-colors cursor-pointer ${
                         autoVoice ? 'text-indigo-600 bg-indigo-50' : 'text-slate-400 hover:text-slate-600'
                       }`}
-                      title={autoVoice ? "ऑटो-वॉइस चालू है (क्लिक करके म्यूट करें)" : "ऑटो-वॉइस बंद है (क्लिक करके चालू करें)"}
+                      title={autoVoice ? "आवाज़ म्यूट करें" : "आवाज़ चालू करें"}
                     >
                       {autoVoice ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}
                     </button>
 
                     <button
                       type="button"
-                      onClick={() => speakText(dialogue)}
-                      className="p-1 text-indigo-600 hover:text-indigo-800 hover:bg-indigo-50 rounded-lg transition-colors cursor-pointer"
-                      title="दोबारा सुनें"
-                    >
-                      <Volume2 className="w-3.5 h-3.5" />
-                    </button>
-
-                    <button
-                      type="button"
                       onClick={() => setIsMinimized(true)}
-                      className="p-1 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-colors cursor-pointer"
+                      className="p-1.5 text-slate-400 hover:text-slate-600 rounded-full transition-colors cursor-pointer"
                       title="मिनीमाइज़ करें"
                     >
                       <ChevronDown className="w-3.5 h-3.5" />
                     </button>
                   </div>
                 </div>
-
-                <p className="text-xs sm:text-sm text-slate-800 font-medium leading-relaxed">
-                  {dialogue}
-                </p>
-
-                <div className="pt-1 flex items-center justify-between text-[11px] text-slate-400">
-                  <span className="hover:text-indigo-600 cursor-pointer flex items-center gap-1" onClick={handleAvatarClick}>
-                    <Wand2 className="w-3 h-3 text-amber-500" />
-                    <span>टैप करें जादुई टिप के लिए!</span>
-                  </span>
-                  <Heart className="w-3 h-3 text-rose-400 fill-rose-300" />
-                </div>
-
-                {/* Dynamic Tail pointing towards avatar */}
-                {!isTop ? (
-                  <div
-                    className={`absolute -bottom-2 w-4 h-4 bg-white border-r-2 border-b-2 border-indigo-200 rotate-45 transform ${
-                      isLeft ? 'left-9' : 'right-9'
-                    }`}
-                  />
-                ) : (
-                  <div
-                    className={`absolute -top-2 w-4 h-4 bg-white border-l-2 border-t-2 border-indigo-200 rotate-45 transform ${
-                      isLeft ? 'left-9' : 'right-9'
-                    }`}
-                  />
-                )}
               </div>
+
+              {bubblePlacement === 'left' && renderComicDots()}
             </motion.div>
           )}
         </AnimatePresence>
+
+        {/* Vertical Comic Dots if placed Top or Bottom */}
+        {!isMinimized && (bubblePlacement === 'top' || bubblePlacement === 'bottom') && renderComicDots()}
 
         {/* The Animated Magical Girl Genie Avatar with Real-Time Eye Tracking */}
         <motion.div
           ref={avatarRef}
           animate={{
             rotate: flightTilt,
-            scale: isFlying ? 1.05 : 1,
           }}
           transition={{ duration: 0.4 }}
-          whileHover={{ scale: 1.1 }}
+          whileHover={{ scale: 1.08 }}
           whileTap={{ scale: 0.94 }}
           onClick={isMinimized ? () => setIsMinimized(false) : handleAvatarClick}
-          className="pointer-events-auto cursor-pointer relative group flex items-center gap-2"
-          title={isMinimized ? "एला जिनी से बात करें (Open)" : "टैप करें और जादुई प्रेरणा पाएँ!"}
+          className="pointer-events-auto cursor-pointer relative group flex items-center shrink-0"
+          title={isMinimized ? "एला जिनी से बात करें (क्लिक करें)" : "टैप करें और जादुई टिप पाएँ!"}
         >
           {isMinimized && (
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
+              initial={{ opacity: 0, scale: 0.85 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="px-3 py-1.5 bg-white border border-indigo-200 shadow-md rounded-full text-xs font-bold text-indigo-700 flex items-center gap-1.5"
+              className="px-3 py-1 bg-white border border-indigo-200 shadow-md rounded-full text-xs font-bold text-indigo-700 flex items-center gap-1 mr-2"
             >
-              <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-              <span>एला जिनी 🧞‍♀️</span>
+              <Sparkles className="w-3 h-3 text-amber-500" />
+              <span>एला</span>
               <ChevronUp className="w-3 h-3 text-slate-400" />
             </motion.div>
           )}
 
-          {/* Floating Genie Glow Container with sinusoidal hover bobbing */}
+          {/* Floating Genie Glow Container with Sinusoidal Hover */}
           <motion.div
-            animate={{ y: isFlying ? [0, -12, 0] : [0, -6, 0] }}
+            animate={{ y: [0, -6, 0] }}
             transition={{
               repeat: Infinity,
-              duration: isFlying ? 1.2 : 2.8,
+              duration: 2.8,
               ease: 'easeInOut',
             }}
-            className="relative w-16 h-18 sm:w-18 sm:h-20 drop-shadow-xl overflow-visible"
+            className="relative w-16 h-18 sm:w-18 sm:h-20 drop-shadow-xl overflow-visible shrink-0"
           >
-            {/* Animated SVG Girl Genie */}
+            {/* Animated SVG Girl Genie (100% visible, never disappears) */}
             <svg viewBox="0 0 100 115" className="w-full h-full overflow-visible">
               <defs>
-                {/* Hair Gradient */}
                 <linearGradient id="genieHairGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                   <stop offset="0%" stopColor="#C084FC" />
                   <stop offset="50%" stopColor="#9333EA" />
                   <stop offset="100%" stopColor="#6B21A8" />
                 </linearGradient>
 
-                {/* Magical Skin Tone */}
                 <linearGradient id="genieSkinGrad" x1="0%" y1="0%" x2="0%" y2="100%">
                   <stop offset="0%" stopColor="#FFF1F2" />
                   <stop offset="100%" stopColor="#FFE4E6" />
                 </linearGradient>
 
-                {/* Magical Swirling Genie Smoke Tail */}
                 <linearGradient id="genieTailGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                   <stop offset="0%" stopColor="#818CF8" stopOpacity="0.95" />
                   <stop offset="40%" stopColor="#A855F7" stopOpacity="0.85" />
                   <stop offset="100%" stopColor="#EC4899" stopOpacity="0.1" />
                 </linearGradient>
 
-                {/* Golden Accents */}
                 <linearGradient id="genieGoldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                   <stop offset="0%" stopColor="#FDE047" />
                   <stop offset="100%" stopColor="#D97706" />
@@ -570,34 +567,28 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
               {/* ======================================================== */}
               {/* INTERACTIVE CURSOR-TRACKING EYES                         */}
               {/* ======================================================== */}
-              {/* Left Eye White */}
               <ellipse cx="40" cy="42" rx="7.5" ry="9" fill="#FFFFFF" stroke="#312E81" strokeWidth="1.2" />
-              {/* Right Eye White */}
               <ellipse cx="60" cy="42" rx="7.5" ry="9" fill="#FFFFFF" stroke="#312E81" strokeWidth="1.2" />
 
-              {/* Pupils tracking mouse cursor smoothly */}
               {mood === 'cheering' || mood === 'celebrating' ? (
-                // Happy smiling closed eyes ^ ^
                 <>
                   <path d="M 34 43 Q 40 37 46 43" stroke="#4C1D95" strokeWidth="2.5" fill="none" strokeLinecap="round" />
                   <path d="M 54 43 Q 60 37 66 43" stroke="#4C1D95" strokeWidth="2.5" fill="none" strokeLinecap="round" />
                 </>
               ) : (
                 <>
-                  {/* Left Pupil (Tracks Cursor from Live Flight Coordinates) */}
+                  {/* Left Pupil (Tracks Cursor) */}
                   <g style={{ transform: `translate(${eyeOffset.x}px, ${eyeOffset.y}px)`, transition: 'transform 0.05s ease-out' }}>
                     <ellipse cx="40" cy="42" rx="4.8" ry="6.2" fill="#4C1D95" />
                     <ellipse cx="40" cy="43" rx="3.5" ry="4.5" fill="#7C3AED" />
-                    {/* Catchlight sparkles in eyes */}
                     <circle cx="41.5" cy="39.5" r="1.8" fill="#FFFFFF" />
                     <circle cx="38.5" cy="44.5" r="0.9" fill="#FFFFFF" />
                   </g>
 
-                  {/* Right Pupil (Tracks Cursor from Live Flight Coordinates) */}
+                  {/* Right Pupil (Tracks Cursor) */}
                   <g style={{ transform: `translate(${eyeOffset.x}px, ${eyeOffset.y}px)`, transition: 'transform 0.05s ease-out' }}>
                     <ellipse cx="60" cy="42" rx="4.8" ry="6.2" fill="#4C1D95" />
                     <ellipse cx="60" cy="43" rx="3.5" ry="4.5" fill="#7C3AED" />
-                    {/* Catchlight sparkles in eyes */}
                     <circle cx="61.5" cy="39.5" r="1.8" fill="#FFFFFF" />
                     <circle cx="58.5" cy="44.5" r="0.9" fill="#FFFFFF" />
                   </g>
@@ -611,7 +602,7 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
               {/* Sweet Smiling Mouth */}
               <path d="M 46 51 Q 50 54 54 51" stroke="#E11D48" strokeWidth="1.8" fill="none" strokeLinecap="round" />
 
-              {/* Floating Magic Sparkles Around Genie */}
+              {/* Floating Magic Sparkles */}
               <motion.circle
                 cx="22"
                 cy="25"
@@ -628,38 +619,11 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
                 animate={{ scale: [1.2, 0.5, 1.2], opacity: [1, 0.4, 1] }}
                 transition={{ repeat: Infinity, duration: 1.5 }}
               />
-              <motion.circle
-                cx="76"
-                cy="65"
-                r="2.2"
-                fill="#A855F7"
-                animate={{ scale: [0.7, 1.3, 0.7], opacity: [0.5, 1, 0.5] }}
-                transition={{ repeat: Infinity, duration: 2 }}
-              />
             </svg>
 
-            {/* Glowing Flight Trail Sparkle effect when flying */}
-            {isFlying && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={{
-                  opacity: [0.3, 1, 0.3],
-                  scale: [0.8, 1.3, 0.8],
-                  x: flightTilt > 0 ? [-10, -25, -35] : [10, 25, 35],
-                }}
-                transition={{ repeat: Infinity, duration: 0.5 }}
-                className="absolute -bottom-3 pointer-events-none flex items-center gap-1 text-amber-400 drop-shadow-md text-xs font-bold"
-              >
-                <Sparkles className="w-4 h-4 text-amber-400" />
-                <span className="text-[10px] text-purple-700 font-extrabold bg-white/90 px-1.5 py-0.5 rounded-full shadow-xs">
-                  ✨ उड़ रही हूँ...
-                </span>
-              </motion.div>
-            )}
-
             {/* Pulse ring indicator */}
-            <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-amber-400 border-2 border-white rounded-full animate-ping" />
-            <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-amber-500 border-2 border-white rounded-full shadow-xs" />
+            <span className="absolute -top-1 -right-1 w-3 h-3 bg-amber-400 border-2 border-white rounded-full animate-ping" />
+            <span className="absolute -top-1 -right-1 w-3 h-3 bg-amber-500 border-2 border-white rounded-full shadow-xs" />
           </motion.div>
         </motion.div>
       </motion.div>

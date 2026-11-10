@@ -10,6 +10,7 @@ import {
   Volume2,
   Sparkles,
   CheckCircle2,
+  Check,
 } from 'lucide-react';
 
 interface SettingsViewProps {
@@ -20,6 +21,8 @@ interface SettingsViewProps {
   onImportBackup: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onDeleteAllData: () => void;
   speakText?: (text: string) => void;
+  flightIntervalSeconds?: number;
+  onUpdateFlightInterval?: (seconds: number) => void;
 }
 
 export const SettingsView: React.FC<SettingsViewProps> = ({
@@ -30,6 +33,8 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
   onImportBackup,
   onDeleteAllData,
   speakText,
+  flightIntervalSeconds = 90,
+  onUpdateFlightInterval,
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [detectedVoiceName, setDetectedVoiceName] = useState<string>('');
@@ -213,6 +218,55 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
             <li><strong>Google Chrome (Windows):</strong> अपने Windows की <em>Settings &gt; Time &amp; Language &gt; Speech &gt; Add voices</em> में जाकर मुफ़्त <strong>"English (India)"</strong> वॉयस पैक जोड़ें (Heera/Ravi)।</li>
             <li><strong>Android / मोबाइल:</strong> Google Play Services में Indian English (en-IN) पहले से ही सक्रिय रहता है।</li>
           </ul>
+        </div>
+      </div>
+
+      {/* Genie Motion & Movement Timing Settings */}
+      <div className="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-7 space-y-4 shadow-xs">
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2 text-sm font-bold text-slate-900">
+            <Sparkles className="w-4 h-4 text-purple-600" />
+            <span>एला जिनी मूवमेंट सेटिंग्स (Genie Motion & Flight Interval)</span>
+          </div>
+          <span className="text-[11px] font-bold text-purple-700 bg-purple-50 border border-purple-200/70 px-2.5 py-0.5 rounded-full flex items-center gap-1">
+            <span>🧞‍♀️</span>
+            <span>{flightIntervalSeconds === 0 ? 'स्थिर मोड' : `हर ${flightIntervalSeconds}s में उड़ान`}</span>
+          </span>
+        </div>
+
+        <p className="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-3xl">
+          जिनी स्क्रीन पर कितनी देर बाद अपनी जगह बदले, यह आप यहाँ चुन सकते हैं। यदि आप चाहते हैं कि जिनी एक ही जगह रुकी रहे, तो 'एक जगह रोकें' चुनें।
+        </p>
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 pt-1">
+          {[
+            { sec: 60, label: '60 सेकंड', sub: '1 मिनट' },
+            { sec: 90, label: '90 सेकंड', sub: 'डिफ़ॉल्ट (शांत)' },
+            { sec: 120, label: '120 सेकंड', sub: '2 मिनट' },
+            { sec: 150, label: '150 सेकंड', sub: '2.5 मिनट' },
+            { sec: 180, label: '180 सेकंड', sub: '3 मिनट' },
+            { sec: 0, label: 'रोक कर रखें', sub: 'स्थिर (No Move)' },
+          ].map((opt) => {
+            const isSelected = flightIntervalSeconds === opt.sec;
+            return (
+              <button
+                key={opt.sec}
+                type="button"
+                onClick={() => onUpdateFlightInterval?.(opt.sec)}
+                className={`p-3 rounded-2xl border text-left flex flex-col justify-between transition-all cursor-pointer ${
+                  isSelected
+                    ? 'bg-purple-50 border-purple-400 text-purple-950 ring-2 ring-purple-400/40 shadow-xs'
+                    : 'bg-slate-50/70 hover:bg-slate-100 border-slate-200 text-slate-700'
+                }`}
+              >
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold">{opt.label}</span>
+                  {isSelected && <Check className="w-3.5 h-3.5 text-purple-600 shrink-0" />}
+                </div>
+                <div className="text-[10px] text-slate-500 mt-1">{opt.sub}</div>
+              </button>
+            );
+          })}
         </div>
       </div>
 

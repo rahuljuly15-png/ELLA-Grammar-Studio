@@ -363,7 +363,7 @@ export function checkSentenceOffline(sentence: string, _topicId?: string): RuleC
   }
 
   // Pattern 2.8: 'he don't' / 'she don't' -> 'doesn't'
-  const heDontRegex = /\b(he|she|it|my father|my mother|the boy|the teacher)\s+(don't|do\s+not)\b/gi;
+  const heDontRegex = /\b(he|she|it|my father|my mother|my brother|my sister|the boy|the girl|the teacher|the student|the dog|the cat)\s+(don't|do\s+not)\b/gi;
   while ((match = heDontRegex.exec(trimmed)) !== null) {
     const subj = match[1];
     errors.push({

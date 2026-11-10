@@ -102,8 +102,14 @@ export const ErrorVaultView: React.FC<ErrorVaultViewProps> = ({ onRetryTopic }) 
                 </div>
 
                 <div className="text-xs space-y-1.5 pt-1">
+                  {err.full_sentence && (
+                    <div className="text-slate-700 font-mono text-[11px] bg-slate-50 p-2 rounded-lg border border-slate-100">
+                      <span className="text-slate-500 font-sans mr-2">पूरा वाक्य:</span>
+                      <span>"{err.full_sentence}"</span>
+                    </div>
+                  )}
                   <div className="text-rose-700 font-mono">
-                    <span className="text-slate-500 font-sans mr-2">गलत वाक्य:</span>
+                    <span className="text-slate-500 font-sans mr-2">गलत अंश:</span>
                     <span className="line-through bg-rose-50 px-2 py-0.5 rounded font-bold">
                       {err.wrong_input}
                     </span>
@@ -119,7 +125,7 @@ export const ErrorVaultView: React.FC<ErrorVaultViewProps> = ({ onRetryTopic }) 
 
               <div className="flex items-center gap-2 shrink-0">
                 <button
-                  onClick={() => onRetryTopic(err.topic_id, err.wrong_input)}
+                  onClick={() => onRetryTopic(err.topic_id, err.full_sentence || err.wrong_input)}
                   className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-500 rounded-xl transition-all shadow-xs shadow-indigo-200 cursor-pointer"
                 >
                   <RotateCcw className="w-3.5 h-3.5" />

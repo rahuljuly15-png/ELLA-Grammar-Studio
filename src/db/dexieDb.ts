@@ -106,6 +106,7 @@ export interface ErrorPattern {
   corrected_output: string;
   caught_by: 'offline_rule' | 'gemini_ai';
   timestamp: Date;
+  full_sentence?: string;
 }
 
 const db = new Dexie('ELLAGrammarDB') as Dexie & {

@@ -570,6 +570,7 @@ export async function recordProductionAttempt(
       corrected_output: err.suggestedText,
       caught_by: 'offline_rule',
       timestamp: new Date(),
+      full_sentence: studentSentence,
     })) as number;
     errorIds.push(errId);
   }

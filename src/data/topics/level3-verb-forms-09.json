@@ -1,0 +1,130 @@
+{
+  "topicId": "level3-verb-forms-09",
+  "title": "Verb Forms: Action & State of Being (V1, V2, V3)",
+  "level": 3,
+  "category": "काल और क्रिया",
+  "descriptionHi": "कार्य क्रियाएँ vs अवस्था क्रियाएँ (is/am/are); V1 (Base), V2 (Past), V3 (Past Participle)।",
+  "steps": {
+    "1_notice": {
+      "stepTitleHi": "1. ध्यान दें (Notice)",
+      "instructionHi": "इन वाक्यों को ध्यान से देखें। क्रिया के रूपों (Forms) में क्या बदलाव आ रहा है?",
+      "pairs": [
+        {
+          "sentence": "Yesterday I played cricket, but my sister wrote a poem.",
+          "highlightWord": "played (-ed) vs wrote (irregular)",
+          "soundHintHi": "साधारण क्रियाओं में '-ed' लगता है (play➔played), लेकिन अनियमित क्रियाओं की स्पेलिंग बदलती है (write➔wrote)।"
+        },
+        {
+          "sentence": "Did you finish your project? (Never say 'Did you finished')",
+          "highlightWord": "Did you finish",
+          "soundHintHi": "जब 'did' आ गया, तो मुख्य क्रिया हमेशा V1 (Base form) में ही रहेगी!"
+        },
+        {
+          "sentence": "She has eaten dinner, but he has gone to sleep.",
+          "highlightWord": "has eaten / has gone",
+          "soundHintHi": "'has/have/had' के बाद हमेशा तीसरा रूप (V3: Past Participle) आता है, कभी V2 नहीं।"
+        },
+        {
+          "sentence": "He cut the apple into four pieces yesterday.",
+          "highlightWord": "cut (not cutted)",
+          "soundHintHi": "अंग्रेजी में 'cutted' या 'putted' जैसा कोई शब्द नहीं होता; cut, put, hit तीनों रूपों में समान रहते हैं।"
+        }
+      ]
+    },
+    "2_hypothesize": {
+      "stepTitleHi": "2. नियम का अनुमान लगाएँ (Hypothesize)",
+      "questionHi": "क्रिया के तीनों रूपों (V1, V2, V3) का उपयोग किस नियम के अनुसार होता है?",
+      "options": [
+        {
+          "textHi": "हम भूतकाल (Past) के हर वाक्य में केवल क्रिया के अंत में '-ed' जोड़ देते हैं।",
+          "isCorrect": false,
+          "feedbackHi": "गलत! केवल Regular Verbs में '-ed' लगता है। go➔went, see➔saw, write➔wrote जैसी Irregular क्रियाओं के रूप याद रखने होते हैं।"
+        },
+        {
+          "textHi": "V1 मूल रूप है (Routine/did के बाद), V2 केवल Simple Past में अकेले आता है, और V3 हमेशा Helping Verbs (has/have/had) व Passive Voice के साथ आता है।",
+          "isCorrect": true,
+          "feedbackHi": "शाबाश! V2 कभी सहायक क्रिया (has/did) के साथ नहीं आता; 'has' के साथ हमेशा V3 और 'did' के साथ V1 आता है।"
+        },
+        {
+          "textHi": "'cut' का Past Tense 'cutted' और 'put' का 'putted' होता है।",
+          "isCorrect": false,
+          "feedbackHi": "गलत! cut, put, hurt, hit, read (उच्चारण 'रेड') के तीनों रूप समान रहते हैं।"
+        }
+      ]
+    },
+    "3_clarify": {
+      "stepTitleHi": "3. सुनहरा नियम (Clarify - Golden Rule)",
+      "goldenRuleHi": "क्रिया रूपों का त्रिसूत्रीय नियम: 1. V1 (Base Form): दैनिक आदतें व 'did/do/does/to/modals' के बाद (उदा. He didn't go)। 2. V2 (Simple Past): केवल अकेले भूतकाल में (उदा. He went home)। 3. V3 (Past Participle): हमेशा 'has/have/had' और Passive Voice के साथ (उदा. He has gone, It was written)।",
+      "theRuleHi": "अपरिवर्तनीय क्रियाएँ (Invariable Verbs): cut-cut-cut, put-put-put, hit-hit-hit, hurt-hurt-hurt, let-let-let में कभी '-ed' न जोड़ें! और 'did + V2' (उदा. did went) तथा 'has + V2' (उदा. has wrote) अंग्रेजी की सबसे घातक गलतियाँ हैं!",
+      "examples": [
+        {
+          "word": "did not go",
+          "sound": "Did + V1",
+          "reason": "'did' पहले से भूतकाल है, इसलिए V1 आएगा (not 'did not went')"
+        },
+        {
+          "word": "has written",
+          "sound": "Has + V3",
+          "reason": "'has' के साथ V3 (written) आएगा, V2 (wrote) नहीं"
+        },
+        {
+          "word": "cut the paper",
+          "sound": "Zero-change verb",
+          "reason": "cut का V1, V2, V3 तीनों 'cut' ही रहता है"
+        },
+        {
+          "word": "ran fast",
+          "sound": "Irregular V2",
+          "reason": "run (V1) ➔ ran (V2) ➔ run (V3)"
+        }
+      ]
+    },
+    "4_guided_practice": {
+      "stepTitleHi": "4. निर्देशित अभ्यास (Guided Practice)",
+      "instructionHi": "वाक्यों में सही क्रिया रूप (V1, V2, V3) चुनें:",
+      "questions": [
+        {
+          "id": "vf-1",
+          "sentence": "She did not ___ the truth yesterday. (speak / spoke / spoken)",
+          "options": ["speak", "spoke", "spoken"],
+          "correctAnswer": "speak",
+          "explanationHi": "Did के बाद हमेशा क्रिया का पहला रूप (V1 - speak) आता है।"
+        },
+        {
+          "id": "vf-2",
+          "sentence": "The train has already ___ the station. (leave / left / leaved)",
+          "options": ["leave", "left", "leaved"],
+          "correctAnswer": "left",
+          "explanationHi": "Has/Have के बाद क्रिया का तीसरा रूप (V3 - left) आता है। 'leaved' अमान्य है।"
+        },
+        {
+          "id": "vf-3",
+          "sentence": "He ___ his finger with a sharp knife. (cut / cutted)",
+          "options": ["cut", "cutted"],
+          "correctAnswer": "cut",
+          "explanationHi": "Cut का भूतकाल रूप भी 'cut' ही होता है, 'cutted' नहीं।"
+        }
+      ]
+    },
+    "5_free_production": {
+      "stepTitleHi": "5. स्वयं वाक्य बनाएँ (Production Task)",
+      "promptHi": "अब 'has written' या 'did not see' या 'cut' का उपयोग करके अपना वाक्य लिखें:",
+      "placeholderHi": "उदा. I have finished my homework.",
+      "sampleSolutions": [
+        "I have finished my homework.",
+        "He did not see the red signal.",
+        "She has written an interesting story."
+      ]
+    },
+    "6_reflection": {
+      "stepTitleHi": "6. आत्म-मूल्यांकन (Review & Reflection)",
+      "promptHi": "आज क्रिया के रूपों (Verb Forms) के बारे में क्या याद रखना है?",
+      "recapPointsHi": [
+        "Did के बाद हमेशा V1 (Did + go, Did + see, Did + play)",
+        "Has / Have / Had के बाद हमेशा V3 (has gone, have eaten)",
+        "Cut, put, hit, hurt के तीनों रूप समान रहते हैं (-ed कभी न जोड़ें)",
+        "Irregular verbs की तीनों अवस्थाएं (go-went-gone, write-wrote-written) ध्यान से सीखें"
+      ]
+    }
+  }
+}

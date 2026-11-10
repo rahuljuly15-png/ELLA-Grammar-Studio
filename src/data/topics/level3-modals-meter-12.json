@@ -1,0 +1,130 @@
+{
+  "topicId": "level3-modals-meter-12",
+  "title": "The Modal Meter: Can, May, Must, Should (मोडल्स मीटर)",
+  "level": 3,
+  "category": "काल और क्रिया",
+  "descriptionHi": "क्षमता (Can/Could), अनुमति/संभावना (May/Might), कर्तव्य/अनिवार्यता (Must/Should)।",
+  "steps": {
+    "1_notice": {
+      "stepTitleHi": "1. ध्यान दें (Notice)",
+      "instructionHi": "इन वाक्यों को ध्यान से देखें। Modals के बाद मुख्य क्रिया का रूप कैसे आ रहा है?",
+      "pairs": [
+        {
+          "sentence": "She can swim very well, and he must leave now.",
+          "highlightWord": "can swim & must leave",
+          "soundHintHi": "कर्ता एकवचन होने पर भी Modal के बाद क्रिया में कभी '-s' या '-es' नहीं लगता (can swim, not 'can swims')।"
+        },
+        {
+          "sentence": "May I come in, sir? vs Can you lift this heavy box?",
+          "highlightWord": "May (विनम्र अनुमति) vs Can (शारीरिक क्षमता)",
+          "soundHintHi": "औपचारिक अनुमति माँगने के लिए 'May' और शारीरिक/मानसिक क्षमता के लिए 'Can' का प्रयोग होता है।"
+        },
+        {
+          "sentence": "You should brush your teeth daily, but you must wear a helmet on a bike.",
+          "highlightWord": "should (सलाह) vs must (अनिवार्य नियम)",
+          "soundHintHi": "'Should' अच्छी सलाह या नैतिक कर्तव्य है, जबकि 'Must' कानूनी या अनिवार्य नियम है।"
+        },
+        {
+          "sentence": "Could you please pass the notebook to Rohan?",
+          "highlightWord": "Could you please",
+          "soundHintHi": "अत्यधिक विनम्रता से किसी से निवेदन करने के लिए 'Could' या 'Would' सबसे उत्तम माना जाता है।"
+        }
+      ]
+    },
+    "2_hypothesize": {
+      "stepTitleHi": "2. नियम का अनुमान लगाएँ (Hypothesize)",
+      "questionHi": "मोडल क्रियाओं (Modals: Can, Could, May, Must, Should) का सबसे बुनियादी नियम क्या है?",
+      "options": [
+        {
+          "textHi": "एकवचन कर्ता (He/She) के साथ Modals के बाद क्रिया में 's' जोड़ना पड़ता है (जैसे 'He can goes')।",
+          "isCorrect": false,
+          "feedbackHi": "बिल्कुल गलत! 'He can goes' या 'She should has' व्याकरण में गंभीर त्रुटि है। Modal के बाद हमेशा शुद्ध V1 आता है।"
+        },
+        {
+          "textHi": "किसी भी Modal के ठीक बाद क्रिया का शुद्ध मूल रूप (Base Form - V1) आता है, बिना 's/es', बिना '-ing' और बिना 'to' के।",
+          "isCorrect": true,
+          "feedbackHi": "बिल्कुल सही! Can + V1, Should + V1, Must + V1। हमेशा 'She can play' और 'You must go'।"
+        },
+        {
+          "textHi": "Must और Should दोनों का अर्थ बिल्कुल एक समान होता है।",
+          "isCorrect": false,
+          "feedbackHi": "गलत! Should एक सलाह (सलाह मानना या न मानना आपकी मर्जी), लेकिन Must एक अनिवार्यता या कानून है।"
+        }
+      ]
+    },
+    "3_clarify": {
+      "stepTitleHi": "3. सुनहरा नियम (Clarify - Golden Rule)",
+      "goldenRuleHi": "मोडल्स का स्वर्णिम नियम (Golden Rule): Modal (Can, Could, May, Might, Shall, Should, Will, Would, Must) + Base Verb (V1)। कभी भी Modal के बाद 's/es', '-ed', '-ing' या 'to' न लगाएँ! (उदा. He can play, You must study, She should have)।",
+      "theRuleHi": "मोडल्स मीटर का उपयोग: 1. Can = वर्तमान क्षमता (I can solve this)। 2. Could = भूतकाल क्षमता या विनम्र निवेदन (Could you help me?)। 3. May = औपचारिक अनुमति या संभावना (May I come in?)। 4. Should = नेक सलाह (You should exercise)। 5. Must = कानूनी अनिवार्यता या अति-आवश्यक नियम (You must obey traffic rules)।",
+      "examples": [
+        {
+          "word": "can speak",
+          "sound": "Modal + V1",
+          "reason": "Modal के बाद क्रिया का शुद्ध मूल रूप (never 'can speaks')"
+        },
+        {
+          "word": "must stop",
+          "sound": "Compulsion",
+          "reason": "लाल बत्ती पर रुकना कानूनी मजबूरी है"
+        },
+        {
+          "word": "May I help you?",
+          "sound": "Polite offer",
+          "reason": "विनम्रतापूर्वक सहायता की पेशकश"
+        },
+        {
+          "word": "should read books",
+          "sound": "Good advice",
+          "reason": "अच्छी सलाह देने के लिए 'should'"
+        }
+      ]
+    },
+    "4_guided_practice": {
+      "stepTitleHi": "4. निर्देशित अभ्यास (Guided Practice)",
+      "instructionHi": "वाक्यों में सही मोडल (Modal) या क्रिया रूप चुनें:",
+      "questions": [
+        {
+          "id": "md-1",
+          "sentence": "She can ___ fluently in three languages. (speaks / speak / speaking)",
+          "options": ["speaks", "speak", "speaking"],
+          "correctAnswer": "speak",
+          "explanationHi": "Modal 'can' के बाद हमेशा क्रिया का शुद्ध मूल रूप (speak) आता है, 'speaks' नहीं।"
+        },
+        {
+          "id": "md-2",
+          "sentence": "You ___ wear a seatbelt while driving a car. (may / should / must)",
+          "options": ["may", "should", "must"],
+          "correctAnswer": "must",
+          "explanationHi": "गाड़ी चलाते समय सीटबेल्ट लगाना कानूनी रूप से अनिवार्य (Compulsion) है, इसलिए 'must' आएगा।"
+        },
+        {
+          "id": "md-3",
+          "sentence": "___ you please lend me your pencil for a minute? (Could / Must / Should)",
+          "options": ["Could", "Must", "Should"],
+          "correctAnswer": "Could",
+          "explanationHi": "विनम्र निवेदन (Polite request) के लिए 'Could you please...' सबसे उपयुक्त है।"
+        }
+      ]
+    },
+    "5_free_production": {
+      "stepTitleHi": "5. स्वयं वाक्य बनाएँ (Production Task)",
+      "promptHi": "अब 'can play' या 'should respect' या 'must follow' का प्रयोग करके अपना एक वाक्य लिखें:",
+      "placeholderHi": "उदा. We should respect our teachers.",
+      "sampleSolutions": [
+        "We should respect our teachers.",
+        "She can solve this math problem easily.",
+        "Students must wear their school uniform."
+      ]
+    },
+    "6_reflection": {
+      "stepTitleHi": "6. आत्म-मूल्यांकन (Review & Reflection)",
+      "promptHi": "आज Modals (मोडल्स) के बारे में क्या याद रखना है?",
+      "recapPointsHi": [
+        "Modal + V1 (Base Form): Can, May, Must, Should के बाद कभी -s या to न लगाएँ।",
+        "Can = क्षमता | May = अनुमति व संभावना",
+        "Should = नेक सलाह | Must = कानूनी अनिवार्यता व कड़ा नियम",
+        "विनम्र निवेदन के लिए 'Could you please...' का प्रयोग करें।"
+      ]
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import {
   Settings,
   Download,
@@ -7,6 +7,9 @@ import {
   Trash2,
   ShieldCheck,
   User,
+  Volume2,
+  Sparkles,
+  CheckCircle2,
 } from 'lucide-react';
 
 interface SettingsViewProps {
@@ -16,6 +19,7 @@ interface SettingsViewProps {
   onExportBackup: () => void;
   onImportBackup: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onDeleteAllData: () => void;
+  speakText?: (text: string) => void;
 }
 
 export const SettingsView: React.FC<SettingsViewProps> = ({
@@ -25,8 +29,48 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
   onExportBackup,
   onImportBackup,
   onDeleteAllData,
+  speakText,
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [detectedVoiceName, setDetectedVoiceName] = useState<string>('');
+  const [hasIndianVoice, setHasIndianVoice] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      const detectVoice = () => {
+        const voices = window.speechSynthesis.getVoices();
+        const inVoice = voices.find(
+          (v) =>
+            v.lang === 'en-IN' ||
+            v.lang === 'en_IN' ||
+            /india|indian|neerja|heera|prabhat|ravi|rishi|veena|kavya/i.test(v.name)
+        );
+        const inBilingual = voices.find(
+          (v) =>
+            (v.lang.startsWith('hi') || v.lang === 'hi-IN') &&
+            /google|swara|kalpana|madhur/i.test(v.name)
+        );
+
+        if (inVoice) {
+          setDetectedVoiceName(inVoice.name);
+          setHasIndianVoice(true);
+        } else if (inBilingual) {
+          setDetectedVoiceName(`${inBilingual.name} (Bilingual Indian)`);
+          setHasIndianVoice(true);
+        } else {
+          const generalVoice = voices.find((v) => v.lang.startsWith('en'));
+          setDetectedVoiceName(generalVoice ? `${generalVoice.name} (en-IN mode)` : 'Standard Engine (en-IN mode)');
+          setHasIndianVoice(false);
+        }
+      };
+
+      detectVoice();
+      window.speechSynthesis.addEventListener('voiceschanged', detectVoice);
+      return () => {
+        window.speechSynthesis.removeEventListener('voiceschanged', detectVoice);
+      };
+    }
+  }, []);
 
   return (
     <div className="space-y-8 animate-in fade-in duration-150">
@@ -113,6 +157,62 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
               <div className="text-[11px] text-slate-600 font-medium">रिवीजन टॉपिक्स</div>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Voice & Indian Accent Configuration */}
+      <div className="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-7 space-y-4 shadow-xs">
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2 text-sm font-bold text-slate-900">
+            <Volume2 className="w-4 h-4 text-indigo-600" />
+            <span>भारतीय अंग्रेज़ी उच्चारण (Indian English Voice Engine)</span>
+          </div>
+          <span className="text-[11px] font-bold text-indigo-700 bg-indigo-50 border border-indigo-200/70 px-2.5 py-0.5 rounded-full flex items-center gap-1">
+            <span>🇮🇳</span>
+            <span>en-IN Priority</span>
+          </span>
+        </div>
+
+        <p className="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-3xl">
+          ELLA में उदाहरणों और वाक्यों का उच्चारण भारतीय अंग्रेज़ी एक्सेंट (Indian English) में बोला जाता है ताकि विद्यार्थियों को सहज व स्पष्ट समझ आए।
+        </p>
+
+        <div className="p-4 bg-slate-50 border border-slate-200 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div className="space-y-1">
+            <div className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+              <span>सक्रिय आवाज़: <strong className="text-indigo-700 font-mono">{detectedVoiceName || 'Indian English (en-IN)'}</strong></span>
+            </div>
+            <div className="text-[11px] text-slate-500">
+              {hasIndianVoice
+                ? 'प्राकृतिक भारतीय उच्चारण आवाज़ सक्रिय है।'
+                : 'सिस्टम भारतीय फोनेटिक्स (en-IN locale) का उपयोग कर रहा है।'}
+            </div>
+          </div>
+
+          {speakText && (
+            <button
+              type="button"
+              onClick={() => speakText("Wait here for an hour please. Welcome to ELLA Grammar Studio!")}
+              className="inline-flex items-center justify-center gap-2 px-4 py-2 text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 rounded-xl transition-all cursor-pointer shrink-0"
+              title="भारतीय उच्चारण का टेस्ट सैंपल सुनें"
+            >
+              <Volume2 className="w-3.5 h-3.5 text-indigo-600" />
+              <span>भारतीय उच्चारण टेस्ट करें (Test Accent)</span>
+            </button>
+          )}
+        </div>
+
+        <div className="p-4 bg-amber-50/70 border border-amber-200/80 rounded-2xl text-xs space-y-1 text-slate-700">
+          <div className="font-bold text-amber-950 flex items-center gap-1.5">
+            <Sparkles className="w-3.5 h-3.5 text-amber-600" />
+            <span>उच्चारण को और भी सजीव बनाने के सरल तरीके:</span>
+          </div>
+          <ul className="list-disc list-inside space-y-1 text-slate-600 pt-1 text-[11.5px]">
+            <li><strong>Microsoft Edge ब्राउज़र (सर्वाधिक अनुशंसित):</strong> Edge में 'Microsoft Neerja Natural (Indian English)' आवाज़ पहले से इन-बिल्ट मिलती है जो 100% प्राकृतिक भारतीय लहजे में बोलती है।</li>
+            <li><strong>Google Chrome (Windows):</strong> अपने Windows की <em>Settings &gt; Time &amp; Language &gt; Speech &gt; Add voices</em> में जाकर मुफ़्त <strong>"English (India)"</strong> वॉयस पैक जोड़ें (Heera/Ravi)।</li>
+            <li><strong>Android / मोबाइल:</strong> Google Play Services में Indian English (en-IN) पहले से ही सक्रिय रहता है।</li>
+          </ul>
         </div>
       </div>
 

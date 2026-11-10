@@ -133,28 +133,56 @@ export default function App() {
             utterance.voice = inFemale;
           }
         } else {
-          // Priority for English: Natural cheerful female voices (Zira, Jenny, Aria, Samantha, Google UK Female)
-          const enFemale = voices.find(
-            (v) =>
-              v.lang.startsWith('en') &&
-              /zira|jenny|aria|samantha|heera|neerja|hazel|female|natural/i.test(v.name)
-          );
-          const enIndian = voices.find((v) => v.lang === 'en-IN');
-          const enGeneral = voices.find((v) => v.lang.startsWith('en'));
+          // =========================================================================
+          // STRICT PRIORITY FOR ENGLISH: AUTHENTIC INDIAN ENGLISH ACCENT (en-IN)
+          // =========================================================================
 
-          if (enFemale) {
-            utterance.voice = enFemale;
-          } else if (enIndian) {
-            utterance.voice = enIndian;
-          } else if (enGeneral) {
-            utterance.voice = enGeneral;
+          // 1. Natural / Female Indian English Voice (Microsoft Neerja, Microsoft Heera, Veena, Kavya, Google English India)
+          const inFemale = voices.find(
+            (v) =>
+              (v.lang === 'en-IN' || v.lang === 'en_IN' || /india/i.test(v.name) || /india/i.test(v.lang)) &&
+              /female|neerja|heera|veena|kavya|google|natural/i.test(v.name)
+          );
+
+          // 2. Any Indian English Voice (Microsoft Prabhat, Microsoft Ravi, Rishi, en-IN, en_IN)
+          const inAny = voices.find(
+            (v) =>
+              v.lang === 'en-IN' ||
+              v.lang === 'en_IN' ||
+              /india|indian|neerja|heera|prabhat|ravi|rishi|veena|kavya/i.test(v.name) ||
+              /india/i.test(v.lang)
+          );
+
+          // 3. Indian Hindi voice speaking English (Google हिन्दी, Swara, Kalpana - natural Indian accent)
+          const inBilingual = voices.find(
+            (v) =>
+              (v.lang.startsWith('hi') || v.lang === 'hi-IN') &&
+              /google|swara|kalpana|madhur/i.test(v.name)
+          );
+
+          // 4. Standard English fallback ONLY if device has zero Indian voices
+          const enFallback = voices.find((v) => v.lang.startsWith('en'));
+
+          if (inFemale) {
+            utterance.voice = inFemale;
+          } else if (inAny) {
+            utterance.voice = inAny;
+          } else if (inBilingual) {
+            utterance.voice = inBilingual;
+          } else if (enFallback) {
+            utterance.voice = enFallback;
           }
+
+          // Always explicitly set locale to en-IN for Indian pronunciation & phonetics
+          utterance.lang = 'en-IN';
         }
+      } else {
+        utterance.lang = isHindi ? 'hi-IN' : 'en-IN';
       }
 
       // Cheerful, youthful Genie pitch & natural pace
-      utterance.pitch = isHindi ? 1.08 : 1.14;
-      utterance.rate = 0.96;
+      utterance.pitch = isHindi ? 1.08 : 1.04;
+      utterance.rate = 0.95;
       utterance.volume = 1;
 
       window.speechSynthesis.speak(utterance);
@@ -342,6 +370,7 @@ export default function App() {
             onExportBackup={handleExportBackup}
             onImportBackup={handleImportBackup}
             onDeleteAllData={handleDeleteAllData}
+            speakText={speakText}
           />
         )}
       </main>

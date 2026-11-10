@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Volume2, VolumeX, Sparkles, ChevronDown, ChevronUp, Mic, MicOff, Send } from 'lucide-react';
+import { Volume2, VolumeX, Sparkles, ChevronDown, ChevronUp, Mic, MicOff, Send, Zap } from 'lucide-react';
 import type { StepKey } from './PracticeCycleView';
 import type { RuleCheckResult } from '../../engines/offlineRuleEngine';
 import type { FullTopicData } from '../../data/topicLoader';
 import { getProactiveTeachingDialogue, generateTutorResponse } from '../../engines/ellaTutorEngine';
+import { askEllaAI, getStoredGeminiKey } from '../../services/geminiService';
 
 export type EllaMood = 'waving' | 'thinking' | 'cheering' | 'guiding' | 'celebrating';
 
@@ -81,6 +82,12 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
   const [autoVoice, setAutoVoice] = useState(true);
   const [userInput, setUserInput] = useState('');
   const [isListening, setIsListening] = useState(false);
+  const [isGeneratingAI, setIsGeneratingAI] = useState(false);
+  const [hasGeminiKey, setHasGeminiKey] = useState<boolean>(() => !!getStoredGeminiKey());
+
+  useEffect(() => {
+    setHasGeminiKey(!!getStoredGeminiKey());
+  }, []);
 
   // Flight spot & shifting bubble placement
   const [currentSpotIndex, setCurrentSpotIndex] = useState(0);
@@ -256,12 +263,44 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
     activeTopic,
   ]);
 
-  // Two-Way Interactive Dialogue Handler (Student asks question or sends response)
-  const handleSendMessage = (textToSend?: string) => {
+  // Two-Way Interactive Dialogue Handler (Uses Google Gemini AI if connected, else Offline Engine)
+  const handleSendMessage = async (textToSend?: string) => {
     const q = (textToSend || userInput).trim();
     if (!q) return;
 
     setUserInput('');
+    const geminiKey = getStoredGeminiKey();
+
+    if (geminiKey) {
+      setIsGeneratingAI(true);
+      const option = selectedHypothesis !== null
+        ? activeTopic.steps['2_hypothesize']?.options[selectedHypothesis]
+        : null;
+
+      const aiReply = await askEllaAI(q, {
+        studentName: displayName,
+        currentStep,
+        topicTitle: activeTopic.title || 'English Grammar',
+        goldenRule: activeTopic.steps['3_clarify']?.goldenRuleHi,
+        studentSentence,
+        errors: liveCheckResult.errors.map((e) => `${e.matchedText} -> ${e.suggestedText} (${e.explanationHi})`),
+        selectedHypothesisText: option?.textHi,
+        isHypothesisCorrect,
+      });
+
+      setIsGeneratingAI(false);
+
+      if (aiReply) {
+        setDialogue(aiReply);
+        setMood('cheering');
+        if (autoVoice) {
+          speakText(aiReply);
+        }
+        return;
+      }
+    }
+
+    // Offline Socratic ESL Brain Fallback
     const res = generateTutorResponse(q, {
       studentName: displayName,
       currentStep,
@@ -415,9 +454,15 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
               >
                 {/* Header: Name + Pause/Mute + Minimize */}
                 <div className="flex items-center justify-between gap-2 border-b border-indigo-50 pb-1">
-                  <div className="flex items-center gap-1 text-[11px] font-extrabold text-indigo-700">
+                  <div className="flex items-center gap-1.5 text-[11px] font-extrabold text-indigo-700">
                     <Sparkles className="w-3 h-3 text-amber-500 fill-amber-400" />
                     <span>एला जिनी (AI टीचर)</span>
+                    {hasGeminiKey && (
+                      <span className="text-[9.5px] font-bold text-amber-700 bg-amber-50 border border-amber-200/80 px-1.5 py-0.2 rounded-full flex items-center gap-0.5">
+                        <Zap className="w-2.5 h-2.5 text-amber-500 fill-amber-400" />
+                        <span>Gemini AI</span>
+                      </span>
+                    )}
                   </div>
 
                   <div className="flex items-center gap-1">
@@ -448,10 +493,17 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
                   </div>
                 </div>
 
-                {/* Analytical, concise teaching reply (2-3 sentences max) */}
-                <p className="text-xs sm:text-[13px] text-slate-800 font-semibold leading-snug">
-                  {dialogue}
-                </p>
+                {/* Analytical, concise teaching reply or thinking indicator */}
+                {isGeneratingAI ? (
+                  <div className="flex items-center gap-1.5 py-1 text-xs text-indigo-600 font-bold animate-pulse">
+                    <Zap className="w-3.5 h-3.5 text-amber-500 fill-amber-400" />
+                    <span>एला समझदारी से सोच रही है... ✨</span>
+                  </div>
+                ) : (
+                  <p className="text-xs sm:text-[13px] text-slate-800 font-semibold leading-snug">
+                    {dialogue}
+                  </p>
+                )}
 
                 {/* 1-Tap Socratic Quick Reply Chips: Student interacts with Ella */}
                 <div className="flex flex-wrap gap-1 pt-0.5">

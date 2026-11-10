@@ -1,4 +1,5 @@
 import { db } from '../db/dexieDb';
+import { deriveRatingFromCheckResult, computeNextFSRSState } from '../services/fsrsScheduler';
 
 export interface RuleError {
   ruleId: string;
@@ -710,26 +711,37 @@ export async function recordProductionAttempt(
     errorIds.push(errId);
   }
 
-  // 3. Update or put review state using compound index &[student_id+topic_id]
-  const accuracyScore = checkResult.isValid ? 100 : Math.max(20, 100 - checkResult.errors.length * 30);
-  const nextDueDate = new Date();
-  nextDueDate.setDate(nextDueDate.getDate() + (checkResult.isValid ? 3 : 1));
-
+  // 3. Update or put review state using FSRS algorithm & compound index &[student_id+topic_id]
   const existingReview = await db.review_states.where({ student_id: studentId, topic_id: topicId }).first();
+  const rating = deriveRatingFromCheckResult(checkResult.isValid, checkResult.errors.length, true);
+  const now = new Date();
+  const fsrs = computeNextFSRSState(existingReview, rating, now);
+  const accuracyScore = checkResult.isValid ? 100 : Math.max(20, 100 - checkResult.errors.length * 30);
+  const recallScore = checkResult.isValid ? 95 : 55;
 
   if (existingReview?.id) {
     await db.review_states.update(existingReview.id, {
       production_accuracy_score: accuracyScore,
-      rule_recall_score: checkResult.isValid ? 90 : 60,
-      next_due_date: nextDueDate,
+      rule_recall_score: recallScore,
+      stability: fsrs.stability,
+      difficulty: fsrs.difficulty,
+      reps: fsrs.reps,
+      lapses: fsrs.lapses,
+      last_review: now,
+      next_due_date: fsrs.nextDueDate,
     });
   } else {
     await db.review_states.put({
       student_id: studentId,
       topic_id: topicId,
-      rule_recall_score: checkResult.isValid ? 90 : 60,
       production_accuracy_score: accuracyScore,
-      next_due_date: nextDueDate,
+      rule_recall_score: recallScore,
+      stability: fsrs.stability,
+      difficulty: fsrs.difficulty,
+      reps: fsrs.reps,
+      lapses: fsrs.lapses,
+      last_review: now,
+      next_due_date: fsrs.nextDueDate,
     });
   }
 

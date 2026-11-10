@@ -13,10 +13,19 @@ import {
   ArrowRight,
   ShieldCheck,
   ChevronDown,
+  Brain,
+  Clock,
+  RotateCcw,
 } from 'lucide-react';
 import type { FullTopicData } from '../../data/topicLoader';
 import type { RuleCheckResult, RuleError } from '../../engines/offlineRuleEngine';
 import { db, type ReviewState } from '../../db/dexieDb';
+import {
+  type FSRSRating,
+  FSRS_RATINGS,
+  computeNextFSRSState,
+  calculateRetention,
+} from '../../services/fsrsScheduler';
 
 export type StepKey = 'use' | 'notice' | 'hypothesize' | 'clarify' | 'schedule';
 
@@ -93,6 +102,61 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
   const applyCorrection = (error: RuleError) => {
     const updated = studentSentence.replace(error.matchedText, error.suggestedText);
     setStudentSentence(updated);
+  };
+
+  const handleFSRSRating = async (rating: FSRSRating) => {
+    const now = new Date();
+    const nextFSRS = computeNextFSRSState(reviewState || undefined, rating, now);
+    const recallScores: Record<FSRSRating, number> = { 1: 50, 2: 70, 3: 90, 4: 98 };
+    const accuracy = reviewState?.production_accuracy_score ?? 100;
+
+    if (reviewState?.id) {
+      await db.review_states.update(reviewState.id, {
+        rule_recall_score: recallScores[rating],
+        stability: nextFSRS.stability,
+        difficulty: nextFSRS.difficulty,
+        reps: nextFSRS.reps,
+        lapses: nextFSRS.lapses,
+        last_review: now,
+        next_due_date: nextFSRS.nextDueDate,
+      });
+      setReviewState({
+        ...reviewState,
+        rule_recall_score: recallScores[rating],
+        stability: nextFSRS.stability,
+        difficulty: nextFSRS.difficulty,
+        reps: nextFSRS.reps,
+        lapses: nextFSRS.lapses,
+        last_review: now,
+        next_due_date: nextFSRS.nextDueDate,
+      });
+    } else {
+      const id = await db.review_states.put({
+        student_id: 1,
+        topic_id: activeTopic.topicId,
+        production_accuracy_score: accuracy,
+        rule_recall_score: recallScores[rating],
+        stability: nextFSRS.stability,
+        difficulty: nextFSRS.difficulty,
+        reps: nextFSRS.reps,
+        lapses: nextFSRS.lapses,
+        last_review: now,
+        next_due_date: nextFSRS.nextDueDate,
+      });
+      setReviewState({
+        id: id as number,
+        student_id: 1,
+        topic_id: activeTopic.topicId,
+        production_accuracy_score: accuracy,
+        rule_recall_score: recallScores[rating],
+        stability: nextFSRS.stability,
+        difficulty: nextFSRS.difficulty,
+        reps: nextFSRS.reps,
+        lapses: nextFSRS.lapses,
+        last_review: now,
+        next_due_date: nextFSRS.nextDueDate,
+      });
+    }
   };
 
   return (
@@ -563,36 +627,44 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
       )}
 
       {/* ======================================================== */}
-      {/* STEP 5: SCHEDULE & REVIEW                                */}
+      {/* STEP 5: SCHEDULE & REVIEW (FSRS Engine)                  */}
       {/* ======================================================== */}
       {currentStep === 'schedule' && (
-        <div className="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-7 space-y-5 shadow-xs">
+        <div className="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-7 space-y-6 shadow-xs">
           <div>
-            <span className="text-xs font-bold text-indigo-600 uppercase tracking-wider">
-              चरण 4 • समीक्षा स्थिति (Spaced Repetition Review)
+            <span className="text-xs font-bold text-indigo-600 uppercase tracking-wider flex items-center gap-1.5">
+              <Brain className="w-3.5 h-3.5 text-indigo-600" />
+              <span>चरण 4 • FSRS स्मृति समीक्षा (Cognitive Spaced Repetition)</span>
             </span>
-            <h3 className="text-base sm:text-lg font-bold text-slate-900 mt-0.5">
-              अगली समीक्षा की तारीख और स्थिति
+            <h3 className="text-base sm:text-lg font-bold text-slate-900 mt-1">
+              स्मृति स्थायित्व व अगली समीक्षा तालिका
             </h3>
-            <p className="text-xs text-slate-600 mt-1">
-              इस विषय के लिए निर्धारित अगली समीक्षा का समय।
+            <p className="text-xs text-slate-600 mt-0.5">
+              FSRS कलन-विधि द्वारा छात्र के अभ्यास इतिहास के आधार पर वैज्ञानिक रूप से निर्धारित समय।
             </p>
           </div>
 
-          {/* TODO: Implement full FSRS scheduler algorithm here (Stage 3 roadmap) */}
-
-          <div className="p-5 bg-indigo-50/70 border border-indigo-200 rounded-2xl space-y-3">
-            <div className="font-bold text-indigo-900 flex items-center gap-2 text-sm">
-              <Calendar className="w-4 h-4 text-indigo-600" />
-              <span>निर्धारित समीक्षा (Next Review Date):</span>
+          {/* Next Due Date Banner */}
+          <div className="p-5 bg-gradient-to-r from-indigo-50/80 via-blue-50/50 to-indigo-50/80 border border-indigo-200 rounded-2xl space-y-3">
+            <div className="font-bold text-indigo-900 flex items-center justify-between text-sm">
+              <div className="flex items-center gap-2">
+                <Calendar className="w-4 h-4 text-indigo-600" />
+                <span>आगामी समीक्षा तिथि (Next Review Date):</span>
+              </div>
+              {reviewState?.next_due_date && (
+                <span className="text-xs font-mono font-bold text-indigo-700 bg-white/80 px-2.5 py-0.5 rounded-full border border-indigo-200">
+                  लक्ष्य प्रतिधारण: 90%
+                </span>
+              )}
             </div>
 
             {isLoadingReview ? (
               <p className="text-xs text-slate-500">डेटाबेस से समीक्षा लोड हो रही है...</p>
             ) : reviewState?.next_due_date ? (
-              <div className="space-y-2">
-                <div className="text-base sm:text-lg font-bold text-slate-900 font-mono">
+              <div className="space-y-3">
+                <div className="text-xl sm:text-2xl font-bold text-slate-900 font-mono tracking-tight">
                   {new Date(reviewState.next_due_date).toLocaleDateString('hi-IN', {
+                    weekday: 'long',
                     day: 'numeric',
                     month: 'long',
                     year: 'numeric',
@@ -605,19 +677,107 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
                   </span>
                   <span aria-hidden="true" className="text-slate-300">·</span>
                   <span>
-                    नियम स्मरण (Recall):{' '}
+                    स्मृति स्कोर (Recall):{' '}
                     <strong className="text-indigo-700 font-mono">{reviewState.rule_recall_score}%</strong>
                   </span>
                 </div>
               </div>
             ) : (
               <div className="text-sm font-semibold text-slate-600">
-                अभी कोई समीक्षा तय नहीं
+                अभी कोई समीक्षा तय नहीं हुई है। वाक्य निर्माण करने पर यह स्वतः शेड्यूल होगी।
               </div>
             )}
           </div>
 
-          <div className="flex justify-end pt-4 border-t border-slate-100">
+          {/* FSRS Cognitive Metrics Grid */}
+          <div className="space-y-2">
+            <h4 className="text-xs font-bold text-slate-600 flex items-center gap-1.5">
+              <Clock className="w-3.5 h-3.5 text-indigo-500" />
+              <span>मेमोरी मेट्रिक्स (Cognitive Stability & Difficulty):</span>
+            </h4>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl space-y-1">
+                <span className="text-[11px] font-semibold text-slate-500 block">स्मृति स्थायित्व (Stability)</span>
+                <span className="text-base font-bold font-mono text-indigo-700">
+                  {reviewState?.stability ? `${reviewState.stability.toFixed(1)} दिन` : '3.5 दिन'}
+                </span>
+              </div>
+
+              <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl space-y-1">
+                <span className="text-[11px] font-semibold text-slate-500 block">अनुमानित प्रतिधारण (Recall)</span>
+                <span className="text-base font-bold font-mono text-emerald-700">
+                  {reviewState?.stability
+                    ? `${calculateRetention(reviewState.stability, 0)}%`
+                    : '95%'}
+                </span>
+              </div>
+
+              <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl space-y-1">
+                <span className="text-[11px] font-semibold text-slate-500 block">कठिनाई स्तर (Difficulty)</span>
+                <span className="text-base font-bold font-mono text-amber-700">
+                  {reviewState?.difficulty ? `${reviewState.difficulty.toFixed(1)} / 10` : '4.5 / 10'}
+                </span>
+              </div>
+
+              <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl space-y-1">
+                <span className="text-[11px] font-semibold text-slate-500 block">सफल आवृत्तियां (Reps)</span>
+                <span className="text-base font-bold font-mono text-purple-700">
+                  {reviewState?.reps ?? 1} बार
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Interactive Self-Rating Buttons */}
+          <div className="p-4 bg-slate-50/80 border border-slate-200 rounded-2xl space-y-3">
+            <div className="flex items-center justify-between text-xs">
+              <span className="font-bold text-slate-800 flex items-center gap-1.5">
+                <RotateCcw className="w-3.5 h-3.5 text-indigo-600" />
+                <span>स्व-मूल्यांकन (Self-Rate & Adjust Schedule):</span>
+              </span>
+              <span className="text-slate-500 text-[11px]">अपनी सुविधानुसार शेड्यूल बदलें</span>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+              <button
+                type="button"
+                onClick={() => handleFSRSRating(FSRS_RATINGS.AGAIN)}
+                className="p-3 rounded-xl border border-rose-200 bg-white hover:bg-rose-50 text-rose-800 font-bold text-xs flex flex-col items-center justify-center gap-1 shadow-2xs transition-all cursor-pointer"
+              >
+                <span>🔴 पुनः अभ्यास</span>
+                <span className="text-[10px] font-normal text-rose-600">कल (1 दिन)</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => handleFSRSRating(FSRS_RATINGS.HARD)}
+                className="p-3 rounded-xl border border-amber-200 bg-white hover:bg-amber-50 text-amber-800 font-bold text-xs flex flex-col items-center justify-center gap-1 shadow-2xs transition-all cursor-pointer"
+              >
+                <span>🟡 थोड़ा कठिन</span>
+                <span className="text-[10px] font-normal text-amber-600">2 दिन बाद</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => handleFSRSRating(FSRS_RATINGS.GOOD)}
+                className="p-3 rounded-xl border border-emerald-200 bg-white hover:bg-emerald-50 text-emerald-800 font-bold text-xs flex flex-col items-center justify-center gap-1 shadow-2xs transition-all cursor-pointer"
+              >
+                <span>🟢 अच्छा (Good)</span>
+                <span className="text-[10px] font-normal text-emerald-600">4 दिन बाद</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => handleFSRSRating(FSRS_RATINGS.EASY)}
+                className="p-3 rounded-xl border border-indigo-200 bg-white hover:bg-indigo-50 text-indigo-800 font-bold text-xs flex flex-col items-center justify-center gap-1 shadow-2xs transition-all cursor-pointer"
+              >
+                <span>🔵 बहुत सरल</span>
+                <span className="text-[10px] font-normal text-indigo-600">7+ दिन बाद</span>
+              </button>
+            </div>
+          </div>
+
+          <div className="flex justify-end pt-3 border-t border-slate-100">
             <button
               onClick={() => setCurrentStep('use')}
               className="inline-flex items-center gap-2 px-6 py-2.5 text-xs font-bold text-white bg-indigo-600 hover:bg-indigo-500 rounded-xl transition-all shadow-xs cursor-pointer"

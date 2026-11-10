@@ -87,6 +87,11 @@ export interface ReviewState {
   rule_recall_score: number;
   production_accuracy_score: number;
   next_due_date: Date;
+  stability?: number;
+  difficulty?: number;
+  reps?: number;
+  lapses?: number;
+  last_review?: Date;
 }
 
 export interface SessionLog {

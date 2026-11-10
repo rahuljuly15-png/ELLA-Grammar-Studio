@@ -244,6 +244,7 @@ export default function App() {
             isSavedToDb={isSavedToDb}
             savedSessionId={savedSessionId}
             speakText={speakText}
+            studentName={studentName}
             onEscapeHatch={() => {
               showToast('आसान उदाहरण लोड किया गया!');
               if (activeTopic.steps['5_free_production']?.sampleSolutions?.[0]) {

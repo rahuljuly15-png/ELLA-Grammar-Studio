@@ -105,6 +105,9 @@ export interface TranslationDictionary {
   genie_resume_btn: string;
   genie_paused_badge: string;
   genie_drag_tooltip: string;
+  genie_lamp_tuck: string;
+  genie_lamp_tip: string;
+  genie_ask_btn: string;
 
   // Learning Map
   map_title: string;
@@ -278,6 +281,9 @@ export const TRANSLATIONS: Record<Language, TranslationDictionary> = {
     genie_resume_btn: 'जिनी को पुनः शुरू करें (Resume)',
     genie_paused_badge: 'पॉज़्ड (Paused)',
     genie_drag_tooltip: 'पकड़कर स्क्रीन पर कहीं भी ले जाएँ',
+    genie_lamp_tuck: 'चिराग में समेटें (Tuck into Lamp)',
+    genie_lamp_tip: '🪔 जादुई चिराग • टैप करें और एला से बात करें',
+    genie_ask_btn: 'सवाल पूछें (Ask Ella)',
 
     // Learning Map
     map_title: 'लर्निंग मैप (21 टॉपिक्स)',
@@ -450,6 +456,9 @@ export const TRANSLATIONS: Record<Language, TranslationDictionary> = {
     genie_resume_btn: 'Resume Genie',
     genie_paused_badge: 'Paused',
     genie_drag_tooltip: 'Drag anywhere on screen',
+    genie_lamp_tuck: 'Tuck into Lamp',
+    genie_lamp_tip: '🪔 Magic Lamp • Tap to talk to Ella',
+    genie_ask_btn: 'Ask Ella',
 
     // Learning Map
     map_title: 'Learning Map (21 Topics)',

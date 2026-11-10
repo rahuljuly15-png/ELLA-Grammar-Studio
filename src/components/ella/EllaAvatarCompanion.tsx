@@ -78,7 +78,10 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
   activeTopic,
 }) => {
   const { language, t } = useLanguage();
-  const [isMinimized, setIsMinimized] = useState(false);
+  // Lamp Mode: true = collapsed into Golden Magic Lamp (चिराग), false = dialogue bubble expanded
+  const [isLampMode, setIsLampMode] = useState(false);
+  // Expandable Q&A input: false = slim compact tip, true = input field & mic visible
+  const [isQuestionOpen, setIsQuestionOpen] = useState(false);
   const [mood, setMood] = useState<EllaMood>('waving');
   const [dialogue, setDialogue] = useState<string>('');
   const [autoVoice, setAutoVoice] = useState(true);
@@ -95,7 +98,7 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
     return false;
   });
 
-  // Custom Dragged Position (allows student to grab and place avatar anywhere on screen)
+  // Custom Dragged Position of Ella the Genie directly (allows placing in exact corner)
   const [customCoords, setCustomCoords] = useState<{ x: number; y: number } | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const dragStartRef = useRef<{
@@ -131,69 +134,8 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
     }
   };
 
-  // Drag and Drop pointer handlers for the Genie Avatar & Bubble Header
-  const handleDragPointerDown = (e: React.PointerEvent) => {
-    if (e.button !== 0) return; // Left-click or touch only
-
-    const currentX = customCoords ? customCoords.x : layout.containerX;
-    const currentY = customCoords ? customCoords.y : layout.containerY;
-
-    dragStartRef.current = {
-      pointerX: e.clientX,
-      pointerY: e.clientY,
-      origX: currentX,
-      origY: currentY,
-      moved: false,
-    };
-
-    setIsDragging(true);
-    try {
-      e.currentTarget.setPointerCapture(e.pointerId);
-    } catch {}
-  };
-
-  const handleDragPointerMove = (e: React.PointerEvent) => {
-    if (!isDragging) return;
-
-    const dx = e.clientX - dragStartRef.current.pointerX;
-    const dy = e.clientY - dragStartRef.current.pointerY;
-
-    if (Math.hypot(dx, dy) > 4) {
-      dragStartRef.current.moved = true;
-    }
-
-    const containerW = isMinimized ? 110 : (layout.bubbleW + layout.genieW + 24);
-    const containerH = isMinimized ? 80 : Math.max(layout.bubbleH, layout.genieH) + 20;
-
-    const maxX = Math.max(12, screenSize.w - containerW);
-    const maxY = Math.max(70, screenSize.h - containerH);
-
-    const newX = Math.max(12, Math.min(maxX, dragStartRef.current.origX + dx));
-    const newY = Math.max(70, Math.min(maxY, dragStartRef.current.origY + dy));
-
-    setCustomCoords({ x: newX, y: newY });
-  };
-
-  const handleDragPointerUp = (e: React.PointerEvent) => {
-    if (!isDragging) return;
-    setIsDragging(false);
-
-    try {
-      e.currentTarget.releasePointerCapture(e.pointerId);
-    } catch {}
-
-    // If the student dragged the avatar, pause autonomous flight so it stays right here
-    if (dragStartRef.current.moved) {
-      setIsPaused(true);
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('ella_genie_paused', 'true');
-      }
-    }
-  };
-
-  // Flight spot & shifting bubble placement
+  // Flight spot
   const [currentSpotIndex, setCurrentSpotIndex] = useState(0);
-  const [bubblePlacement, setBubblePlacement] = useState<BubblePlacement>('left');
   const [isFlying, setIsFlying] = useState(false);
   const [flightTilt, setFlightTilt] = useState(0);
 
@@ -220,45 +162,106 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
   // Current spot configuration
   const currentSpot = SPOTS[currentSpotIndex % SPOTS.length];
 
-  // Dynamic calculations for Group Container (clamp strictly to viewport boundaries)
-  const layout = useMemo(() => {
-    const w = screenSize.w;
-    const h = screenSize.h;
-    const isSmall = w < 640;
+  // Exact coordinates of Ella the Genie & Lamp
+  const geniePos = useMemo(() => {
+    if (customCoords) return customCoords;
+    return currentSpot.getGenieCoords(screenSize.w, screenSize.h);
+  }, [customCoords, currentSpot, screenSize]);
 
-    const genieW = isSmall ? 68 : 76;
-    const genieH = isSmall ? 82 : 90;
-    const bubbleW = isSmall ? 280 : 330;
-    const bubbleH = 110;
+  // Dynamic calculations for Dialogue Bubble:
+  // Automatically switches side (Right or Left) based on Ella's screen location!
+  const bubbleLayout = useMemo(() => {
+    const isSmall = screenSize.w < 640;
+    const bubbleW = isSmall ? Math.min(screenSize.w - 100, 270) : 310;
+    const isLeft = geniePos.x < screenSize.w / 2;
 
-    const geniePos = currentSpot.getGenieCoords(w, h);
+    // If Ella is on the left half of the screen, bubble MUST be on her RIGHT
+    // If Ella is on the right half of the screen, bubble MUST be on her LEFT
+    let bubbleX = isLeft
+      ? geniePos.x + 86
+      : geniePos.x - bubbleW - 14;
 
-    let containerX = geniePos.x;
-    let containerY = geniePos.y;
+    // Clamp strictly within viewport borders so it never hangs off or blocks the edge
+    bubbleX = Math.max(10, Math.min(screenSize.w - bubbleW - 12, bubbleX));
 
-    if (bubblePlacement === 'left') {
-      containerX = Math.max(16, geniePos.x - bubbleW - 14);
-      containerY = Math.max(75, Math.min(geniePos.y, h - Math.max(genieH, bubbleH) - 16));
-    } else if (bubblePlacement === 'right') {
-      containerX = Math.max(16, Math.min(geniePos.x, w - bubbleW - genieW - 24));
-      containerY = Math.max(75, Math.min(geniePos.y, h - Math.max(genieH, bubbleH) - 16));
-    } else if (bubblePlacement === 'top') {
-      containerX = Math.max(16, Math.min(geniePos.x - bubbleW * 0.4, w - bubbleW - 16));
-      containerY = Math.max(75, geniePos.y - bubbleH - 14);
-    } else if (bubblePlacement === 'bottom') {
-      containerX = Math.max(16, Math.min(geniePos.x - bubbleW * 0.4, w - bubbleW - 16));
-      containerY = Math.max(75, Math.min(geniePos.y, h - bubbleH - genieH - 24));
+    // Vertical placement: align smoothly with Ella
+    const isNearTop = geniePos.y < 160;
+    const isNearBottom = geniePos.y > screenSize.h - 220;
+
+    let bubbleY = geniePos.y;
+    if (isNearTop) {
+      bubbleY = Math.max(75, Math.min(geniePos.y, screenSize.h - 200));
+    } else if (isNearBottom) {
+      bubbleY = Math.max(75, geniePos.y - 70);
+    } else {
+      bubbleY = Math.max(75, Math.min(geniePos.y - 15, screenSize.h - 200));
     }
 
     return {
-      containerX,
-      containerY,
+      isLeft,
+      bubbleX,
+      bubbleY,
       bubbleW,
-      bubbleH,
-      genieW,
-      genieH,
     };
-  }, [currentSpot, bubblePlacement, screenSize]);
+  }, [geniePos, screenSize]);
+
+  // Drag and Drop pointer handlers: student grabs Ella directly to place her anywhere
+  const handleDragPointerDown = (e: React.PointerEvent) => {
+    if (e.button !== 0) return; // Left-click or touch only
+
+    dragStartRef.current = {
+      pointerX: e.clientX,
+      pointerY: e.clientY,
+      origX: geniePos.x,
+      origY: geniePos.y,
+      moved: false,
+    };
+
+    setIsDragging(true);
+    try {
+      e.currentTarget.setPointerCapture(e.pointerId);
+    } catch {}
+  };
+
+  const handleDragPointerMove = (e: React.PointerEvent) => {
+    if (!isDragging) return;
+
+    const dx = e.clientX - dragStartRef.current.pointerX;
+    const dy = e.clientY - dragStartRef.current.pointerY;
+
+    if (Math.hypot(dx, dy) > 4) {
+      dragStartRef.current.moved = true;
+    }
+
+    const genieW = 80;
+    const genieH = 145;
+
+    // Allows dragging all the way to the very edge/corner (10px from edge!)
+    const maxX = Math.max(10, screenSize.w - genieW - 10);
+    const maxY = Math.max(75, screenSize.h - genieH - 10);
+
+    const newX = Math.max(10, Math.min(maxX, dragStartRef.current.origX + dx));
+    const newY = Math.max(75, Math.min(maxY, dragStartRef.current.origY + dy));
+
+    setCustomCoords({ x: newX, y: newY });
+  };
+
+  const handleDragPointerUp = (e: React.PointerEvent) => {
+    if (!isDragging) return;
+    setIsDragging(false);
+
+    try {
+      e.currentTarget.releasePointerCapture(e.pointerId);
+    } catch {}
+
+    // If the student moved the avatar, pause autonomous flight so it stays right here
+    if (dragStartRef.current.moved) {
+      setIsPaused(true);
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('ella_genie_paused', 'true');
+      }
+    }
+  };
 
   // Real-time Mouse / Touch Eye Tracking
   useEffect(() => {
@@ -307,12 +310,7 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
     const tilt = nextCoords.x > currentCoords.x ? 8 : -8;
     setFlightTilt(tilt);
 
-    // Pick a safe relative bubble placement for the new spot (Right, Left, Top, or Bottom)
-    const placements = nextSpot.validPlacements;
-    const nextPlacement = placements[Math.floor(Math.random() * placements.length)];
-
     setCurrentSpotIndex(nextIndex);
-    setBubblePlacement(nextPlacement);
 
     setTimeout(() => {
       setIsFlying(false);
@@ -498,61 +496,206 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
     }
   }, [currentStep, language]);
 
-  // Render cartoon speech bubble graduated comic dots
-  const renderComicDots = () => {
-    if (bubblePlacement === 'left') {
-      return (
-        <div className="flex items-center gap-1 shrink-0">
-          <span className="w-2.5 h-2.5 rounded-full bg-white border-2 border-indigo-200 shadow-2xs" />
-          <span className="w-2 h-2 rounded-full bg-white border-2 border-indigo-200" />
-          <span className="w-1.5 h-1.5 rounded-full bg-white border-2 border-indigo-200" />
-        </div>
-      );
-    }
-    if (bubblePlacement === 'right') {
-      return (
-        <div className="flex items-center gap-1 shrink-0">
-          <span className="w-1.5 h-1.5 rounded-full bg-white border-2 border-indigo-200" />
-          <span className="w-2 h-2 rounded-full bg-white border-2 border-indigo-200" />
-          <span className="w-2.5 h-2.5 rounded-full bg-white border-2 border-indigo-200 shadow-2xs" />
-        </div>
-      );
-    }
-    if (bubblePlacement === 'top') {
-      return (
-        <div className="flex flex-col items-center gap-0.5 shrink-0">
-          <span className="w-2.5 h-2.5 rounded-full bg-white border-2 border-indigo-200 shadow-2xs" />
-          <span className="w-2 h-2 rounded-full bg-white border-2 border-indigo-200" />
-          <span className="w-1.5 h-1.5 rounded-full bg-white border-2 border-indigo-200" />
-        </div>
-      );
-    }
-    return (
-      <div className="flex flex-col items-center gap-0.5 shrink-0">
-        <span className="w-1.5 h-1.5 rounded-full bg-white border-2 border-indigo-200" />
-        <span className="w-2 h-2 rounded-full bg-white border-2 border-indigo-200" />
-        <span className="w-2.5 h-2.5 rounded-full bg-white border-2 border-indigo-200 shadow-2xs" />
-      </div>
-    );
-  };
+  // Render cartoon speech bubble comic dots pointing towards Ella
+  const renderComicDotsLeft = () => (
+    <div className="flex items-center gap-1 shrink-0 mr-1.5">
+      <span className="w-1.5 h-1.5 rounded-full bg-white border-2 border-indigo-200" />
+      <span className="w-2 h-2 rounded-full bg-white border-2 border-indigo-200" />
+      <span className="w-2.5 h-2.5 rounded-full bg-white border-2 border-indigo-200 shadow-2xs" />
+    </div>
+  );
 
-  const getFlexClass = () => {
-    if (bubblePlacement === 'left') return 'flex-row items-center';
-    if (bubblePlacement === 'right') return 'flex-row-reverse items-center';
-    if (bubblePlacement === 'top') return 'flex-col items-center';
-    return 'flex-col-reverse items-center';
-  };
-
-  const targetX = customCoords ? customCoords.x : layout.containerX;
-  const targetY = customCoords ? customCoords.y : layout.containerY;
+  const renderComicDotsRight = () => (
+    <div className="flex items-center gap-1 shrink-0 ml-1.5">
+      <span className="w-2.5 h-2.5 rounded-full bg-white border-2 border-indigo-200 shadow-2xs" />
+      <span className="w-2 h-2 rounded-full bg-white border-2 border-indigo-200" />
+      <span className="w-1.5 h-1.5 rounded-full bg-white border-2 border-indigo-200" />
+    </div>
+  );
 
   return (
     <div className="fixed inset-0 pointer-events-none z-40 overflow-hidden select-none">
-      {/* Gliding / Draggable Genie Container: shifts around screen every 90s, or dragged by student */}
+      {/* ======================================================== */}
+      {/* 1. DYNAMIC AUTO-ORIENTED SPEECH BUBBLE                   */}
+      {/* Automatically opens to Right or Left based on Ella's pos */}
+      {/* ======================================================== */}
+      <AnimatePresence>
+        {!isLampMode && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{
+              opacity: 1,
+              scale: 1,
+              x: bubbleLayout.bubbleX,
+              y: bubbleLayout.bubbleY,
+            }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{
+              duration: isDragging ? 0 : 0.25,
+              ease: 'easeOut',
+            }}
+            style={{ left: 0, top: 0 }}
+            className={`absolute pointer-events-auto z-50 flex items-center ${
+              bubbleLayout.isLeft ? 'flex-row' : 'flex-row-reverse'
+            }`}
+          >
+            {/* Comic dots pointing towards Ella */}
+            {bubbleLayout.isLeft ? renderComicDotsLeft() : renderComicDotsRight()}
+
+            {/* Bubbly Cartoon Oval Speech Card (Compact & Auto-adjusting) */}
+            <div
+              style={{ width: bubbleLayout.bubbleW }}
+              className="relative px-3.5 sm:px-4 py-2.5 sm:py-3 bg-white/95 backdrop-blur-md border-2 border-indigo-200/90 rounded-[26px] sm:rounded-[30px] shadow-xl shadow-indigo-100/70 space-y-2 max-w-[320px]"
+            >
+              {/* Header: Name + Pause + Auto-Voice + Tuck into Lamp */}
+              <div className="flex items-center justify-between gap-1.5 border-b border-indigo-50 pb-1 select-none">
+                <div className="flex items-center gap-1 text-[11px] font-extrabold text-indigo-700">
+                  <Sparkles className="w-3 h-3 text-amber-500 fill-amber-400 shrink-0" />
+                  <span className="truncate">{t('genie_title')}</span>
+                  {hasGeminiKey && (
+                    <span className="text-[9px] font-bold text-amber-700 bg-amber-50 border border-amber-200/80 px-1 py-0.2 rounded-full flex items-center gap-0.5 shrink-0">
+                      <Zap className="w-2.5 h-2.5 text-amber-500 fill-amber-400" />
+                      <span>AI</span>
+                    </span>
+                  )}
+                </div>
+
+                <div className="flex items-center gap-1 shrink-0">
+                  {/* Pause / Resume Button */}
+                  <button
+                    type="button"
+                    onClick={handleTogglePause}
+                    className={`p-1 rounded-full transition-all cursor-pointer text-[10px] font-bold flex items-center gap-0.5 ${
+                      isPaused
+                        ? 'bg-amber-100 text-amber-900 border border-amber-300'
+                        : 'text-slate-400 hover:text-slate-700 hover:bg-slate-100'
+                    }`}
+                    title={isPaused ? t('genie_resume_btn') : t('genie_pause_btn')}
+                  >
+                    {isPaused ? <Play className="w-3 h-3 text-amber-700 fill-amber-700" /> : <Pause className="w-3 h-3" />}
+                  </button>
+
+                  {/* Proactive Auto-Voice Toggle */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const next = !autoVoice;
+                      setAutoVoice(next);
+                      if (next && !isPaused) speakText(dialogue);
+                    }}
+                    className={`p-1 rounded-full transition-colors cursor-pointer text-[10px] font-bold flex items-center gap-0.5 ${
+                      autoVoice ? 'text-indigo-600 bg-indigo-50' : 'text-slate-400 hover:text-slate-600'
+                    }`}
+                    title={autoVoice ? "टीचिंग पॉज़ / म्यूट करें" : "टीचिंग आवाज़ चालू करें"}
+                  >
+                    {autoVoice ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}
+                  </button>
+
+                  {/* Tuck into Lamp Button (User Request: Collapse box into Magic Lamp) */}
+                  <button
+                    type="button"
+                    onClick={() => setIsLampMode(true)}
+                    className="inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-extrabold text-amber-900 bg-amber-50 hover:bg-amber-100 border border-amber-300 rounded-full transition-all cursor-pointer shadow-2xs"
+                    title={t('genie_lamp_tuck')}
+                  >
+                    <span>🪔</span>
+                    <span className="hidden sm:inline">{language === 'en' ? 'Lamp' : 'चिराग'}</span>
+                    <span className="text-slate-400 font-bold ml-0.5">✕</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Analytical, concise teaching reply or thinking indicator */}
+              {isGeneratingAI ? (
+                <div className="flex items-center gap-1.5 py-1 text-xs text-indigo-600 font-bold animate-pulse">
+                  <Zap className="w-3.5 h-3.5 text-amber-500 fill-amber-400" />
+                  <span>{t('genie_thinking')} ✨</span>
+                </div>
+              ) : (
+                <p className="text-xs sm:text-[12.5px] text-slate-800 font-semibold leading-snug">
+                  {dialogue}
+                </p>
+              )}
+
+              {/* Action footer: 1-2 Quick Reaction Chips + Ask Ella button */}
+              <div className="flex flex-wrap items-center justify-between gap-1 pt-1 border-t border-slate-100">
+                <div className="flex flex-wrap gap-1">
+                  {quickChips.slice(0, 2).map((chip, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() => handleSendMessage(chip)}
+                      className="px-2 py-0.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-full text-[10px] font-medium transition-colors cursor-pointer"
+                    >
+                      {chip}
+                    </button>
+                  ))}
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setIsQuestionOpen(!isQuestionOpen)}
+                  className="text-[10px] font-bold text-indigo-600 hover:text-indigo-800 flex items-center gap-0.5 px-1.5 py-0.5 rounded-md hover:bg-indigo-50/80 cursor-pointer"
+                >
+                  <span>💬 {t('genie_ask_btn')}</span>
+                </button>
+              </div>
+
+              {/* Expandable Two-Way Input: Speak or Type to Ella (Only when opened) */}
+              {isQuestionOpen && (
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    handleSendMessage();
+                  }}
+                  className="flex items-center gap-1 pt-1.5 border-t border-indigo-50 animate-in fade-in duration-150"
+                >
+                  <input
+                    id="ella-user-input"
+                    type="text"
+                    value={userInput}
+                    onChange={(e) => setUserInput(e.target.value)}
+                    placeholder={t('genie_input_placeholder')}
+                    className="flex-1 px-2.5 py-1 bg-slate-50 border border-slate-200 rounded-full text-[11px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-indigo-400"
+                  />
+
+                  {/* Speech Recognition Mic */}
+                  <button
+                    type="button"
+                    onClick={handleToggleVoiceInput}
+                    className={`p-1 rounded-full transition-colors cursor-pointer shrink-0 ${
+                      isListening
+                        ? 'bg-rose-500 text-white animate-pulse'
+                        : 'text-indigo-600 hover:bg-indigo-50'
+                    }`}
+                    title={isListening ? "सुन रही हूँ..." : "बोलकर पूछें"}
+                  >
+                    {isListening ? <MicOff className="w-3 h-3" /> : <Mic className="w-3 h-3" />}
+                  </button>
+
+                  <button
+                    type="submit"
+                    disabled={!userInput.trim()}
+                    className="p-1 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-40 text-white rounded-full transition-all cursor-pointer shrink-0"
+                    title="भेजें"
+                  >
+                    <Send className="w-2.5 h-2.5" />
+                  </button>
+                </form>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ======================================================== */}
+      {/* 2. THE MAGICAL GIRL GENIE & HER GOLDEN MAGIC LAMP (चिराग) */}
+      {/* Directly draggable to any corner of the screen           */}
+      {/* ======================================================== */}
       <motion.div
         animate={{
-          x: targetX,
-          y: targetY,
+          x: geniePos.x,
+          y: geniePos.y,
         }}
         transition={
           isDragging
@@ -562,179 +705,9 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
                 ease: [0.34, 1.15, 0.64, 1],
               }
         }
-        className={`absolute pointer-events-auto flex ${getFlexClass()} gap-2`}
+        style={{ left: 0, top: 0 }}
+        className="absolute pointer-events-auto z-40 select-none"
       >
-        {/* Cartoon Oval Speech Bubble with 2-Way Interactive AI Tutoring */}
-        <AnimatePresence>
-          {!isMinimized && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.85 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.85 }}
-              transition={{ duration: 0.25 }}
-              className="flex items-center gap-1.5"
-            >
-              {bubblePlacement === 'right' && renderComicDots()}
-
-              {/* Bubbly Cartoon Oval Container */}
-              <div
-                style={{ width: layout.bubbleW }}
-                className="relative px-4 sm:px-5 py-3 sm:py-3.5 bg-white/95 backdrop-blur-md border-2 border-indigo-200/90 rounded-[30px] sm:rounded-[36px] shadow-xl shadow-indigo-100/70 space-y-2"
-              >
-                {/* Header: Name + Drag Handle + Pause/Resume + Auto-Voice + Minimize */}
-                <div className="flex items-center justify-between gap-2 border-b border-indigo-50 pb-1 select-none">
-                  <div className="flex items-center gap-1.5 text-[11px] font-extrabold text-indigo-700">
-                    <Sparkles className="w-3 h-3 text-amber-500 fill-amber-400 shrink-0" />
-                    <span className="truncate">{t('genie_title')}</span>
-                    {hasGeminiKey && (
-                      <span className="text-[9px] font-bold text-amber-700 bg-amber-50 border border-amber-200/80 px-1 py-0.2 rounded-full flex items-center gap-0.5 shrink-0">
-                        <Zap className="w-2.5 h-2.5 text-amber-500 fill-amber-400" />
-                        <span>Gemini AI</span>
-                      </span>
-                    )}
-
-                    {/* Drag Handle in Bubble Header */}
-                    <span
-                      onPointerDown={handleDragPointerDown}
-                      onPointerMove={handleDragPointerMove}
-                      onPointerUp={handleDragPointerUp}
-                      onPointerCancel={handleDragPointerUp}
-                      className="cursor-grab active:cursor-grabbing text-slate-400 hover:text-indigo-600 p-1 rounded-md touch-none hover:bg-indigo-50/70 transition-colors ml-0.5 shrink-0"
-                      title={t('genie_drag_tooltip')}
-                    >
-                      <Move className="w-3 h-3" />
-                    </span>
-                  </div>
-
-                  <div className="flex items-center gap-1 shrink-0">
-                    {/* Pause / Resume Button (User Request: Pause Gemini Avatar) */}
-                    <button
-                      type="button"
-                      onClick={handleTogglePause}
-                      className={`px-2 py-0.5 rounded-full transition-all cursor-pointer text-[10px] font-bold flex items-center gap-1 ${
-                        isPaused
-                          ? 'bg-amber-100 text-amber-900 border border-amber-300 shadow-2xs'
-                          : 'text-slate-500 hover:text-slate-800 hover:bg-slate-100 border border-transparent'
-                      }`}
-                      title={isPaused ? t('genie_resume_btn') : t('genie_pause_btn')}
-                    >
-                      {isPaused ? (
-                        <>
-                          <Play className="w-3 h-3 text-amber-700 fill-amber-700" />
-                          <span>{t('genie_paused_badge')}</span>
-                        </>
-                      ) : (
-                        <>
-                          <Pause className="w-3 h-3 text-slate-500" />
-                          <span className="hidden sm:inline">{language === 'en' ? 'Pause' : 'पॉज़'}</span>
-                        </>
-                      )}
-                    </button>
-
-                    {/* Proactive Auto-Voice Toggle */}
-                    <button
-                      type="button"
-                      onClick={() => {
-                        const next = !autoVoice;
-                        setAutoVoice(next);
-                        if (next && !isPaused) speakText(dialogue);
-                      }}
-                      className={`p-1 rounded-full transition-colors cursor-pointer text-[10px] font-bold flex items-center gap-0.5 ${
-                        autoVoice ? 'text-indigo-600 bg-indigo-50' : 'text-slate-400 hover:text-slate-600'
-                      }`}
-                      title={autoVoice ? "टीचिंग पॉज़ / म्यूट करें" : "टीचिंग आवाज़ चालू करें"}
-                    >
-                      {autoVoice ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => setIsMinimized(true)}
-                      className="p-1 text-slate-400 hover:text-slate-600 rounded-full transition-colors cursor-pointer"
-                      title="मिनीमाइज़ करें"
-                    >
-                      <ChevronDown className="w-3.5 h-3.5" />
-                    </button>
-                  </div>
-                </div>
-
-                {/* Analytical, concise teaching reply or thinking indicator */}
-                {isGeneratingAI ? (
-                  <div className="flex items-center gap-1.5 py-1 text-xs text-indigo-600 font-bold animate-pulse">
-                    <Zap className="w-3.5 h-3.5 text-amber-500 fill-amber-400" />
-                    <span>{t('genie_thinking')} ✨</span>
-                  </div>
-                ) : (
-                  <p className="text-xs sm:text-[13px] text-slate-800 font-semibold leading-snug">
-                    {dialogue}
-                  </p>
-                )}
-
-                {/* 1-Tap Socratic Quick Reply Chips: Student interacts with Ella */}
-                <div className="flex flex-wrap gap-1 pt-0.5">
-                  {quickChips.map((chip, idx) => (
-                    <button
-                      key={idx}
-                      type="button"
-                      onClick={() => handleSendMessage(chip)}
-                      className="px-2 py-0.5 bg-indigo-50/80 hover:bg-indigo-100 text-indigo-700 hover:text-indigo-900 border border-indigo-200/60 rounded-full text-[10.5px] font-medium transition-colors cursor-pointer"
-                    >
-                      {chip}
-                    </button>
-                  ))}
-                </div>
-
-                {/* Two-Way Input: Speak (Mic) or Type to Ella directly! */}
-                <form
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    handleSendMessage();
-                  }}
-                  className="flex items-center gap-1.5 pt-1 border-t border-slate-100"
-                >
-                  <input
-                    id="ella-user-input"
-                    type="text"
-                    value={userInput}
-                    onChange={(e) => setUserInput(e.target.value)}
-                    placeholder={t('genie_input_placeholder')}
-                    className="flex-1 px-3 py-1 bg-slate-50 border border-slate-200 rounded-full text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-indigo-400"
-                  />
-
-                  {/* Speech Recognition Mic */}
-                  <button
-                    type="button"
-                    onClick={handleToggleVoiceInput}
-                    className={`p-1.5 rounded-full transition-colors cursor-pointer shrink-0 ${
-                      isListening
-                        ? 'bg-rose-500 text-white animate-pulse'
-                        : 'text-indigo-600 hover:bg-indigo-50'
-                    }`}
-                    title={isListening ? "सुन रही हूँ... (रोकने के लिए क्लिक करें)" : "बोलकर पूछें (माइक दबाएँ)"}
-                  >
-                    {isListening ? <MicOff className="w-3.5 h-3.5" /> : <Mic className="w-3.5 h-3.5" />}
-                  </button>
-
-                  <button
-                    type="submit"
-                    disabled={!userInput.trim()}
-                    className="p-1.5 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-40 text-white rounded-full transition-all cursor-pointer shrink-0"
-                    title="भेजें"
-                  >
-                    <Send className="w-3 h-3" />
-                  </button>
-                </form>
-              </div>
-
-              {bubblePlacement === 'left' && renderComicDots()}
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* Vertical Comic Dots if placed Top or Bottom */}
-        {!isMinimized && (bubblePlacement === 'top' || bubblePlacement === 'bottom') && renderComicDots()}
-
-        {/* The Animated Magical Girl Genie Avatar with Real-Time Eye Tracking & Drag */}
         <motion.div
           ref={avatarRef}
           onPointerDown={handleDragPointerDown}
@@ -749,40 +722,16 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
           whileTap={{ scale: 0.94 }}
           onClick={() => {
             if (dragStartRef.current.moved) return;
-            if (isMinimized) {
-              setIsMinimized(false);
-            } else {
-              handleSendMessage(language === 'en' ? 'Give me a magic tip' : 'मुझे एक जादुई टिप दो');
-            }
+            // Clicking Ella or her Lamp toggles the dialogue bubble open / closed!
+            setIsLampMode(!isLampMode);
           }}
-          className={`pointer-events-auto relative group flex items-center shrink-0 touch-none select-none ${
+          className={`relative group flex flex-col items-center shrink-0 touch-none select-none ${
             isDragging ? 'cursor-grabbing' : 'cursor-grab'
           }`}
-          title={`${t('genie_drag_tooltip')} • ${
-            isMinimized
-              ? language === 'en' ? 'Click to talk to Ella' : 'एला जिनी से बात करें (क्लिक करें)'
-              : language === 'en' ? 'Tap for a magic tip!' : 'टैप करें और जादुई टिप पाएँ!'
-          }`}
+          title={`${t('genie_drag_tooltip')} • ${t('genie_lamp_tip')}`}
         >
-          {isMinimized && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.85 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="px-3 py-1 bg-white border border-indigo-200 shadow-md rounded-full text-xs font-bold text-indigo-700 flex items-center gap-1.5 mr-2"
-            >
-              <Sparkles className="w-3 h-3 text-amber-500" />
-              <span>{language === 'en' ? 'Ella' : 'एला'}</span>
-              {isPaused && (
-                <span className="text-[10px] bg-amber-100 text-amber-800 px-1.5 py-0.2 rounded-full font-bold">
-                  ⏸ {t('genie_paused_badge')}
-                </span>
-              )}
-              <ChevronUp className="w-3 h-3 text-slate-400" />
-            </motion.div>
-          )}
-
           {/* Paused floating status badge */}
-          {isPaused && !isMinimized && (
+          {isPaused && (
             <span
               className="absolute -top-1.5 -left-1.5 z-20 px-1.5 py-0.5 bg-amber-500 border-2 border-white rounded-full text-[9px] font-extrabold text-white flex items-center gap-0.5 shadow-xs"
               title={t('genie_paused_badge')}
@@ -792,23 +741,23 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
           )}
 
           {/* Hover Drag Helper Pill */}
-          <span className="absolute -bottom-3 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-indigo-700/95 text-white text-[9px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1 shadow-sm whitespace-nowrap pointer-events-none z-20">
+          <span className="absolute -top-4 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-indigo-700/95 text-white text-[9px] font-bold px-2 py-0.5 rounded-full flex items-center gap-1 shadow-sm whitespace-nowrap pointer-events-none z-20">
             <Move className="w-2.5 h-2.5" />
             <span>{language === 'en' ? 'Drag me' : 'पकड़कर घुमाएँ'}</span>
           </span>
 
           {/* Floating Genie Glow Container with Sinusoidal Hover */}
           <motion.div
-            animate={{ y: [0, -6, 0] }}
+            animate={{ y: [0, -5, 0] }}
             transition={{
               repeat: Infinity,
               duration: 2.8,
               ease: 'easeInOut',
             }}
-            className="relative w-16 h-18 sm:w-18 sm:h-20 drop-shadow-xl overflow-visible shrink-0"
+            className="relative w-18 h-24 sm:w-20 sm:h-26 drop-shadow-xl overflow-visible shrink-0"
           >
-            {/* Animated SVG Girl Genie (100% visible, never disappears) */}
-            <svg viewBox="0 0 100 115" className="w-full h-full overflow-visible">
+            {/* Animated SVG Girl Genie + Golden Magic Lamp (चिराग) */}
+            <svg viewBox="0 0 100 148" className="w-full h-full overflow-visible">
               <defs>
                 <linearGradient id="genieHairGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                   <stop offset="0%" stopColor="#C084FC" />
@@ -824,27 +773,34 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
                 <linearGradient id="genieTailGrad" x1="0%" y1="0%" x2="100%" y2="100%">
                   <stop offset="0%" stopColor="#818CF8" stopOpacity="0.95" />
                   <stop offset="40%" stopColor="#A855F7" stopOpacity="0.85" />
-                  <stop offset="100%" stopColor="#EC4899" stopOpacity="0.1" />
+                  <stop offset="100%" stopColor="#EC4899" stopOpacity="0.8" />
                 </linearGradient>
 
-                <linearGradient id="genieGoldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#FDE047" />
-                  <stop offset="100%" stopColor="#D97706" />
+                {/* Burnished Brass Gold for Magic Lamp (जादुई चिराग) */}
+                <linearGradient id="magicLampGoldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#FEF08A" />
+                  <stop offset="25%" stopColor="#F59E0B" />
+                  <stop offset="70%" stopColor="#D97706" />
+                  <stop offset="100%" stopColor="#78350F" />
                 </linearGradient>
+
+                <filter id="lampGlow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feDropShadow dx="0" dy="2" stdDeviation="3" floodColor="#F59E0B" floodOpacity="0.45" />
+                </filter>
               </defs>
 
-              {/* Floating Magical Cloud/Smoke Tail with dynamic wave */}
+              {/* Floating Magical Cloud/Smoke Tail emerging out of Lamp Spout (27, 108) */}
               <motion.path
-                d="M 50 78 C 42 85 36 94 44 102 C 52 110 66 108 58 114 C 52 118 42 116 38 120"
+                d="M 50 78 C 42 86 36 94 44 102 C 48 106 32 108 27 108"
                 fill="none"
                 stroke="url(#genieTailGrad)"
-                strokeWidth="9"
+                strokeWidth="8.5"
                 strokeLinecap="round"
                 animate={{
                   d: [
-                    "M 50 78 C 42 85 36 94 44 102 C 52 110 66 108 58 114 C 52 118 42 116 38 120",
-                    "M 50 78 C 58 85 64 94 56 102 C 48 110 34 108 42 114 C 48 118 58 116 62 120",
-                    "M 50 78 C 42 85 36 94 44 102 C 52 110 66 108 58 114 C 52 118 42 116 38 120",
+                    "M 50 78 C 42 86 36 94 44 102 C 48 106 32 108 27 108",
+                    "M 50 78 C 58 86 60 94 52 102 C 46 106 34 108 27 108",
+                    "M 50 78 C 42 86 36 94 44 102 C 48 106 32 108 27 108",
                   ],
                 }}
                 transition={{
@@ -871,7 +827,7 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
               {/* Genie Vest & Torso */}
               <path d="M 40 60 L 60 60 L 56 78 L 44 78 Z" fill="#6366F1" />
               {/* Golden Belt */}
-              <rect x="42" y="74" width="16" height="4" rx="2" fill="url(#genieGoldGrad)" />
+              <rect x="42" y="74" width="16" height="4" rx="2" fill="url(#magicLampGoldGrad)" />
 
               {/* Arms / Hand Gestures */}
               {mood === 'waving' ? (
@@ -916,7 +872,7 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
               <path d="M 71 32 C 74 40 72 50 70 52 C 68 46 69 38 69 32 Z" fill="url(#genieHairGrad)" />
 
               {/* Golden Tiara with Ruby Gem */}
-              <polygon points="50,11 44,18 56,18" fill="url(#genieGoldGrad)" />
+              <polygon points="50,11 44,18 56,18" fill="url(#magicLampGoldGrad)" />
               <circle cx="50" cy="16" r="2.5" fill="#EF4444" />
 
               {/* Cursor Eye Tracking */}
@@ -955,6 +911,60 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
               {/* Smiling Mouth */}
               <path d="M 46 51 Q 50 54 54 51" stroke="#E11D48" strokeWidth="1.8" fill="none" strokeLinecap="round" />
 
+              {/* ======================================================== */}
+              {/* 🪔 THE GOLDEN MAGIC LAMP (जादुई चिराग) UNDER THE GENIE  */}
+              {/* ======================================================== */}
+              <g id="magicLampGroup" filter="url(#lampGlow)" className="transition-transform group-hover:scale-105">
+                {/* Lamp Base Pedestal */}
+                <ellipse cx="50" cy="140" rx="14" ry="4" fill="url(#magicLampGoldGrad)" stroke="#78350F" strokeWidth="1" />
+                <path d="M 45 135 L 47 140 L 53 140 L 55 135 Z" fill="url(#magicLampGoldGrad)" stroke="#78350F" strokeWidth="0.8" />
+
+                {/* Lamp Main Pot Belly */}
+                <path
+                  d="M 34 125 C 32 133 40 137 50 137 C 60 137 68 133 66 125 C 64 119 36 119 34 125 Z"
+                  fill="url(#magicLampGoldGrad)"
+                  stroke="#78350F"
+                  strokeWidth="1.2"
+                />
+
+                {/* Lamp Spout curving UP and LEFT towards the smoke tail */}
+                <path
+                  d="M 36 123 C 28 121 21 115 25 108 C 28 108 32 113 40 120 Z"
+                  fill="url(#magicLampGoldGrad)"
+                  stroke="#78350F"
+                  strokeWidth="1"
+                />
+                {/* Spout Lip / Orifice where smoke emerges */}
+                <ellipse cx="26" cy="108" rx="2.8" ry="1.4" fill="#78350F" />
+
+                {/* Lamp Handle (Right Side ornate loop) */}
+                <path
+                  d="M 64 122 C 75 117 78 129 65 131"
+                  fill="none"
+                  stroke="url(#magicLampGoldGrad)"
+                  strokeWidth="3.2"
+                  strokeLinecap="round"
+                />
+
+                {/* Lamp Lid & Ruby Finial */}
+                <ellipse cx="50" cy="121" rx="7" ry="2.2" fill="url(#magicLampGoldGrad)" stroke="#78350F" strokeWidth="0.8" />
+                <circle cx="50" cy="117" r="2.5" fill="#EF4444" stroke="#78350F" strokeWidth="0.6" />
+
+                {/* Glint and golden sheen highlight */}
+                <path d="M 40 127 Q 50 130 60 127" stroke="#FEF08A" strokeWidth="1.5" fill="none" opacity="0.85" />
+                <circle cx="48" cy="131" r="1.2" fill="#FFFFFF" opacity="0.9" />
+
+                {/* Magical Lamp Sparkles */}
+                <motion.circle
+                  cx="26"
+                  cy="104"
+                  r="2"
+                  fill="#FDE047"
+                  animate={{ scale: [0.8, 1.5, 0.8], opacity: [0.5, 1, 0.5] }}
+                  transition={{ repeat: Infinity, duration: 1.5 }}
+                />
+              </g>
+
               {/* Sparkles */}
               <motion.circle
                 cx="22"
@@ -978,6 +988,20 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
             <span className="absolute -top-1 -right-1 w-3 h-3 bg-amber-400 border-2 border-white rounded-full animate-ping" />
             <span className="absolute -top-1 -right-1 w-3 h-3 bg-amber-500 border-2 border-white rounded-full shadow-xs" />
           </motion.div>
+
+          {/* Mini Lamp Toggle Pill under the Lamp */}
+          <div
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsLampMode(!isLampMode);
+            }}
+            className="mt-1 flex items-center justify-center cursor-pointer"
+          >
+            <span className="text-[10px] font-extrabold bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white px-2 py-0.5 rounded-full shadow-md flex items-center gap-1 transition-transform hover:scale-105 border border-amber-300">
+              <span>🪔</span>
+              <span>{isLampMode ? (language === 'en' ? 'Open' : 'खोलें') : (language === 'en' ? 'Lamp' : 'चिराग')}</span>
+            </span>
+          </div>
         </motion.div>
       </motion.div>
     </div>

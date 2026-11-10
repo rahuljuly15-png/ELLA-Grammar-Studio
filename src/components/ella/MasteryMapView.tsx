@@ -7,8 +7,10 @@ import {
   ArrowRight,
   Sparkles,
   BookOpen,
+  Lock,
 } from 'lucide-react';
 import { CLASS_7_SYLLABUS, ENGINES_META, type CurriculumTopic, type EngineType } from '../../data/curriculum';
+import { isTopicAvailable } from '../../data/topicLoader';
 
 interface MasteryMapViewProps {
   activeTopicId: string;
@@ -117,13 +119,15 @@ export const MasteryMapView: React.FC<MasteryMapViewProps> = ({
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {filteredTopics.map((topic: CurriculumTopic) => {
           const isSelected = activeTopicId === topic.topicId;
+          const available = isTopicAvailable(topic.topicId);
           return (
             <div
               key={topic.topicId}
-              className={`bg-white border rounded-3xl p-5 sm:p-6 space-y-4 transition-all flex flex-col justify-between hover:shadow-md ${getEngineCardBorder(
-                topic.engine,
-                isSelected
-              )}`}
+              className={`border rounded-3xl p-5 sm:p-6 space-y-4 transition-all flex flex-col justify-between ${
+                !available
+                  ? 'bg-slate-50/70 border-slate-200 opacity-80'
+                  : `bg-white hover:shadow-md ${getEngineCardBorder(topic.engine, isSelected)}`
+              }`}
             >
               <div className="space-y-2.5">
                 <div className="flex items-center justify-between text-xs">
@@ -158,15 +162,30 @@ export const MasteryMapView: React.FC<MasteryMapViewProps> = ({
                 </div>
 
                 <button
-                  onClick={() => onSelectTopic(topic.topicId)}
-                  className={`w-full py-2.5 px-3 text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-xs ${
-                    isSelected
-                      ? 'bg-indigo-600 text-white shadow-indigo-200'
-                      : 'bg-slate-100 hover:bg-indigo-600 hover:text-white text-slate-800'
+                  disabled={!available}
+                  onClick={() => {
+                    if (!available) return;
+                    onSelectTopic(topic.topicId);
+                  }}
+                  className={`w-full py-2.5 px-3 text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-1.5 shadow-xs ${
+                    !available
+                      ? 'bg-slate-100 text-slate-400 cursor-not-allowed border border-slate-200'
+                      : isSelected
+                      ? 'bg-indigo-600 text-white shadow-indigo-200 cursor-pointer'
+                      : 'bg-slate-100 hover:bg-indigo-600 hover:text-white text-slate-800 cursor-pointer'
                   }`}
                 >
-                  <span>{isSelected ? 'सक्रिय विषय (अभ्यास करें)' : 'अभ्यास शुरू करें'}</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
+                  {!available ? (
+                    <>
+                      <Lock className="w-3.5 h-3.5 text-slate-400" />
+                      <span>जल्द आ रहा है (Coming soon)</span>
+                    </>
+                  ) : (
+                    <>
+                      <span>{isSelected ? 'सक्रिय विषय (अभ्यास करें)' : 'अभ्यास शुरू करें'}</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </>
+                  )}
                 </button>
               </div>
             </div>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { X, Search, Check, Blocks, Clock, Repeat, FileText } from 'lucide-react';
+import { X, Search, Check, Blocks, Clock, Repeat, FileText, Lock } from 'lucide-react';
 import { CLASS_7_SYLLABUS, ENGINES_META, type CurriculumTopic, type EngineType } from '../../data/curriculum';
+import { isTopicAvailable } from '../../data/topicLoader';
 
 interface TopicSelectorModalProps {
   isOpen: boolean;
@@ -108,17 +109,22 @@ export const TopicSelectorModal: React.FC<TopicSelectorModalProps> = ({
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 overflow-y-auto pr-1 flex-1">
           {filteredTopics.map((topic: CurriculumTopic) => {
             const isSelected = activeTopicId === topic.topicId;
+            const available = isTopicAvailable(topic.topicId);
             return (
               <button
                 key={topic.topicId}
+                disabled={!available}
                 onClick={() => {
+                  if (!available) return;
                   onSelectTopic(topic.topicId);
                   onClose();
                 }}
-                className={`p-4 rounded-2xl border text-left transition-all flex flex-col justify-between gap-2.5 cursor-pointer ${
-                  isSelected
-                    ? 'bg-indigo-50/80 border-indigo-400 text-slate-900 ring-2 ring-indigo-400/30'
-                    : 'bg-slate-50/60 border-slate-200 hover:border-indigo-200 hover:bg-white text-slate-700'
+                className={`p-4 rounded-2xl border text-left transition-all flex flex-col justify-between gap-2.5 ${
+                  !available
+                    ? 'bg-slate-100/70 border-slate-200 text-slate-400 cursor-not-allowed opacity-75'
+                    : isSelected
+                    ? 'bg-indigo-50/80 border-indigo-400 text-slate-900 ring-2 ring-indigo-400/30 cursor-pointer'
+                    : 'bg-slate-50/60 border-slate-200 hover:border-indigo-200 hover:bg-white text-slate-700 cursor-pointer'
                 }`}
               >
                 <div>
@@ -140,13 +146,18 @@ export const TopicSelectorModal: React.FC<TopicSelectorModalProps> = ({
                 </div>
 
                 <div className="flex items-center justify-between pt-2 border-t border-slate-200/80 text-[11px] text-slate-600">
-                  <span className="truncate max-w-[200px] font-mono">{topic.formulaHi}</span>
-                  {isSelected && (
-                    <span className="text-emerald-700 flex items-center gap-1 font-bold">
+                  <span className="truncate max-w-[180px] font-mono">{topic.formulaHi}</span>
+                  {!available ? (
+                    <span className="text-amber-800 bg-amber-50 border border-amber-200/80 px-2 py-0.5 rounded text-[11px] font-medium flex items-center gap-1 shrink-0">
+                      <Lock className="w-3 h-3 text-amber-600" />
+                      जल्द आ रहा है (Coming soon)
+                    </span>
+                  ) : isSelected ? (
+                    <span className="text-emerald-700 flex items-center gap-1 font-bold shrink-0">
                       <Check className="w-3.5 h-3.5 text-emerald-600" />
                       सक्रिय
                     </span>
-                  )}
+                  ) : null}
                 </div>
               </button>
             );

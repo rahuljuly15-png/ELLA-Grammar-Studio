@@ -83,7 +83,14 @@ export const TOPIC_REGISTRY: Record<string, FullTopicData> = {
   'level6-notice-writing-19': noticeWritingData as unknown as FullTopicData,
 };
 
+export function isTopicAvailable(topicId: string): boolean {
+  return Object.prototype.hasOwnProperty.call(TOPIC_REGISTRY, topicId);
+}
+
 export function getTopicById(topicId: string): FullTopicData {
+  if (!isTopicAvailable(topicId)) {
+    console.warn(`[topicLoader] Topic "${topicId}" is not available in TOPIC_REGISTRY. Falling back to default.`);
+  }
   return TOPIC_REGISTRY[topicId] || TOPIC_REGISTRY['level1-articles-01'];
 }
 

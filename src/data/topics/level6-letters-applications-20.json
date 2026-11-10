@@ -1,0 +1,134 @@
+{
+  "topicId": "level6-letters-applications-20",
+  "title": "Letters & Formal Applications (प्रार्थना पत्र और औपचारिक पत्र)",
+  "level": 6,
+  "category": "लेखन कौशल",
+  "descriptionHi": "प्रधानाचार्य को प्रार्थना पत्र (Application to Principal); औपचारिक पत्र (Formal) व अनौपचारिक पत्र (Informal) का प्रारूप।",
+  "steps": {
+    "1_notice": {
+      "stepTitleHi": "1. ध्यान दें (Notice)",
+      "instructionHi": "इन प्रारूपों को ध्यान से देखें। औपचारिक (Formal) और अनौपचारिक (Informal) पत्रों में क्या अंतर है?",
+      "pairs": [
+        {
+          "sentence": "Formal: To, The Principal... Respected Sir | Informal: Dear Rohan... How are you?",
+          "highlightWord": "Respected Sir vs Dear Rohan",
+          "soundHintHi": "प्रधानाचार्य या अधिकारी को औपचारिक (Respected Sir) और मित्र/रिश्तेदार को अनौपचारिक (Dear Rohan) लिखा जाता है।"
+        },
+        {
+          "sentence": "Subject: Application for three days' sick leave.",
+          "highlightWord": "Subject line (विषय)",
+          "soundHintHi": "औपचारिक पत्र में एक संक्षिप्त 'Subject' लिखना अनिवार्य है ताकि पत्र का कारण तुरंत समझ आ जाए।"
+        },
+        {
+          "sentence": "Formal: Yours obediently / Yours faithfully | Informal: Yours lovingly / Your friend",
+          "highlightWord": "Yours obediently (Never write 'Your's')",
+          "soundHintHi": "सावधान: 'Yours' में कभी Apostrophe (') नहीं लगता (Yours obediently ✅, Your's ❌)।"
+        },
+        {
+          "sentence": "आधुनिक CBSE प्रारूप में सभी पंक्तियाँ (Date, Salutation, Body, Signature) बाईं ओर (Left-aligned) से शुरू होती हैं।",
+          "highlightWord": "Left Aligned (बाईं ओर)",
+          "soundHintHi": "नये नियम के अनुसार मार्जिन के साथ पूरी शुरुआत बाईं ओर से होती है।"
+        }
+      ]
+    },
+    "2_hypothesize": {
+      "stepTitleHi": "2. नियम का अनुमान लगाएँ (Hypothesize)",
+      "questionHi": "स्कूल के प्रधानाचार्य को प्रार्थना पत्र (Application) लिखते समय कौन सा नियम अत्यंत आवश्यक है?",
+      "options": [
+        {
+          "textHi": "पत्र में दोस्तों की तरह हाल-चाल पूछना चाहिए।",
+          "isCorrect": false,
+          "feedbackHi": "गलत! प्रधानाचार्य को औपचारिक भाषा में सीधे कारण और विनम्र प्रार्थना लिखनी होती है।"
+        },
+        {
+          "textHi": "To The Principal ➔ स्कूल का नाम ➔ Date ➔ Subject ➔ Respected Sir ➔ मुख्य बात ➔ Yours obediently + नाम/कक्षा/रोल नं.।",
+          "isCorrect": true,
+          "feedbackHi": "बिल्कुल सही! यह 7-चरणीय मानक प्रारूप परीक्षा में शत-प्रतिशत अंक दिलाता है।"
+        },
+        {
+          "textHi": "अंत में 'Your's obediently' लिखना सही है।",
+          "isCorrect": false,
+          "feedbackHi": "गलत! 'Your's' में कभी apostrophe नहीं लगता; हमेशा 'Yours obediently' लिखा जाता है।"
+        }
+      ]
+    },
+    "3_clarify": {
+      "stepTitleHi": "3. सुनहरा नियम (Clarify - Golden Rule)",
+      "goldenRuleHi": "प्रार्थना पत्र का 7-चरणीय ब्लूप्रिंट: 1. To, The Principal, 2. स्कूल का नाम व शहर, 3. Date, 4. Subject (विषय), 5. Salutation (Respected Sir / Madam), 6. Body: 'Most respectfully, I beg to say that...', 7. Subscription: 'Yours obediently', नाम, कक्षा और रोल नंबर।",
+      "theRuleHi": "औपचारिक बनाम अनौपचारिक अंत: 1. स्कूल में ➔ Yours obediently (आपका आज्ञाकारी)। 2. सम्पादक या अधिकारी को ➔ Yours faithfully / Yours truly। 3. मित्र या माता-पिता को ➔ Yours lovingly / Your loving son/friend।",
+      "examples": [
+        {
+          "word": "Subject: Leave Application",
+          "sound": "Clear purpose",
+          "reason": "विषय 1 पंक्ति में स्पष्ट होना चाहिए"
+        },
+        {
+          "word": "Yours obediently",
+          "sound": "Spelling Trap",
+          "reason": "Y-o-u-r-s बिना किसी कॉमा/एपॉस्ट्रॉफी के"
+        },
+        {
+          "word": "Most respectfully, I beg to say...",
+          "sound": "Opening sentence",
+          "reason": "प्रार्थना पत्र की सर्वाधिक प्रामाणिक शुरुआत"
+        },
+        {
+          "word": "Kindly grant me leave for two days",
+          "sound": "Polite request",
+          "reason": "विनम्रता से अवकाश प्रदान करने का निवेदन"
+        }
+      ]
+    },
+    "4_guided_practice": {
+      "stepTitleHi": "4. निर्देशित अभ्यास (Guided Practice)",
+      "instructionHi": "प्रार्थना पत्र के सही घटक चुनें:",
+      "questions": [
+        {
+          "id": "la-1",
+          "sentence": "प्रार्थना पत्र में अंत में सही रूप कौन सा है?",
+          "options": ["Your's obediently", "Yours obediently", "Yours' obediently"],
+          "correctAnswer": "Yours obediently",
+          "explanationHi": "अंग्रेजी में 'Yours' में कभी भी apostrophe नहीं लगाया जाता।"
+        },
+        {
+          "id": "la-2",
+          "sentence": "प्रधानाचार्य को लिखे जाने वाले पत्र में कौन सा अभिवादन (Salutation) सही है?",
+          "options": ["Hey Sir,", "Dear Principal Bro,", "Respected Sir,"],
+          "correctAnswer": "Respected Sir,",
+          "explanationHi": "औपचारिक पत्र में 'Respected Sir' या 'Respected Madam' ही मान्य है।"
+        },
+        {
+          "id": "la-3",
+          "sentence": "औपचारिक पत्र में 'Subject' कहाँ लिखा जाता है?",
+          "options": [
+            "पत्र के सबसे नीचे",
+            "Salutation (Respected Sir) से ठीक पहले",
+            "लिफाफे के पीछे"
+          ],
+          "correctAnswer": "Salutation (Respected Sir) से ठीक पहले",
+          "explanationHi": "Subject को Date/पते के बाद और Salutation से ठीक पहले लिखा जाता है।"
+        }
+      ]
+    },
+    "5_free_production": {
+      "stepTitleHi": "5. स्वयं वाक्य बनाएँ (Production Task)",
+      "promptHi": "दो दिन के अवकाश के लिए प्रधानाचार्य को निवेदन पंक्ति (Kindly grant me leave...) लिखें:",
+      "placeholderHi": "उदा. Kindly grant me leave for two days from 15th to 16th November.",
+      "sampleSolutions": [
+        "Kindly grant me leave for two days from 15th to 16th November.",
+        "I request you to kindly grant me sick leave for three days.",
+        "Kindly allow me to participate in the inter-school debate."
+      ]
+    },
+    "6_reflection": {
+      "stepTitleHi": "6. आत्म-मूल्यांकन (Review & Reflection)",
+      "promptHi": "आज Application और Letters के बारे में क्या याद रखना है?",
+      "recapPointsHi": [
+        "Formal Letter में Subject लिखना अनिवार्य है",
+        "सभी पंक्तियाँ बाईं ओर (Left Margin) से शुरू करें",
+        "सावधान: 'Yours obediently' लिखें, 'Your's' कभी नहीं",
+        "Body को 2-3 छोटे पैराग्राफ में रखें (कारण ➔ निवेदन ➔ धन्यवाद)"
+      ]
+    }
+  }
+}

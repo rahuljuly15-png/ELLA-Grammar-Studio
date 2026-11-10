@@ -1,0 +1,130 @@
+{
+  "topicId": "level6-word-lab-17",
+  "title": "Word-Lab: Prefixes, Suffixes & Animal Sounds (शब्द निर्माण प्रयोगशाला)",
+  "level": 6,
+  "category": "शब्दावली निर्माण",
+  "descriptionHi": "Prefix (un/dis/im) + Root Word + Suffix (ful/less/ly); पशु-पक्षियों की आवाज़ें (Animal Sounds)।",
+  "steps": {
+    "1_notice": {
+      "stepTitleHi": "1. ध्यान दें (Notice)",
+      "instructionHi": "इन शब्दों को ध्यान से देखें। मूल शब्द में आगे या पीछे जुड़ने से क्या परिवर्तन आ रहा है?",
+      "pairs": [
+        {
+          "sentence": "happy (प्रसन्न) ➔ unhappy (अप्रसन्न) | kind (दयालु) ➔ unkind (निर्दयी)",
+          "highlightWord": "un- prefix (विलोम शब्द)",
+          "soundHintHi": "मूल शब्द से पहले जुड़ने वाला शब्दांश Prefix कहलाता है (un-, dis-, im- विलोम अर्थ देते हैं)।"
+        },
+        {
+          "sentence": "care (संज्ञा/क्रिया) ➔ careful (विशेषण) ➔ carefully (क्रिया विशेषण)",
+          "highlightWord": "-ful and -ly suffixes",
+          "soundHintHi": "मूल शब्द के अंत में जुड़ने वाला शब्दांश Suffix कहलाता है जो शब्द का व्याकरणिक रूप बदलता है।"
+        },
+        {
+          "sentence": "possible ➔ impossible | agree ➔ disagree | direct ➔ indirect",
+          "highlightWord": "im-, dis-, in-",
+          "soundHintHi": "'p' या 'm' से शुरू होने वाले शब्दों में प्रायः 'im-' लगता है (possible ➔ impossible, mature ➔ immature)।"
+        },
+        {
+          "sentence": "Dogs bark, lions roar, elephants trumpet, and bees buzz.",
+          "highlightWord": "bark, roar, trumpet, buzz",
+          "soundHintHi": "विभिन्न जानवरों और पक्षियों की आवाज़ों के अंग्रेजी में विशिष्ट नाम होते हैं।"
+        }
+      ]
+    },
+    "2_hypothesize": {
+      "stepTitleHi": "2. नियम का अनुमान लगाएँ (Hypothesize)",
+      "questionHi": "अंग्रेजी में किसी मूल शब्द (Root Word) में Prefix या Suffix जोड़ने का क्या प्रभाव पड़ता है?",
+      "options": [
+        {
+          "textHi": "शब्द की स्पेलिंग और अर्थ में कोई अंतर नहीं आता।",
+          "isCorrect": false,
+          "feedbackHi": "गलत! Prefix से अर्थ उलट सकता है और Suffix से संज्ञा विशेषण या क्रिया-विशेषण बन सकती है।"
+        },
+        {
+          "textHi": "Prefix (आगे जुड़कर) अक्सर अर्थ को विलोम (Opposite) बनाता है, और Suffix (पीछे जुड़कर) शब्द की श्रेणी बदलता है।",
+          "isCorrect": true,
+          "feedbackHi": "बिल्कुल सही! Root Word + Affixes की मदद से एक शब्द से कई नए शब्द बनाए जा सकते हैं।"
+        },
+        {
+          "textHi": "Prefix हमेशा शब्द के अंत में और Suffix शुरुआत में लगाया जाता है।",
+          "isCorrect": false,
+          "feedbackHi": "गलत! Pre- का अर्थ ही है 'पहले' (शुरुआत में) और Suffix का अर्थ 'बाद में'।"
+        }
+      ]
+    },
+    "3_clarify": {
+      "stepTitleHi": "3. सुनहरा नियम (Clarify - Golden Rule)",
+      "goldenRuleHi": "शब्द निर्माण के दो पंख: 1. Prefix (उपसर्ग - शुरुआत में): un- (unhappy), dis- (disagree), im- (impossible), mis- (misunderstand)। 2. Suffix (प्रत्यय - अंत में): -ful (painful), -less (painless), -able (readable), -ness (kindness), -ly (slowly)।",
+      "theRuleHi": "प्रमुख पशु-पक्षियों की आवाज़ें (Animal Sounds): Dog ➔ bark, Cat ➔ meow/purr, Lion ➔ roar, Horse ➔ neigh, Elephant ➔ trumpet, Snake ➔ hiss, Bee ➔ buzz, Bird ➔ chirp, Frog ➔ croak, Cow ➔ moo।",
+      "examples": [
+        {
+          "word": "help + ful / help + less",
+          "sound": "-ful (भरा) vs -less (रहित)",
+          "reason": "helpful = मददगार, helpless = लाचार"
+        },
+        {
+          "word": "p- words ➔ im-",
+          "sound": "Spelling phonetics",
+          "reason": "patient ➔ impatient, polite ➔ impolite"
+        },
+        {
+          "word": "Elephants trumpet",
+          "sound": "Animal sound",
+          "reason": "हाथी की चिंघाड़ को अंग्रेजी में 'trumpet' कहते हैं"
+        },
+        {
+          "word": "Lions roar",
+          "sound": "Wild sound",
+          "reason": "शेर की दहाड़ को 'roar' कहते हैं"
+        }
+      ]
+    },
+    "4_guided_practice": {
+      "stepTitleHi": "4. निर्देशित अभ्यास (Guided Practice)",
+      "instructionHi": "सही उपसर्ग (Prefix), प्रत्यय (Suffix) या पशु ध्वनि चुनें:",
+      "questions": [
+        {
+          "id": "wl-1",
+          "sentence": "The opposite of 'polite' using the correct prefix is:",
+          "options": ["unpolite", "impolite", "dispolite"],
+          "correctAnswer": "impolite",
+          "explanationHi": "'p' से शुरू होने वाले शब्दों के विलोम में प्रायः 'im-' लगता है (polite ➔ impolite)।"
+        },
+        {
+          "id": "wl-2",
+          "sentence": "The suffix in the word 'hopeless' means:",
+          "options": ["full of hope", "without hope", "able to hope"],
+          "correctAnswer": "without hope",
+          "explanationHi": "'-less' का अर्थ 'के बिना / रहित' होता है (hopeless = आशारहित)।"
+        },
+        {
+          "id": "wl-3",
+          "sentence": "Match the animal with its sound: A frog ___.",
+          "options": ["barks", "croaks", "roars"],
+          "correctAnswer": "croaks",
+          "explanationHi": "मेंढक की टर्र-टर्र को अंग्रेजी में 'croak' कहा जाता है।"
+        }
+      ]
+    },
+    "5_free_production": {
+      "stepTitleHi": "5. स्वयं वाक्य बनाएँ (Production Task)",
+      "promptHi": "अब 'impossible' या 'careful' या किसी पशु की आवाज़ (उदा. 'Lions roar') का उपयोग करके एक वाक्य लिखें:",
+      "placeholderHi": "उदा. Nothing is impossible if you work hard.",
+      "sampleSolutions": [
+        "Nothing is impossible if you work hard.",
+        "Be careful while crossing the busy road.",
+        "The fierce lions roar in the jungle."
+      ]
+    },
+    "6_reflection": {
+      "stepTitleHi": "6. आत्म-मूल्यांकन (Review & Reflection)",
+      "promptHi": "आज Word-Lab में क्या नया सीखा?",
+      "recapPointsHi": [
+        "Prefix शुरुआत में जुड़ता है (un-, dis-, im-)",
+        "Suffix अंत में जुड़ता है (-ful, -less, -ness, -ly)",
+        "-ful = भरा हुआ (hopeful), -less = बिना (hopeless)",
+        "Animal Sounds: Lion roars, Elephant trumpets, Snake hisses, Frog croaks"
+      ]
+    }
+  }
+}

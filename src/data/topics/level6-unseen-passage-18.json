@@ -1,0 +1,138 @@
+{
+  "topicId": "level6-unseen-passage-18",
+  "title": "Unseen Passage: Skimming & Scanning (अपठित गद्यांश की समझ)",
+  "level": 6,
+  "category": "पठन कौशल",
+  "descriptionHi": "मुख्य विचार के लिए Skimming (तेज़ पठन) और विशिष्ट उत्तर के लिए Scanning (कीवर्ड खोज); शीर्षक व संदर्भ समझना।",
+  "steps": {
+    "1_notice": {
+      "stepTitleHi": "1. ध्यान दें (Notice)",
+      "instructionHi": "इन तकनीकों को ध्यान से देखें। अपठित गद्यांश हल करते समय क्या अंतर आता है?",
+      "pairs": [
+        {
+          "sentence": "Skim: 60 सेकंड में पूरा पैराग्राफ सरसरी नज़र से पढ़ना ताकि मुख्य विषय (Topic) समझ आ जाए।",
+          "highlightWord": "Skimming (Bird's Eye View)",
+          "soundHintHi": "Skimming से हम पूछते हैं: 'यह गद्यांश किस बारे में है?' (Central Idea)।"
+        },
+        {
+          "sentence": "Scan: प्रश्न में दिए गए मुख्य शब्द (जैसे '1947', 'Kolkata', 'Dr. Kalam') को गद्यांश में तेज़ी से ढूँढना।",
+          "highlightWord": "Scanning (Target Search)",
+          "soundHintHi": "Scanning एक लेंस की तरह खास तथ्य (वर्ष, नाम, संख्या) को तुरंत पकड़ती है।"
+        },
+        {
+          "sentence": "गद्यांश के पहले 2 वाक्यों और आखिरी 2 वाक्यों में प्रायः गद्यांश का शीर्षक (Title) छिपा होता है।",
+          "highlightWord": "First & Last Lines = Title Hint",
+          "soundHintHi": "शीर्षक छोटा (2-4 शब्द) और पूरे गद्यांश का सार होना चाहिए।"
+        },
+        {
+          "sentence": "कठिन शब्द का अर्थ उसके आगे-पीछे के वाक्यों के भाव से अनुमान लगाया जाता है।",
+          "highlightWord": "Context Clues",
+          "soundHintHi": "यदि किसी शब्द का अर्थ न पता हो, तो पूरे वाक्य का संदर्भ देखकर अर्थ समझें।"
+        }
+      ]
+    },
+    "2_hypothesize": {
+      "stepTitleHi": "2. नियम का अनुमान लगाएँ (Hypothesize)",
+      "questionHi": "परीक्षा में अपठित गद्यांश (Unseen Passage) हल करने की सबसे तेज़ और सटीक रणनीति क्या है?",
+      "options": [
+        {
+          "textHi": "गद्यांश को 5 बार धीरे-धीरे एक-एक शब्द करके पढ़ें, फिर प्रश्न देखें।",
+          "isCorrect": false,
+          "feedbackHi": "गलत! इससे बहुत समय बर्बाद होता है। परीक्षा में समय सीमित होता है।"
+        },
+        {
+          "textHi": "पहले प्रश्नों के कीवर्ड्स (Keywords) पढ़ें ➔ फिर गद्यांश को Skim करके उन कीवर्ड्स को Scan करें और उत्तर रेखांकित करें।",
+          "isCorrect": true,
+          "feedbackHi": "बिल्कुल सही! 'Questions First' रणनीति से दिमाग को पहले से पता होता है कि क्या ढूँढना है।"
+        },
+        {
+          "textHi": "गद्यांश पढ़े बिना अपने मन से कुछ भी उत्तर लिख दें।",
+          "isCorrect": false,
+          "feedbackHi": "गलत! अपठित गद्यांश के सभी उत्तर उसी गद्यांश के अंदर मौजूद होते हैं।"
+        }
+      ]
+    },
+    "3_clarify": {
+      "stepTitleHi": "3. सुनहरा नियम (Clarify - Golden Rule)",
+      "goldenRuleHi": "Unseen Passage का 3-Step फॉर्मूला: Step 1: पहले प्रश्नों पर नज़र डालें और मुख्य कीवर्ड्स (नाम, साल, स्थान) को दिमाग में रखें। Step 2: गद्यांश को Skim (सरसरी तौर पर) पढ़ें और जहाँ कीवर्ड दिखे वहाँ रुकें (Scan)। Step 3: अपने शब्दों में सटीक उत्तर लिखें (गद्यांश की 4-5 लाइनें हूबहू नकल न करें)।",
+      "theRuleHi": "शीर्षक (Title) और विलोम/समानार्थी शब्द: शीर्षक 2 से 4 शब्दों का होना चाहिए (उदा. 'The Value of Trees', 'Discipline in Student Life')। जब Synonym पूछे, तो वही Part of Speech चुनें जो गद्यांश में हो।",
+      "examples": [
+        {
+          "word": "Questions First Strategy",
+          "sound": "Smart Exam Tip",
+          "reason": "प्रश्न पहले पढ़ने से खोज का लक्ष्य स्पष्ट हो जाता है"
+        },
+        {
+          "word": "Scan for Capital Letters",
+          "sound": "Proper Noun Clue",
+          "reason": "नाम और स्थान हमेशा Capital से शुरू होते हैं, उन्हें ढूँढना आसान है"
+        },
+        {
+          "word": "Scan for Numbers / Years",
+          "sound": "Numeric Clue",
+          "reason": "संख्याएं (1947, 50%) टेक्स्ट में तुरंत चमकती हैं"
+        },
+        {
+          "word": "Precise Answer",
+          "sound": "To the point",
+          "reason": "जितना पूछा जाए, केवल उतना ही उत्तर दें"
+        }
+      ]
+    },
+    "4_guided_practice": {
+      "stepTitleHi": "4. निर्देशित अभ्यास (Guided Practice)",
+      "instructionHi": "अपठित गद्यांश हल करने के सही तरीके चुनें:",
+      "questions": [
+        {
+          "id": "up-1",
+          "sentence": "Unseen Passage हल करते समय सबसे पहले क्या पढ़ना चाहिए?",
+          "options": [
+            "पूरा गद्यांश दो बार",
+            "दिए गए प्रश्न और उनके मुख्य कीवर्ड्स",
+            "गद्यांश का आखिरी पैराग्राफ"
+          ],
+          "correctAnswer": "दिए गए प्रश्न और उनके मुख्य कीवर्ड्स",
+          "explanationHi": "प्रश्न पहले पढ़ने से हमें पता चल जाता है कि गद्यांश में क्या ढूँढना है।"
+        },
+        {
+          "id": "up-2",
+          "sentence": "विशिष्ट वर्ष या व्यक्ति का नाम ढूँढने की तकनीक को क्या कहते हैं?",
+          "options": ["Skimming", "Scanning", "Memorizing"],
+          "correctAnswer": "Scanning",
+          "explanationHi": "विशिष्ट तथ्य या शब्द को ढूँढना Scanning कहलाता है।"
+        },
+        {
+          "id": "up-3",
+          "sentence": "किसी गद्यांश का उपयुक्त शीर्षक (Title) कैसा होना चाहिए?",
+          "options": [
+            "2-3 वाक्यों का लंबा पैराग्राफ",
+            "संक्षिप्त (2-4 शब्द) और पूरे विषय का सार",
+            "केवल पहला शब्द"
+          ],
+          "correctAnswer": "संक्षिप्त (2-4 शब्द) और पूरे विषय का सार",
+          "explanationHi": "शीर्षक संक्षिप्त, आकर्षक और पूरे गद्यांश का सार होना चाहिए।"
+        }
+      ]
+    },
+    "5_free_production": {
+      "stepTitleHi": "5. स्वयं वाक्य बनाएँ (Production Task)",
+      "promptHi": "यदि गद्यांश 'पेड़ों के महत्व और पर्यावरण संरक्षण' पर हो, तो उसके लिए एक उत्तम शीर्षक (Title) अंग्रेजी में लिखें:",
+      "placeholderHi": "उदा. The Importance of Trees in Our Life",
+      "sampleSolutions": [
+        "The Importance of Trees in Our Life",
+        "Save Trees, Save the Earth",
+        "Trees: Nature's Greatest Gift"
+      ]
+    },
+    "6_reflection": {
+      "stepTitleHi": "6. आत्म-मूल्यांकन (Review & Reflection)",
+      "promptHi": "आज Unseen Passage के बारे में क्या याद रखना है?",
+      "recapPointsHi": [
+        "Questions First: पहले प्रश्न पढ़ें, फिर गद्यांश",
+        "Skimming = मुख्य विचार जानना; Scanning = विशिष्ट कीवर्ड ढूँढना",
+        "नाम और वर्षों को ढूँढना सबसे आसान होता है",
+        "उत्तर सटीक लिखें, अनावश्यक पैराग्राफ कॉपी न करें"
+      ]
+    }
+  }
+}

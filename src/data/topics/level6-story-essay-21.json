@@ -1,0 +1,142 @@
+{
+  "topicId": "level6-story-essay-21",
+  "title": "Story & Essay Blueprint (कहानी व निबंध लेखन)",
+  "level": 6,
+  "category": "लेखन कौशल",
+  "descriptionHi": "कहानी रचना: Past Tense, संकेत बिंदु (Outlines), शीर्षक व सीख (Moral); 3-पैरा निबंध ढाँचा (Intro, Body, Conclusion)।",
+  "steps": {
+    "1_notice": {
+      "stepTitleHi": "1. ध्यान दें (Notice)",
+      "instructionHi": "इन उदाहरणों को ध्यान से देखें। कहानी और निबंध की संरचना में क्या खास है?",
+      "pairs": [
+        {
+          "sentence": "Once upon a time, there lived a thirsty crow. He flew all around looking for water.",
+          "highlightWord": "lived, flew (Past Tense)",
+          "soundHintHi": "कहानियाँ हमेशा भूतकाल (Past Tense - V2) में लिखी जाती हैं (lived, saw, went, thought)।"
+        },
+        {
+          "sentence": "Outlines: a dog / finds bone / crosses bridge ➔ A greedy dog found a bone. While crossing a stream...",
+          "highlightWord": "Outline ➔ Connected Sentences",
+          "soundHintHi": "संकेत बिंदुओं (Outlines) के बीच में Helping verbs और Connectors जोड़कर वाक्य बनाए जाते हैं।"
+        },
+        {
+          "sentence": "Title: The Greedy Dog | Moral: Greed is a curse.",
+          "highlightWord": "Title & Moral",
+          "soundHintHi": "कहानी का एक उपयुक्त शीर्षक (Title) और अंत में सीख (Moral) लिखना अनिवार्य होता है।"
+        },
+        {
+          "sentence": "Para 1: Introduction (परिचय) | Para 2: Details/Benefits (विस्तार) | Para 3: Conclusion (निष्कर्ष)",
+          "highlightWord": "Intro ➔ Body ➔ Conclusion",
+          "soundHintHi": "निबंध कभी एक बड़े पैराग्राफ में नहीं, बल्कि 3 स्पष्ट पैराग्राफ में लिखा जाता है।"
+        }
+      ]
+    },
+    "2_hypothesize": {
+      "stepTitleHi": "2. नियम का अनुमान लगाएँ (Hypothesize)",
+      "questionHi": "परीक्षा में कहानी या निबंध लिखते समय सबसे अधिक अंक किस बात पर मिलते हैं?",
+      "options": [
+        {
+          "textHi": "कहानियों को Present Tense में लिखना चाहिए और पैराग्राफ नहीं बदलने चाहिए।",
+          "isCorrect": false,
+          "feedbackHi": "गलत! कहानियाँ Past Tense में लिखी जाती हैं और पैराग्राफ बदलना बहुत जरूरी होता है।"
+        },
+        {
+          "textHi": "कहानी: उचित शीर्षक + Past Tense + रोचक घटनाक्रम + Moral। निबंध: स्पष्ट 3 पैराग्राफ (परिचय, मुख्य लाभ/हानि, निष्कर्ष)।",
+          "isCorrect": true,
+          "feedbackHi": "शाबाश! यह संरचना परीक्षक को प्रभावित करती है और पूरे अंक दिलाती है।"
+        },
+        {
+          "textHi": "कहानी में Moral लिखना जरूरी नहीं होता।",
+          "isCorrect": false,
+          "feedbackHi": "गलत! बिना Moral के कहानी अधूरी मानी जाती है और 1 अंक कट जाता है।"
+        }
+      ]
+    },
+    "3_clarify": {
+      "stepTitleHi": "3. सुनहरा नियम (Clarify - Golden Rule)",
+      "goldenRuleHi": "कहानी का 5-चरणीय ब्लूप्रिंट: 1. Title (शीर्षक - बड़े अक्षरों में बीच में), 2. Beginning ('Once upon a time...'), 3. Problem/Climax (समस्या क्या आई), 4. Resolution (समस्या कैसे हल हुई), 5. Moral (नैतिक सीख - उदा. 'Where there is a will, there is a way')।",
+      "theRuleHi": "निबंध का 3-पैरा ढाँचा: 1. Introduction: विषय क्या है और क्यों महत्वपूर्ण है? 2. Body Paragraph: मुख्य बिंदु, उदाहरण, लाभ या हानियाँ। 3. Conclusion: आपका अपना निष्कर्ष, सुझाव व भविष्य की आशा। Connectors का प्रयोग करें: Firstly, However, In addition, In conclusion।",
+      "examples": [
+        {
+          "word": "Once upon a time...",
+          "sound": "Classic opening",
+          "reason": "कहानी शुरू करने का सबसे लोकप्रिय वाक्य"
+        },
+        {
+          "word": "Moral: Unity is strength",
+          "sound": "Story Moral",
+          "reason": "किसान और उसके चार बेटों की कहानी की सीख"
+        },
+        {
+          "word": "In conclusion,...",
+          "sound": "Essay closing",
+          "reason": "निबंध का समापन करने वाला वाक्यांश"
+        },
+        {
+          "word": "Title: A Friend in Need",
+          "sound": "Catchy title",
+          "reason": "सच्चे दोस्त की कहानी का उपयुक्त शीर्षक"
+        }
+      ]
+    },
+    "4_guided_practice": {
+      "stepTitleHi": "4. निर्देशित अभ्यास (Guided Practice)",
+      "instructionHi": "कहानी व निबंध लेखन के सही नियम चुनें:",
+      "questions": [
+        {
+          "id": "se-1",
+          "sentence": "कहानी लिखते समय मुख्य रूप से किस काल (Tense) का प्रयोग किया जाता है?",
+          "options": [
+            "Present Tense (वर्तमान)",
+            "Past Tense (भूतकाल - V2)",
+            "Future Tense (भविष्य)"
+          ],
+          "correctAnswer": "Past Tense (भूतकाल - V2)",
+          "explanationHi": "घटनाएं पहले घट चुकी होती हैं, इसलिए कहानी भूतकाल (Past Tense) में लिखी जाती है।"
+        },
+        {
+          "id": "se-2",
+          "sentence": "निबंध (Essay) लिखने का सही पैराग्राफ ढाँचा क्या है?",
+          "options": [
+            "केवल 1 बड़ा पैराग्राफ",
+            "3 पैराग्राफ: Introduction ➔ Body ➔ Conclusion",
+            "केवल बुलेट पॉइंट्स"
+          ],
+          "correctAnswer": "3 पैराग्राफ: Introduction ➔ Body ➔ Conclusion",
+          "explanationHi": "आदर्श निबंध में 3 स्पष्ट भाग होते हैं: प्रस्तावना, मुख्य भाग और उपसंहार।"
+        },
+        {
+          "id": "se-3",
+          "sentence": "The story of the thirsty crow teaches us the moral:",
+          "options": [
+            "Greed is a curse",
+            "Where there is a will, there is a way",
+            "Look before you leap"
+          ],
+          "correctAnswer": "Where there is a will, there is a way",
+          "explanationHi": "कौवे ने हिम्मत और बुद्धि से पानी पिया, सीख है: 'जहाँ चाह, वहाँ राह'।"
+        }
+      ]
+    },
+    "5_free_production": {
+      "stepTitleHi": "5. स्वयं वाक्य बनाएँ (Production Task)",
+      "promptHi": "कहानी के लिए एक प्रेरणादायक सीख (Moral) अंग्रेजी में लिखें:",
+      "placeholderHi": "उदा. Moral: Where there is a will, there is a way.",
+      "sampleSolutions": [
+        "Moral: Where there is a will, there is a way.",
+        "Moral: Honesty is the best policy.",
+        "Moral: Greed is a curse."
+      ]
+    },
+    "6_reflection": {
+      "stepTitleHi": "6. आत्म-मूल्यांकन (Review & Reflection)",
+      "promptHi": "आज Story और Essay लेखन के बारे में क्या याद रखना है?",
+      "recapPointsHi": [
+        "कहानी हमेशा Past Tense (V2) में लिखें",
+        "कहानी में Title और Moral अनिवार्य रूप से लिखें",
+        "निबंध को 3 भागों में बाँटें: Intro, Body, Conclusion",
+        "संकेत बिंदुओं (Outlines) को जोड़ते समय Conjunctions का प्रयोग करें"
+      ]
+    }
+  }
+}

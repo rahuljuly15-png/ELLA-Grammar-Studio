@@ -14,7 +14,11 @@ import svoData from './topics/level4-svo-sentence-13.json';
 import jumbledWordsData from './topics/level4-jumbled-words-14.json';
 import activePassiveData from './topics/level5-active-passive-15.json';
 import directIndirectData from './topics/level5-direct-indirect-16.json';
+import wordLabData from './topics/level6-word-lab-17.json';
+import unseenPassageData from './topics/level6-unseen-passage-18.json';
 import noticeWritingData from './topics/level6-notice-writing-19.json';
+import lettersApplicationsData from './topics/level6-letters-applications-20.json';
+import storyEssayData from './topics/level6-story-essay-21.json';
 
 export interface NoticePair {
   sentence: string;
@@ -100,7 +104,11 @@ export const TOPIC_REGISTRY: Record<string, FullTopicData> = {
   'level4-jumbled-words-14': jumbledWordsData as unknown as FullTopicData,
   'level5-active-passive-15': activePassiveData as unknown as FullTopicData,
   'level5-direct-indirect-16': directIndirectData as unknown as FullTopicData,
+  'level6-word-lab-17': wordLabData as unknown as FullTopicData,
+  'level6-unseen-passage-18': unseenPassageData as unknown as FullTopicData,
   'level6-notice-writing-19': noticeWritingData as unknown as FullTopicData,
+  'level6-letters-applications-20': lettersApplicationsData as unknown as FullTopicData,
+  'level6-story-essay-21': storyEssayData as unknown as FullTopicData,
 };
 
 export function isTopicAvailable(topicId: string): boolean {

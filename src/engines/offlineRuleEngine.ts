@@ -52,6 +52,46 @@ const UNIQUE_ITEMS = [
   'taj mahal', 'red fort', 'ganges', 'himalayas', 'pacific ocean'
 ];
 
+// Words to skip after modals (pronouns, adverbs ending in s, etc.)
+const MODAL_SKIP_WORDS = new Set([
+  'this', 'us', 'as', 'his', 'yes', 'always',
+  'sometimes', 'perhaps', 'besides', 'thus', 'otherwise',
+  'hence', 'nowadays', 'towards', 'afterwards', 'upstairs', 'downstairs',
+  'its', 'ours', 'yours', 'theirs'
+]);
+
+/**
+ * Converts a 3rd-person singular verb ending in 's' back to its base form (V1).
+ * has -> have, does -> do, goes -> go
+ * consonant + ies -> y (studies -> study)
+ * ches/shes/sses/xes/zes -> strip "es" (watches -> watch, dresses -> dress)
+ * otherwise -> strip "s" (plays -> play, makes -> make)
+ */
+export function toBaseVerb(verbWithS: string): { baseVerb: string; confidence: 'high' | 'medium' } {
+  const v = verbWithS.toLowerCase();
+  if (v === 'has') return { baseVerb: 'have', confidence: 'high' };
+  if (v === 'does') return { baseVerb: 'do', confidence: 'high' };
+  if (v === 'goes') return { baseVerb: 'go', confidence: 'high' };
+
+  // consonant + ies -> y (studies -> study, flies -> fly, tries -> try)
+  if (/[^aeiou]ies$/i.test(v)) {
+    return { baseVerb: v.slice(0, -3) + 'y', confidence: 'high' };
+  }
+
+  // ches, shes, sses, xes, zes -> strip "es" (watches -> watch, washes -> wash, dresses -> dress, fixes -> fix, buzzes -> buzz)
+  if (/(?:ch|sh|ss|x|z)es$/i.test(v)) {
+    return { baseVerb: v.slice(0, -2), confidence: 'high' };
+  }
+
+  // standard verbs ending in s -> strip "s" (plays -> play, makes -> make, eats -> eat)
+  if (v.length > 2 && v.endsWith('s')) {
+    return { baseVerb: v.slice(0, -1), confidence: 'high' };
+  }
+
+  // If unsure, return the word with medium confidence and no auto-fix
+  return { baseVerb: v, confidence: 'medium' };
+}
+
 /**
  * Multi-topic Offline Regex Rule Checker
  * Specifically tuned for Indian Classroom ESL learners (Class 6-10)
@@ -458,17 +498,21 @@ export function checkSentenceOffline(sentence: string, _topicId?: string): RuleC
   while ((match = modalWithSRegex.exec(trimmed)) !== null) {
     const modal = match[1];
     const verbWithS = match[2].toLowerCase();
-    if (['this', 'us', 'as', 'his', 'yes', 'always'].includes(verbWithS)) continue;
+    if (MODAL_SKIP_WORDS.has(verbWithS)) continue;
     if (verbWithS.endsWith('ss') || verbWithS.endsWith('us')) continue;
-    const baseVerb = verbWithS.endsWith('es') ? verbWithS.slice(0, -2) : verbWithS.slice(0, -1);
+
+    const { baseVerb, confidence } = toBaseVerb(verbWithS);
+    const suggestedText = confidence === 'high' ? `${modal} ${baseVerb}` : match[0];
     errors.push({
       ruleId: 'modal_requires_base_verb',
       matchedText: match[0],
-      suggestedText: `${modal} ${baseVerb}`,
+      suggestedText,
       index: match.index,
-      explanationHi: `मोडल्स (Can, Must, Should) के बाद हमेशा क्रिया का पहला मूल रूप (${baseVerb}) आता है।`,
+      explanationHi: confidence === 'high'
+        ? `'${modal}' के बाद हमेशा क्रिया का पहला मूल रूप (${baseVerb}) आता है, s/es नहीं।`
+        : `'${modal}' के बाद हमेशा क्रिया का पहला मूल रूप आता है, s/es नहीं।`,
       severity: 'error',
-      confidence: 'high',
+      confidence,
       inductiveHintHi: 'Modals के बाद क्रिया में s/es नहीं लगता।',
     });
   }

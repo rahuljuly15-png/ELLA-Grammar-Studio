@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Volume2, VolumeX, Sparkles, ChevronDown, ChevronUp } from 'lucide-react';
+import { Volume2, VolumeX, Sparkles, ChevronDown, ChevronUp, Mic, MicOff, Send } from 'lucide-react';
 import type { StepKey } from './PracticeCycleView';
 import type { RuleCheckResult } from '../../engines/offlineRuleEngine';
+import type { FullTopicData } from '../../data/topicLoader';
+import { getProactiveTeachingDialogue, generateTutorResponse } from '../../engines/ellaTutorEngine';
 
 export type EllaMood = 'waving' | 'thinking' | 'cheering' | 'guiding' | 'celebrating';
 
@@ -18,6 +20,7 @@ interface EllaAvatarCompanionProps {
   isSavedToDb: boolean;
   speakText: (text: string) => void;
   flightIntervalSeconds?: number;
+  activeTopic: FullTopicData;
 }
 
 interface SpotConfig {
@@ -70,12 +73,14 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
   isSavedToDb,
   speakText,
   flightIntervalSeconds = 90,
+  activeTopic,
 }) => {
   const [isMinimized, setIsMinimized] = useState(false);
   const [mood, setMood] = useState<EllaMood>('waving');
   const [dialogue, setDialogue] = useState<string>('');
   const [autoVoice, setAutoVoice] = useState(true);
-  const [clickCount, setClickCount] = useState(0);
+  const [userInput, setUserInput] = useState('');
+  const [isListening, setIsListening] = useState(false);
 
   // Flight spot & shifting bubble placement
   const [currentSpotIndex, setCurrentSpotIndex] = useState(0);
@@ -114,8 +119,8 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
 
     const genieW = isSmall ? 68 : 76;
     const genieH = isSmall ? 82 : 90;
-    const bubbleW = isSmall ? 250 : 290;
-    const bubbleH = 80;
+    const bubbleW = isSmall ? 280 : 330;
+    const bubbleH = 110;
 
     const geniePos = currentSpot.getGenieCoords(w, h);
 
@@ -123,17 +128,17 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
     let containerY = geniePos.y;
 
     if (bubblePlacement === 'left') {
-      containerX = Math.max(16, geniePos.x - bubbleW - 12);
+      containerX = Math.max(16, geniePos.x - bubbleW - 14);
       containerY = Math.max(75, Math.min(geniePos.y, h - Math.max(genieH, bubbleH) - 16));
     } else if (bubblePlacement === 'right') {
       containerX = Math.max(16, Math.min(geniePos.x, w - bubbleW - genieW - 24));
       containerY = Math.max(75, Math.min(geniePos.y, h - Math.max(genieH, bubbleH) - 16));
     } else if (bubblePlacement === 'top') {
       containerX = Math.max(16, Math.min(geniePos.x - bubbleW * 0.4, w - bubbleW - 16));
-      containerY = Math.max(75, geniePos.y - bubbleH - 12);
+      containerY = Math.max(75, geniePos.y - bubbleH - 14);
     } else if (bubblePlacement === 'bottom') {
       containerX = Math.max(16, Math.min(geniePos.x - bubbleW * 0.4, w - bubbleW - 16));
-      containerY = Math.max(75, Math.min(geniePos.y, h - bubbleH - genieH - 20));
+      containerY = Math.max(75, Math.min(geniePos.y, h - bubbleH - genieH - 24));
     }
 
     return {
@@ -179,7 +184,7 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
     };
   }, []);
 
-  // Autonomous Flight: Change spot every configured seconds (default: 90s, or 60/120/150/180s)
+  // Autonomous Flight: Change spot every configured seconds (default: 90s)
   const flyToNextSpot = () => {
     setIsFlying(true);
 
@@ -199,7 +204,6 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
     setCurrentSpotIndex(nextIndex);
     setBubblePlacement(nextPlacement);
 
-    // 3.2s of leisurely, gentle flight
     setTimeout(() => {
       setIsFlying(false);
       setFlightTilt(0);
@@ -207,7 +211,6 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
   };
 
   useEffect(() => {
-    // If flightIntervalSeconds === 0, student chose "रोक कर रखें" (Stationary mode)
     if (flightIntervalSeconds === 0) return;
 
     const intervalMs = Math.max(30, flightIntervalSeconds) * 1000;
@@ -218,77 +221,121 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
     return () => clearTimeout(timer);
   }, [currentSpotIndex, flightIntervalSeconds, screenSize]);
 
-  // Fun motivational tips when tapping Ella Genie
-  const funTips = [
-    `शानदार जा रहे हो ${displayName}! हर गलती से हम एक नया नियम सीखते हैं! 🚀`,
-    `पता है ${displayName}? इंग्लिश का असली सीक्रेट है: स्पेलिंग मत रटो, बस आवाज़ (Sound) सुनो! ✨`,
-    `तुम्हारा फोकस बहुत कमाल का है ${displayName}! You're a rockstar! 🎸`,
-    `जब भी कोई डाउट हो, बस मुझे याद करना! मैं तुम्हारी जादुई इंग्लिश जिनी हूँ! 🧞‍♀️`,
-    `तुम बहुत तेजी से सीख रहे हो ${displayName}! Keep shining bright! 🌟`,
-  ];
-
-  // Dynamic dialogue & mood engine based on real-time learner state
+  // Proactive Teaching Engine: Ella is ready & active by default on student actions!
   useEffect(() => {
-    let newDialogue = '';
-    let newMood: EllaMood = 'waving';
+    const tutorState = getProactiveTeachingDialogue({
+      studentName: displayName,
+      currentStep,
+      activeTopic,
+      selectedHypothesis,
+      isHypothesisCorrect,
+      liveCheckResult,
+      studentSentence,
+      isSavedToDb,
+    });
 
-    if (currentStep === 'use') {
-      if (isSavedToDb) {
-        newMood = 'celebrating';
-        newDialogue = `वाह ${displayName}! आपकी आज की मेहनत सुरक्षित सेव हो गई! 💾✨`;
-      } else if (studentSentence.trim().length > 0 && liveCheckResult.errors.length === 0) {
-        newMood = 'cheering';
-        newDialogue = `सुपरस्टार ${displayName}! 🎉 आपका वाक्य 100% सही और परफेक्ट है! अब 'प्रगति सेव करें' पर क्लिक करो!`;
-      } else if (liveCheckResult.errors.length > 0) {
-        newMood = 'guiding';
-        newDialogue = `अरे ${displayName}, एक छोटा सा सुधार बाकी है! 💡 नीचे 'सुधारें (Apply Fix)' पर क्लिक करो!`;
-      } else {
-        newMood = 'guiding';
-        newDialogue = `चलो ${displayName}, अब अपनी बारी है! ऊपर दिए बॉक्स में अपना एक प्यारा सा वाक्य लिखो ✍️`;
-      }
-    } else if (currentStep === 'hypothesize') {
-      if (selectedHypothesis !== null) {
-        if (isHypothesisCorrect) {
-          newMood = 'celebrating';
-          newDialogue = `कमाल कर दिया ${displayName}! 🎯 आपका अंदाज़ा 100% सही निकला! अब चलो सीक्रेट फॉर्मूला अनलॉक करें!`;
-        } else {
-          newMood = 'thinking';
-          newDialogue = `कोई बात नहीं ${displayName}! एक बार शब्द को बोलकर देखो, फिर सोचो पहली आवाज़ क्या है? 💪`;
-        }
-      } else {
-        newMood = 'thinking';
-        newDialogue = `सोचो-सोचो ${displayName}! 💡 क्या स्पेलिंग से नियम बनता है या बोलने की आवाज़ (Sound) से?`;
-      }
-    } else if (currentStep === 'notice') {
-      newMood = 'waving';
-      newDialogue = `हाय ${displayName}! मैं हूँ एला, आपकी जादुई जिनी 🧞‍♀️! इन उदाहरणों को सुनो, तुम्हें क्या फर्क दिखा?`;
-    } else if (currentStep === 'clarify') {
-      newMood = 'guiding';
-      newDialogue = `ये रहा आज का असली सीक्रेट फॉर्मूला, ${displayName}! 👑 इसे याद रखो, कभी गलती नहीं होगी!`;
-    } else if (currentStep === 'schedule') {
-      newMood = 'celebrating';
-      newDialogue = `मिशन पूरा हुआ ${displayName}! 🏆 खुद को स्टार रेटिंग दो ताकि मैं सही समय पर रिवीजन याद दिला सकूँ!`;
-    }
+    setDialogue(tutorState.reply);
+    setMood(tutorState.mood);
 
-    setMood(newMood);
-    setDialogue(newDialogue);
-
-    if (autoVoice && newDialogue) {
+    // Proactive Auto-Voice: Speaks automatically without requiring button click!
+    if (autoVoice && tutorState.reply) {
       const timer = setTimeout(() => {
-        speakText(newDialogue);
+        speakText(tutorState.reply);
       }, 350);
       return () => clearTimeout(timer);
     }
-  }, [currentStep, selectedHypothesis, isHypothesisCorrect, liveCheckResult.errors.length, liveCheckResult.isValid, isSavedToDb, displayName, autoVoice]);
+  }, [
+    currentStep,
+    selectedHypothesis,
+    isHypothesisCorrect,
+    liveCheckResult.errors.length,
+    studentSentence,
+    isSavedToDb,
+    displayName,
+    autoVoice,
+    activeTopic,
+  ]);
 
-  const handleAvatarClick = () => {
-    setMood('cheering');
-    const nextIndex = (clickCount + 1) % funTips.length;
-    setClickCount(nextIndex);
-    const tip = funTips[nextIndex];
-    setDialogue(tip);
-    speakText(tip);
+  // Two-Way Interactive Dialogue Handler (Student asks question or sends response)
+  const handleSendMessage = (textToSend?: string) => {
+    const q = (textToSend || userInput).trim();
+    if (!q) return;
+
+    setUserInput('');
+    const res = generateTutorResponse(q, {
+      studentName: displayName,
+      currentStep,
+      activeTopic,
+      selectedHypothesis,
+      isHypothesisCorrect,
+      liveCheckResult,
+      studentSentence,
+    });
+
+    setDialogue(res.reply);
+    setMood(res.mood);
+
+    if (autoVoice) {
+      speakText(res.reply);
+    }
   };
+
+  // Web Speech Recognition Microphone (Speak to Ella in Hindi/English)
+  const handleToggleVoiceInput = () => {
+    if (isListening) {
+      setIsListening(false);
+      return;
+    }
+
+    if (typeof window === 'undefined') return;
+    const win = window as any;
+    const SpeechRecognitionClass = win.SpeechRecognition || win.webkitSpeechRecognition;
+
+    if (!SpeechRecognitionClass) {
+      const inputEl = document.getElementById('ella-user-input');
+      inputEl?.focus();
+      return;
+    }
+
+    try {
+      const recognition = new SpeechRecognitionClass();
+      recognition.lang = 'hi-IN';
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+
+      setIsListening(true);
+      recognition.onresult = (event: any) => {
+        const transcript = event.results?.[0]?.[0]?.transcript;
+        setIsListening(false);
+        if (transcript) {
+          handleSendMessage(transcript);
+        }
+      };
+
+      recognition.onerror = () => setIsListening(false);
+      recognition.onend = () => setIsListening(false);
+      recognition.start();
+    } catch (e) {
+      console.warn('Speech recognition start error:', e);
+      setIsListening(false);
+    }
+  };
+
+  // Step-specific Interactive Quick Reply Chips (1-tap socratic interaction)
+  const quickChips = useMemo(() => {
+    switch (currentStep) {
+      case 'notice':
+        return ['👂 उच्चारण में क्या फर्क है?', '💡 सरल शब्दों में समझाओ', '🔍 एक और उदाहरण दो'];
+      case 'hypothesize':
+        return ['🔍 एक हिंट दो', '🤔 स्पेलिंग vs आवाज़?', '💡 मुझे समझाओ'];
+      case 'clarify':
+        return ['👑 एक और उदाहरण दो', '📖 नियम दोहराओ', '🔍 समझ नहीं आया'];
+      case 'use':
+        return ['🔍 मेरी गलती बताओ', '💡 सही वाक्य दिखाओ', '✍️ वाक्य कैसे बनाऊँ?'];
+      case 'schedule':
+        return ['🧠 रिवीजन क्यों ज़रूरी है?', '🏆 मेरा स्कोर क्या है?'];
+    }
+  }, [currentStep]);
 
   // Render cartoon speech bubble graduated comic dots
   const renderComicDots = () => {
@@ -319,7 +366,6 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
         </div>
       );
     }
-    // 'bottom'
     return (
       <div className="flex flex-col items-center gap-0.5 shrink-0">
         <span className="w-1.5 h-1.5 rounded-full bg-white border-2 border-indigo-200" />
@@ -329,7 +375,6 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
     );
   };
 
-  // Orientation flex classes based on bubble placement relative to Genie
   const getFlexClass = () => {
     if (bubblePlacement === 'left') return 'flex-row items-center';
     if (bubblePlacement === 'right') return 'flex-row-reverse items-center';
@@ -339,7 +384,7 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
 
   return (
     <div className="fixed inset-0 pointer-events-none z-40 overflow-hidden select-none">
-      {/* Gliding Genie Container */}
+      {/* Gliding Genie Container: shifts around screen every 90s */}
       <motion.div
         animate={{
           x: layout.containerX,
@@ -347,17 +392,17 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
         }}
         transition={{
           duration: 3.2,
-          ease: [0.34, 1.15, 0.64, 1], // Smooth, gentle swooping flight
+          ease: [0.34, 1.15, 0.64, 1],
         }}
         className={`absolute pointer-events-auto flex ${getFlexClass()} gap-2`}
       >
-        {/* Cartoon Oval Speech Bubble */}
+        {/* Cartoon Oval Speech Bubble with 2-Way Interactive AI Tutoring */}
         <AnimatePresence>
           {!isMinimized && (
             <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
+              initial={{ opacity: 0, scale: 0.85 }}
               animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
+              exit={{ opacity: 0, scale: 0.85 }}
               transition={{ duration: 0.25 }}
               className="flex items-center gap-1.5"
             >
@@ -365,22 +410,18 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
 
               {/* Bubbly Cartoon Oval Container */}
               <div
-                style={{ maxWidth: layout.bubbleW }}
-                className="relative px-5 py-3.5 bg-white/95 backdrop-blur-md border-2 border-indigo-200/90 rounded-[34px] sm:rounded-[38px] shadow-xl shadow-indigo-100/70"
+                style={{ width: layout.bubbleW }}
+                className="relative px-4 sm:px-5 py-3 sm:py-3.5 bg-white/95 backdrop-blur-md border-2 border-indigo-200/90 rounded-[30px] sm:rounded-[36px] shadow-xl shadow-indigo-100/70 space-y-2"
               >
-                <div className="flex items-center justify-between gap-2.5">
-                  <div className="flex-1 pr-1">
-                    <div className="flex items-center gap-1 text-[11px] font-extrabold text-indigo-700 mb-0.5">
-                      <Sparkles className="w-3 h-3 text-amber-500 fill-amber-400" />
-                      <span>एला जिनी</span>
-                    </div>
-                    <p className="text-xs sm:text-[13px] text-slate-800 font-semibold leading-snug">
-                      {dialogue}
-                    </p>
+                {/* Header: Name + Pause/Mute + Minimize */}
+                <div className="flex items-center justify-between gap-2 border-b border-indigo-50 pb-1">
+                  <div className="flex items-center gap-1 text-[11px] font-extrabold text-indigo-700">
+                    <Sparkles className="w-3 h-3 text-amber-500 fill-amber-400" />
+                    <span>एला जिनी (AI टीचर)</span>
                   </div>
 
-                  {/* Clean, minimalist actions */}
-                  <div className="flex items-center gap-1 shrink-0">
+                  <div className="flex items-center gap-1">
+                    {/* Proactive Auto-Voice Toggle / Pause */}
                     <button
                       type="button"
                       onClick={() => {
@@ -388,10 +429,10 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
                         setAutoVoice(next);
                         if (next) speakText(dialogue);
                       }}
-                      className={`p-1.5 rounded-full transition-colors cursor-pointer ${
+                      className={`p-1 rounded-full transition-colors cursor-pointer text-[10px] font-bold flex items-center gap-0.5 ${
                         autoVoice ? 'text-indigo-600 bg-indigo-50' : 'text-slate-400 hover:text-slate-600'
                       }`}
-                      title={autoVoice ? "आवाज़ म्यूट करें" : "आवाज़ चालू करें"}
+                      title={autoVoice ? "टीचिंग पॉज़ / म्यूट करें" : "टीचिंग आवाज़ चालू करें"}
                     >
                       {autoVoice ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}
                     </button>
@@ -399,13 +440,73 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
                     <button
                       type="button"
                       onClick={() => setIsMinimized(true)}
-                      className="p-1.5 text-slate-400 hover:text-slate-600 rounded-full transition-colors cursor-pointer"
+                      className="p-1 text-slate-400 hover:text-slate-600 rounded-full transition-colors cursor-pointer"
                       title="मिनीमाइज़ करें"
                     >
                       <ChevronDown className="w-3.5 h-3.5" />
                     </button>
                   </div>
                 </div>
+
+                {/* Analytical, concise teaching reply (2-3 sentences max) */}
+                <p className="text-xs sm:text-[13px] text-slate-800 font-semibold leading-snug">
+                  {dialogue}
+                </p>
+
+                {/* 1-Tap Socratic Quick Reply Chips: Student interacts with Ella */}
+                <div className="flex flex-wrap gap-1 pt-0.5">
+                  {quickChips.map((chip, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() => handleSendMessage(chip)}
+                      className="px-2 py-0.5 bg-indigo-50/80 hover:bg-indigo-100 text-indigo-700 hover:text-indigo-900 border border-indigo-200/60 rounded-full text-[10.5px] font-medium transition-colors cursor-pointer"
+                    >
+                      {chip}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Two-Way Input: Speak (Mic) or Type to Ella directly! */}
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    handleSendMessage();
+                  }}
+                  className="flex items-center gap-1.5 pt-1 border-t border-slate-100"
+                >
+                  <input
+                    id="ella-user-input"
+                    type="text"
+                    value={userInput}
+                    onChange={(e) => setUserInput(e.target.value)}
+                    placeholder="एला से पूछें (उदा. an क्यों?)..."
+                    className="flex-1 px-3 py-1 bg-slate-50 border border-slate-200 rounded-full text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-indigo-400"
+                  />
+
+                  {/* Speech Recognition Mic */}
+                  <button
+                    type="button"
+                    onClick={handleToggleVoiceInput}
+                    className={`p-1.5 rounded-full transition-colors cursor-pointer shrink-0 ${
+                      isListening
+                        ? 'bg-rose-500 text-white animate-pulse'
+                        : 'text-indigo-600 hover:bg-indigo-50'
+                    }`}
+                    title={isListening ? "सुन रही हूँ... (रोकने के लिए क्लिक करें)" : "बोलकर पूछें (माइक दबाएँ)"}
+                  >
+                    {isListening ? <MicOff className="w-3.5 h-3.5" /> : <Mic className="w-3.5 h-3.5" />}
+                  </button>
+
+                  <button
+                    type="submit"
+                    disabled={!userInput.trim()}
+                    className="p-1.5 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-40 text-white rounded-full transition-all cursor-pointer shrink-0"
+                    title="भेजें"
+                  >
+                    <Send className="w-3 h-3" />
+                  </button>
+                </form>
               </div>
 
               {bubblePlacement === 'left' && renderComicDots()}
@@ -425,7 +526,13 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
           transition={{ duration: 0.4 }}
           whileHover={{ scale: 1.08 }}
           whileTap={{ scale: 0.94 }}
-          onClick={isMinimized ? () => setIsMinimized(false) : handleAvatarClick}
+          onClick={() => {
+            if (isMinimized) {
+              setIsMinimized(false);
+            } else {
+              handleSendMessage('मुझे एक जादुई टिप दो');
+            }
+          }}
           className="pointer-events-auto cursor-pointer relative group flex items-center shrink-0"
           title={isMinimized ? "एला जिनी से बात करें (क्लिक करें)" : "टैप करें और जादुई टिप पाएँ!"}
         >
@@ -556,7 +663,6 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
                 d="M 28 34 C 32 20 45 16 50 16 C 55 16 68 20 72 34 C 68 28 60 26 50 28 C 40 26 32 28 28 34 Z"
                 fill="url(#genieHairGrad)"
               />
-              {/* Side Tendrils */}
               <path d="M 29 32 C 26 40 28 50 30 52 C 32 46 31 38 31 32 Z" fill="url(#genieHairGrad)" />
               <path d="M 71 32 C 74 40 72 50 70 52 C 68 46 69 38 69 32 Z" fill="url(#genieHairGrad)" />
 
@@ -564,9 +670,7 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
               <polygon points="50,11 44,18 56,18" fill="url(#genieGoldGrad)" />
               <circle cx="50" cy="16" r="2.5" fill="#EF4444" />
 
-              {/* ======================================================== */}
-              {/* INTERACTIVE CURSOR-TRACKING EYES                         */}
-              {/* ======================================================== */}
+              {/* Cursor Eye Tracking */}
               <ellipse cx="40" cy="42" rx="7.5" ry="9" fill="#FFFFFF" stroke="#312E81" strokeWidth="1.2" />
               <ellipse cx="60" cy="42" rx="7.5" ry="9" fill="#FFFFFF" stroke="#312E81" strokeWidth="1.2" />
 
@@ -599,10 +703,10 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
               <path d="M 33 36 Q 40 33 47 36" stroke="#312E81" strokeWidth="1.5" fill="none" strokeLinecap="round" />
               <path d="M 53 36 Q 60 33 67 36" stroke="#312E81" strokeWidth="1.5" fill="none" strokeLinecap="round" />
 
-              {/* Sweet Smiling Mouth */}
+              {/* Smiling Mouth */}
               <path d="M 46 51 Q 50 54 54 51" stroke="#E11D48" strokeWidth="1.8" fill="none" strokeLinecap="round" />
 
-              {/* Floating Magic Sparkles */}
+              {/* Sparkles */}
               <motion.circle
                 cx="22"
                 cy="25"

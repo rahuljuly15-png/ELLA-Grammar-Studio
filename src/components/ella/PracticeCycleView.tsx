@@ -1106,6 +1106,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
         isSavedToDb={isSavedToDb}
         speakText={speakText}
         flightIntervalSeconds={flightIntervalSeconds}
+        activeTopic={activeTopic}
       />
     </div>
   );

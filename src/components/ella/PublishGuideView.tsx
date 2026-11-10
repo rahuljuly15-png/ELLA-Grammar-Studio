@@ -24,7 +24,7 @@ export const PublishGuideView: React.FC = () => {
   const [copiedYaml, setCopiedYaml] = useState(false);
   const [previewDevice, setPreviewDevice] = useState<'mobile' | 'desktop'>('mobile');
 
-  const currentSharedUrl = 'https://ais-pre-ssvilk6lry35cch2mbs2mt-380856998063.asia-southeast1.run.app';
+  const currentSharedUrl = 'https://rahuljuly15-png.github.io/ELLA-Grammar-Studio/';
 
   const githubActionYaml = `name: Deploy to GitHub Pages
 

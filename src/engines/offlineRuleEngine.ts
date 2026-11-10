@@ -35,7 +35,8 @@ const CONSONANT_SOUND_VOWEL_WORDS = [
   'user', 'users', 'useful', 'useless', 'utensil', 'utensils',
   'euro', 'euros', 'european', 'europeans', 
   'eucalyptus', 'eulogy', 'euphemism',
-  'one-eyed', 'one-way', 'one-rupee', 'one-time', 'one-man'
+  'one-eyed', 'one-way', 'one-rupee', 'one-time', 'one-man',
+  'one', 'once'
 ];
 
 // 3. ARTICLES: Acronyms/Letters that start with vowel sound (require 'an')
@@ -458,6 +459,7 @@ export function checkSentenceOffline(sentence: string, _topicId?: string): RuleC
     const modal = match[1];
     const verbWithS = match[2].toLowerCase();
     if (['this', 'us', 'as', 'his', 'yes', 'always'].includes(verbWithS)) continue;
+    if (verbWithS.endsWith('ss') || verbWithS.endsWith('us')) continue;
     const baseVerb = verbWithS.endsWith('es') ? verbWithS.slice(0, -2) : verbWithS.slice(0, -1);
     errors.push({
       ruleId: 'modal_requires_base_verb',

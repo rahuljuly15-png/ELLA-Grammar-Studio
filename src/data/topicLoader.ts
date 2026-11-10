@@ -10,7 +10,10 @@ import verbFormsData from './topics/level3-verb-forms-09.json';
 import svaData from './topics/level3-subject-verb-agreement-10.json';
 import tensesData from './topics/level3-tenses-timeline-11.json';
 import modalsData from './topics/level3-modals-meter-12.json';
+import svoData from './topics/level4-svo-sentence-13.json';
+import jumbledWordsData from './topics/level4-jumbled-words-14.json';
 import activePassiveData from './topics/level5-active-passive-15.json';
+import directIndirectData from './topics/level5-direct-indirect-16.json';
 import noticeWritingData from './topics/level6-notice-writing-19.json';
 
 export interface NoticePair {
@@ -93,7 +96,10 @@ export const TOPIC_REGISTRY: Record<string, FullTopicData> = {
   'level3-subject-verb-agreement-10': svaData as unknown as FullTopicData,
   'level3-tenses-timeline-11': tensesData as unknown as FullTopicData,
   'level3-modals-meter-12': modalsData as unknown as FullTopicData,
+  'level4-svo-sentence-13': svoData as unknown as FullTopicData,
+  'level4-jumbled-words-14': jumbledWordsData as unknown as FullTopicData,
   'level5-active-passive-15': activePassiveData as unknown as FullTopicData,
+  'level5-direct-indirect-16': directIndirectData as unknown as FullTopicData,
   'level6-notice-writing-19': noticeWritingData as unknown as FullTopicData,
 };
 

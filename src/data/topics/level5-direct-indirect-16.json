@@ -1,0 +1,142 @@
+{
+  "topicId": "level5-direct-indirect-16",
+  "title": "Direct & Indirect Speech: Reporter Mode (प्रत्यक्ष और अप्रत्यक्ष कथन)",
+  "level": 5,
+  "category": "वाच्य और कथन",
+  "descriptionHi": "कोट्स हटाकर 'that' जोड़ना, सर्वनाम बदलना (I → he) और काल को एक कदम पीछे (Backshift) ले जाना।",
+  "steps": {
+    "1_notice": {
+      "stepTitleHi": "1. ध्यान दें (Notice)",
+      "instructionHi": "इन वाक्यों को ध्यान से देखें। प्रत्यक्ष से अप्रत्यक्ष कथन बनाते समय क्या परिवर्तन हो रहे हैं?",
+      "pairs": [
+        {
+          "sentence": "Rahul said, \"I am happy today.\" ➔ Rahul said that he was happy that day.",
+          "highlightWord": "quotes removed, I➔he, am➔was, today➔that day",
+          "soundHintHi": "अप्रत्यक्ष कथन में इनवर्टेड कॉमा हट जाता है, 'that' लगता है, काल Past में बदलता है और today ➔ that day बनता है।"
+        },
+        {
+          "sentence": "Priya said, \"I play cricket.\" ➔ Priya said that she played cricket.",
+          "highlightWord": "play (V1) ➔ played (V2)",
+          "soundHintHi": "यदि Reporting Verb Past (said) में हो, तो Present Simple (play) ➔ Past Simple (played) में बदल जाता है।"
+        },
+        {
+          "sentence": "The teacher said, \"The earth is round.\" ➔ The teacher said that the earth is round.",
+          "highlightWord": "is round (no change)",
+          "soundHintHi": "सार्वभौमिक सत्य (Universal Truth) और वैज्ञानिक तथ्यों का काल कभी नहीं बदलता (is round ही रहेगा, was round नहीं)!"
+        },
+        {
+          "sentence": "Aman said to me, \"You are right.\" ➔ Aman told me that I was right.",
+          "highlightWord": "said to me ➔ told me",
+          "soundHintHi": "'said to' के बाद कर्म (object) आने पर वह 'told' में बदलता है; कभी 'told to me' न कहें!"
+        }
+      ]
+    },
+    "2_hypothesize": {
+      "stepTitleHi": "2. नियम का अनुमान लगाएँ (Hypothesize)",
+      "questionHi": "प्रत्यक्ष कथन (Direct Speech) को अप्रत्यक्ष (Indirect Speech) में बदलते समय क्या बदलाव होते हैं?",
+      "options": [
+        {
+          "textHi": "केवल इनवर्टेड कॉमा हटा देते हैं, बाकी सभी शब्द और काल बिल्कुल वैसे ही रहते हैं।",
+          "isCorrect": false,
+          "feedbackHi": "गलत! केवल कॉमा हटाना पर्याप्त नहीं है; वक्ता के अनुसार सर्वनाम (Pronoun) और काल (Tense) भी बदलते हैं।"
+        },
+        {
+          "textHi": "कोट्स हटाकर 'that' लगाते हैं, सर्वनाम बदलते हैं (I ➔ he/she), और यदि Reporting verb Past (said) में हो तो काल 1 कदम पीछे (Present ➔ Past) चला जाता है।",
+          "isCorrect": true,
+          "feedbackHi": "शाबाश! यह 3-आयामी बदलाव (Pronoun + Tense + Time/Place words) ही नरेशन का मूल आधार है।"
+        },
+        {
+          "textHi": "सार्वभौमिक सत्य (Universal Truths) का काल हमेशा Past Tense में बदल दिया जाता है।",
+          "isCorrect": false,
+          "feedbackHi": "गलत! वैज्ञानिक व सार्वभौमिक सत्यों का काल कभी नहीं बदलता ('The Sun rises in the east' हमेशा वर्तमान ही रहेगा)।"
+        }
+      ]
+    },
+    "3_clarify": {
+      "stepTitleHi": "3. सुनहरा नियम (Clarify - Golden Rule)",
+      "goldenRuleHi": "नरेशन का 4-स्टेप फॉर्मूला: 1. Reporting Verb बदलें: said ➔ said, said to + object ➔ told + object (never 'told to')। 2. Conjunction 'that' जोड़ें और inverted commas हटाएँ। 3. SON नियम से सर्वनाम बदलें: 1st person (I/we) ➔ Subject अनुसार, 2nd person (you) ➔ Object अनुसार, 3rd person (he/she/they) ➔ No change। 4. काल एक कदम पीछे (Tense Backshift): is/am/are ➔ was/were, V1 ➔ V2, has/have ➔ had, will ➔ would, can ➔ could।",
+      "theRuleHi": "समय व निकटता सूचक शब्दों का बदलाव: this ➔ that, these ➔ those, now ➔ then, today ➔ that day, yesterday ➔ the previous day, tomorrow ➔ the next day। अपवाद: यदि बात Universal Truth, Proverb या वैज्ञानिक तथ्य हो, तो Tense नहीं बदलता!",
+      "examples": [
+        {
+          "word": "said that he was ill",
+          "sound": "am ➔ was",
+          "reason": "Present Continuous ➔ Past Continuous"
+        },
+        {
+          "word": "told me that...",
+          "sound": "said to ➔ told",
+          "reason": "'told to me' गलत है, सही है 'told me'"
+        },
+        {
+          "word": "the sun rises in the east",
+          "sound": "Universal Truth",
+          "reason": "शाश्वत सत्य होने के कारण काल अपरिवर्तित रहेगा"
+        },
+        {
+          "word": "can ➔ could / will ➔ would",
+          "sound": "Modal Past shift",
+          "reason": "Indirect में Modals अपने भूतकाल रूप में बदलते हैं"
+        }
+      ]
+    },
+    "4_guided_practice": {
+      "stepTitleHi": "4. निर्देशित अभ्यास (Guided Practice)",
+      "instructionHi": "वाक्यों का सही अप्रत्यक्ष कथन (Indirect Speech) रूप चुनें:",
+      "questions": [
+        {
+          "id": "nar-1",
+          "sentence": "Rohan said, \"I like ice cream.\" In Indirect speech:",
+          "options": [
+            "Rohan said that he liked ice cream.",
+            "Rohan said that I like ice cream.",
+            "Rohan said that he likes ice cream."
+          ],
+          "correctAnswer": "Rohan said that he liked ice cream.",
+          "explanationHi": "I ➔ he और like (V1) ➔ liked (V2) में बदल जाएगा।"
+        },
+        {
+          "id": "nar-2",
+          "sentence": "The teacher said, \"Honesty is the best policy.\" In Indirect speech:",
+          "options": [
+            "The teacher said that honesty was the best policy.",
+            "The teacher said that honesty is the best policy.",
+            "The teacher told that honesty is the best policy."
+          ],
+          "correctAnswer": "The teacher said that honesty is the best policy.",
+          "explanationHi": "कहावत (Proverb) या नीति वाक्य होने के कारण 'is' का 'was' नहीं होगा।"
+        },
+        {
+          "id": "nar-3",
+          "sentence": "She said to him, \"You are my best friend.\" In Indirect speech:",
+          "options": [
+            "She told to him that he was her best friend.",
+            "She told him that he was her best friend.",
+            "She said him that he was her best friend."
+          ],
+          "correctAnswer": "She told him that he was her best friend.",
+          "explanationHi": "'said to him' ➔ 'told him' में बदलेगा (never 'told to him') और are ➔ was बनेगा।"
+        }
+      ]
+    },
+    "5_free_production": {
+      "stepTitleHi": "5. स्वयं वाक्य बनाएँ (Production Task)",
+      "promptHi": "इस वाक्य को अप्रत्यक्ष कथन (Indirect Speech) में बदलें: Amit said, 'I am ready.'",
+      "placeholderHi": "उदा. Amit said that he was ready.",
+      "sampleSolutions": [
+        "Amit said that he was ready.",
+        "She said that she was writing a letter.",
+        "He told me that he would come tomorrow."
+      ]
+    },
+    "6_reflection": {
+      "stepTitleHi": "6. आत्म-मूल्यांकन (Review & Reflection)",
+      "promptHi": "आज Direct और Indirect Speech के बारे में क्या याद रखना है?",
+      "recapPointsHi": [
+        "Inverted commas हटाकर 'that' जोड़ें",
+        "said to ➔ told (कभी 'told to' न लिखें)",
+        "Tense Backshift: is ➔ was, have ➔ had, V1 ➔ V2, will ➔ would",
+        "Universal Truth और Proverb का काल कभी नहीं बदलता"
+      ]
+    }
+  }
+}

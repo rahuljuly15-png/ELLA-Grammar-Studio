@@ -1,0 +1,130 @@
+{
+  "topicId": "level4-svo-sentence-13",
+  "title": "Sentence, Predicate & Phrases (वाक्य रचना, उद्देश्य-विधेय व वाक्यांश)",
+  "level": 4,
+  "category": "वाक्य रचना",
+  "descriptionHi": "Subject (कर्ता) और Predicate (विधेय) की पहचान; अधूरे वाक्यांशों (Phrases) को पूर्ण वाक्य में बदलना।",
+  "steps": {
+    "1_notice": {
+      "stepTitleHi": "1. ध्यान दें (Notice)",
+      "instructionHi": "इन वाक्यों को ध्यान से देखें। पूर्ण वाक्य और वाक्यांश (Phrase) में क्या अंतर है?",
+      "pairs": [
+        {
+          "sentence": "in the morning (अधूरा वाक्यांश) ➔ I exercise in the morning. (पूर्ण वाक्य)",
+          "highlightWord": "Phrase vs Sentence",
+          "soundHintHi": "'in the morning' में न कोई कर्ता है न क्रिया; पूर्ण वाक्य में कर्ता + क्रिया दोनों होते हैं।"
+        },
+        {
+          "sentence": "The honest farmer / worked hard in his field all day.",
+          "highlightWord": "Subject / Predicate",
+          "soundHintHi": "जिसके बारे में बात हो = Subject (The honest farmer); जो बात कही जाए = Predicate (worked hard...)।"
+        },
+        {
+          "sentence": "Rohit (Subject) + kicked (Verb) + the football (Object).",
+          "highlightWord": "Subject + Verb + Object",
+          "soundHintHi": "अंग्रेजी में क्रम हमेशा 'S-V-O' (कर्ता + क्रिया + कर्म) होता है, हिंदी की तरह 'S-O-V' नहीं।"
+        },
+        {
+          "sentence": "Open the door. (Subject 'You' छिपा हुआ है)",
+          "highlightWord": "(You) Open the door",
+          "soundHintHi": "आज्ञा या प्रार्थना वाले वाक्यों (Imperative) में Subject 'You' अंडरस्टूड (अदृश्य) रहता है।"
+        }
+      ]
+    },
+    "2_hypothesize": {
+      "stepTitleHi": "2. नियम का अनुमान लगाएँ (Hypothesize)",
+      "questionHi": "किसी शब्द-समूह को एक 'पूर्ण सार्थक वाक्य' (Complete Sentence) कब माना जा सकता है?",
+      "options": [
+        {
+          "textHi": "जब उसमें कम से कम 10 शब्द हों और वह बहुत लंबा दिखाई दे।",
+          "isCorrect": false,
+          "feedbackHi": "गलत! वाक्य की लंबाई मायने नहीं रखती। 'Birds fly' केवल 2 शब्दों का होकर भी पूर्ण वाक्य है।"
+        },
+        {
+          "textHi": "जब उसमें एक स्पष्ट Subject (कर्ता) और Predicate (जिसमें कम से कम एक क्रिया हो) मिलकर पूर्ण अर्थ व्यक्त करें।",
+          "isCorrect": true,
+          "feedbackHi": "बिल्कुल सही! बिना क्रिया के कोई भी वाक्य पूर्ण नहीं हो सकता (No Verb = No Sentence)।"
+        },
+        {
+          "textHi": "अंग्रेजी वाक्यों में क्रिया हमेशा सबसे अंत में आती है।",
+          "isCorrect": false,
+          "feedbackHi": "गलत! हिंदी में क्रिया अंत में आती है (राम आम खाता है), लेकिन अंग्रेजी में क्रिया बीच में आती है (Ram eats a mango)।"
+        }
+      ]
+    },
+    "3_clarify": {
+      "stepTitleHi": "3. सुनहरा नियम (Clarify - Golden Rule)",
+      "goldenRuleHi": "वाक्य का सुनहरा ढाँचा (S-V-O Architecture): Subject (कौन?) + Verb (क्या क्रिया?) + Object/Complement (किसे/क्या/कहाँ?)। हर वाक्य के दो मुख्य अंग होते हैं: 1. Subject (उद्देश्य - जिसके विषय में बात हो), 2. Predicate (विधेय - जो बात कही जा रही हो, जिसमें क्रिया शामिल हो)।",
+      "theRuleHi": "Phrase (वाक्यांश) बनाम Sentence (वाक्य): Phrase शब्दों का ऐसा समूह है जिसका कुछ अर्थ तो है पर बिना क्रिया के वह अधूरा है (उदा. 'under the tree')। इसे पूर्ण वाक्य बनाने के लिए Subject + Verb जोड़ना जरूरी है (उदा. 'The cow is sleeping under the tree')।",
+      "examples": [
+        {
+          "word": "The teacher taught us grammar.",
+          "sound": "S + V + O",
+          "reason": "The teacher (S) + taught (V) + us grammar (O)"
+        },
+        {
+          "word": "on the roof",
+          "sound": "Phrase (अपूर्ण)",
+          "reason": "कोई क्रिया नहीं है, केवल एक स्थान वाक्यांश है"
+        },
+        {
+          "word": "Please sit down.",
+          "sound": "Imperative Sentence",
+          "reason": "Subject 'You' छिपा हुआ है, Predicate स्पष्ट है"
+        },
+        {
+          "word": "Birds fly.",
+          "sound": "Smallest complete sentence",
+          "reason": "Subject (Birds) + Verb (fly) पूर्ण अर्थ देते हैं"
+        }
+      ]
+    },
+    "4_guided_practice": {
+      "stepTitleHi": "4. निर्देशित अभ्यास (Guided Practice)",
+      "instructionHi": "वाक्य के सही अंग और संरचना पहचानें:",
+      "questions": [
+        {
+          "id": "svo-1",
+          "sentence": "Identify the Subject in: 'The brave little girl saved her brother.'",
+          "options": ["The brave little girl", "saved her brother", "her brother"],
+          "correctAnswer": "The brave little girl",
+          "explanationHi": "काम करने वाली मुख्य हस्ती 'The brave little girl' पूरा Subject है।"
+        },
+        {
+          "id": "svo-2",
+          "sentence": "Which of the following is a complete sentence?",
+          "options": ["with my friends", "playing in the garden", "Children play in the garden."],
+          "correctAnswer": "Children play in the garden.",
+          "explanationHi": "इसमें Subject (Children) और Finite Verb (play) दोनों हैं, जिससे पूर्ण अर्थ निकलता है।"
+        },
+        {
+          "id": "svo-3",
+          "sentence": "Correct S-V-O word order for: 'A book / is reading / Priya'",
+          "options": ["Priya is reading a book.", "A book Priya is reading.", "Reading is Priya a book."],
+          "correctAnswer": "Priya is reading a book.",
+          "explanationHi": "Subject (Priya) + Verb (is reading) + Object (a book)।"
+        }
+      ]
+    },
+    "5_free_production": {
+      "stepTitleHi": "5. स्वयं वाक्य बनाएँ (Production Task)",
+      "promptHi": "S-V-O क्रम (Subject + Verb + Object) का पालन करते हुए अपना एक वाक्य लिखें:",
+      "placeholderHi": "उदा. The boy caught the ball.",
+      "sampleSolutions": [
+        "The boy caught the cricket ball.",
+        "My mother cooked delicious food.",
+        "The gardener waters the plants every morning."
+      ]
+    },
+    "6_reflection": {
+      "stepTitleHi": "6. आत्म-मूल्यांकन (Review & Reflection)",
+      "promptHi": "आज वाक्य और उसके अंगों के बारे में क्या याद रखना है?",
+      "recapPointsHi": [
+        "वाक्य ढाँचा = Subject (कर्ता) + Verb (क्रिया) + Object (कर्म)",
+        "Subject = जिसके बारे में वाक्य हो; Predicate = क्रिया सहित कही गई बात",
+        "Phrase (वाक्यांश) में क्रिया नहीं होती (उदा. 'in the corner')",
+        "आज्ञावाचक (Imperative) वाक्यों में Subject 'You' छिपा रहता है (Sit down)"
+      ]
+    }
+  }
+}

@@ -1,0 +1,142 @@
+{
+  "topicId": "level4-jumbled-words-14",
+  "title": "Jumbled Words Rearrangement (उलझे हुए शब्द सुलझाना)",
+  "level": 4,
+  "category": "वाक्य रचना",
+  "descriptionHi": "उलझे शब्दों में पहले कर्ता (Who), फिर क्रिया (Action), फिर कर्म (What/Where) ढूँढकर सार्थक वाक्य बनाना।",
+  "steps": {
+    "1_notice": {
+      "stepTitleHi": "1. ध्यान दें (Notice)",
+      "instructionHi": "इन उदाहरणों को ध्यान से देखें। उलझे शब्दों को सार्थक क्रम में कैसे लगाया गया है?",
+      "pairs": [
+        {
+          "sentence": "mangoes / loves / Rohan ➔ Rohan loves mangoes.",
+          "highlightWord": "Who + Does What + What",
+          "soundHintHi": "पहले कर्ता (Rohan) ढूँढें, फिर क्रिया (loves), फिर कर्म (mangoes)।"
+        },
+        {
+          "sentence": "in Delhi / lives / my uncle ➔ My uncle lives in Delhi.",
+          "highlightWord": "Subject + Verb + Place",
+          "soundHintHi": "स्थान (in Delhi) या समय (yesterday) को क्रिया के बाद या वाक्य के अंत में रखें।"
+        },
+        {
+          "sentence": "playing / are / the boys / football ➔ The boys are playing football.",
+          "highlightWord": "are playing (Helping + Main verb)",
+          "soundHintHi": "सहायक क्रिया (are) और मुख्य क्रिया (playing) को हमेशा एक साथ रखें।"
+        },
+        {
+          "sentence": "live / do / where / you ? ➔ Where do you live?",
+          "highlightWord": "Question word + Helping + Subject + Main verb",
+          "soundHintHi": "प्रश्न में क्रम: Wh-word (Where) + Helping verb (do) + Subject (you) + Verb (live)?"
+        }
+      ]
+    },
+    "2_hypothesize": {
+      "stepTitleHi": "2. नियम का अनुमान लगाएँ (Hypothesize)",
+      "questionHi": "उलझे हुए शब्दों (Jumbled Words) को सुलझाने का अचूक 3-चरणीय तरीका क्या है?",
+      "options": [
+        {
+          "textHi": "शब्दों को उसी क्रम में लिख दें जैसे वे दिखाई दे रहे हैं।",
+          "isCorrect": false,
+          "feedbackHi": "गलत! उलझे शब्दों का क्रम गलत होता है, उन्हें व्याकरण के नियमानुसार पुनर्व्यवस्थित करना पड़ता है।"
+        },
+        {
+          "textHi": "चरण 1: क्रिया (Verb) ढूँढें ➔ चरण 2: पूछें 'कौन?' (Subject) ➔ चरण 3: पूछें 'क्या/कहाँ/कब?' (Object/Time)।",
+          "isCorrect": true,
+          "feedbackHi": "बिल्कुल सही! यह 3-चरणीय जादुई फॉर्मूला किसी भी उलझे वाक्य को 10 सेकंड में सुलझा देता है।"
+        },
+        {
+          "textHi": "वाक्य में हमेशा सबसे छोटा शब्द सबसे पहले लिखा जाता है।",
+          "isCorrect": false,
+          "feedbackHi": "गलत! शब्द की लंबाई से क्रम का कोई लेना-देना नहीं होता।"
+        }
+      ]
+    },
+    "3_clarify": {
+      "stepTitleHi": "3. सुनहरा नियम (Clarify - Golden Rule)",
+      "goldenRuleHi": "जंबल्ड वर्ड्स सुलझाने का 3-Step फॉर्मूला: Step 1 (Action): क्रिया ढूँढें (उदा. 'is flying')। Step 2 (Agent): क्रिया से पूछें 'Who?' ➔ कर्ता मिलेगा (उदा. 'The pilot')। Step 3 (Receiver/Details): क्रिया से पूछें 'What / Where / When?' ➔ कर्म मिलेगा (उदा. 'an aeroplane in the sky')।",
+      "theRuleHi": "प्रश्नवाचक वाक्यों का नियम: Wh-word + Helping Verb + Subject + Main Verb + Object + ? (उदा. Why are you crying?)। Capital Letter और Full Stop / Question Mark का विशेष ध्यान रखें!",
+      "examples": [
+        {
+          "word": "water / boil / at 100°C / does",
+          "sound": "Question order",
+          "reason": "Does water boil at 100°C?"
+        },
+        {
+          "word": "honesty / best / policy / is / the",
+          "sound": "Universal proverb",
+          "reason": "Honesty is the best policy."
+        },
+        {
+          "word": "yesterday / arrived / train / the",
+          "sound": "Time placement",
+          "reason": "The train arrived yesterday."
+        },
+        {
+          "word": "hard / students / study / must",
+          "sound": "Modal + Verb",
+          "reason": "Students must study hard."
+        }
+      ]
+    },
+    "4_guided_practice": {
+      "stepTitleHi": "4. निर्देशित अभ्यास (Guided Practice)",
+      "instructionHi": "उलझे शब्दों को सही क्रम में लगाकर सार्थक वाक्य चुनें:",
+      "questions": [
+        {
+          "id": "jw-1",
+          "sentence": "Rearrange: 'loves / music / listening to / Neha'",
+          "options": [
+            "Neha loves listening to music.",
+            "Music loves listening to Neha.",
+            "Listening to music Neha loves."
+          ],
+          "correctAnswer": "Neha loves listening to music.",
+          "explanationHi": "Subject (Neha) + Verb (loves) + Object phrase (listening to music)।"
+        },
+        {
+          "id": "jw-2",
+          "sentence": "Rearrange: 'the match / won / easily / our team'",
+          "options": [
+            "Our team won the match easily.",
+            "Easily the match our team won.",
+            "The match won our team easily."
+          ],
+          "correctAnswer": "Our team won the match easily.",
+          "explanationHi": "Subject (Our team) + Verb (won) + Object (the match) + Adverb (easily)।"
+        },
+        {
+          "id": "jw-3",
+          "sentence": "Rearrange: 'are / doing / what / you ?'",
+          "options": [
+            "What are you doing?",
+            "What you are doing?",
+            "You are doing what?"
+          ],
+          "correctAnswer": "What are you doing?",
+          "explanationHi": "प्रश्नवाचक संरचना: Wh-word (What) + Helping verb (are) + Subject (you) + Verb-ing (doing)?"
+        }
+      ]
+    },
+    "5_free_production": {
+      "stepTitleHi": "5. स्वयं वाक्य बनाएँ (Production Task)",
+      "promptHi": "इस जंबल्ड सेट को सुलझाकर सही वाक्य लिखें: 'a / painted / beautiful picture / the artist'",
+      "placeholderHi": "उदा. The artist painted a beautiful picture.",
+      "sampleSolutions": [
+        "The artist painted a beautiful picture.",
+        "The children are playing cricket in the park.",
+        "My father bought a new car yesterday."
+      ]
+    },
+    "6_reflection": {
+      "stepTitleHi": "6. आत्म-मूल्यांकन (Review & Reflection)",
+      "promptHi": "आज Jumbled Words सुलझाने के बारे में क्या याद रखना है?",
+      "recapPointsHi": [
+        "Step 1: क्रिया (Verb) पहचानें, Step 2: कर्ता (Subject), Step 3: कर्म (Object)",
+        "सहायक क्रिया (is, are, was, have) को मुख्य क्रिया के ठीक पहले रखें",
+        "समय और स्थान (Time & Place) प्रायः वाक्य के अंत में आते हैं",
+        "प्रश्न में Helping verb कर्ता (Subject) से पहले आती है (What are you doing?)"
+      ]
+    }
+  }
+}

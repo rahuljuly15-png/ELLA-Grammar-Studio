@@ -77,24 +77,89 @@ export default function App() {
 
   useEffect(() => {
     refreshStats();
+    // Warm up speech synthesis voices cache
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      window.speechSynthesis.getVoices();
+      const onVoicesChanged = () => {
+        window.speechSynthesis.getVoices();
+      };
+      window.speechSynthesis.addEventListener('voiceschanged', onVoicesChanged);
+      return () => {
+        window.speechSynthesis.removeEventListener('voiceschanged', onVoicesChanged);
+      };
+    }
   }, []);
 
-  // Web Speech API Voice (Indian English -> British -> US fallback)
+  // Lifelike Natural Voice Engine (Female Genie Tone with Hindi/English detection)
   const speakText = (text: string) => {
-    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+    if (typeof window === 'undefined' || !('speechSynthesis' in window)) return;
+
+    try {
       window.speechSynthesis.cancel();
-      const clean = text.replace(/<[^>]*>?/gm, '');
+
+      // Clean emojis, markdown symbols, and HTML tags so voice sounds smooth & doesn't recite emoji names
+      const clean = text
+        .replace(/<[^>]*>?/gm, '')
+        .replace(/[\u{1F300}-\u{1FAFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu, '')
+        .replace(/[*_#`~]/g, '')
+        .trim();
+
+      if (!clean) return;
+
       const utterance = new SpeechSynthesisUtterance(clean);
+      const isHindi = /[\u0900-\u097F]/.test(clean);
       const voices = window.speechSynthesis.getVoices();
-      const indianVoice = voices.find((v) => v.lang === 'en-IN');
-      const englishVoice = voices.find((v) => v.lang.startsWith('en'));
-      if (indianVoice) {
-        utterance.voice = indianVoice;
-      } else if (englishVoice) {
-        utterance.voice = englishVoice;
+
+      if (voices.length > 0) {
+        if (isHindi) {
+          // Priority for Hindi: Natural female voices (Google हिन्दी, Microsoft Swara/Kalpana/Heera)
+          const hiFemale = voices.find(
+            (v) =>
+              (v.lang.startsWith('hi') || v.lang === 'hi-IN') &&
+              /female|swara|kalpana|heera|google|natural/i.test(v.name)
+          );
+          const hiAny = voices.find((v) => v.lang.startsWith('hi') || v.lang === 'hi-IN');
+          const inFemale = voices.find(
+            (v) => v.lang === 'en-IN' && /female|heera|neerja|google/i.test(v.name)
+          );
+
+          if (hiFemale) {
+            utterance.voice = hiFemale;
+            utterance.lang = hiFemale.lang;
+          } else if (hiAny) {
+            utterance.voice = hiAny;
+            utterance.lang = hiAny.lang;
+          } else if (inFemale) {
+            utterance.voice = inFemale;
+          }
+        } else {
+          // Priority for English: Natural cheerful female voices (Zira, Jenny, Aria, Samantha, Google UK Female)
+          const enFemale = voices.find(
+            (v) =>
+              v.lang.startsWith('en') &&
+              /zira|jenny|aria|samantha|heera|neerja|hazel|female|natural/i.test(v.name)
+          );
+          const enIndian = voices.find((v) => v.lang === 'en-IN');
+          const enGeneral = voices.find((v) => v.lang.startsWith('en'));
+
+          if (enFemale) {
+            utterance.voice = enFemale;
+          } else if (enIndian) {
+            utterance.voice = enIndian;
+          } else if (enGeneral) {
+            utterance.voice = enGeneral;
+          }
+        }
       }
-      utterance.rate = 0.9;
+
+      // Cheerful, youthful Genie pitch & natural pace
+      utterance.pitch = isHindi ? 1.08 : 1.14;
+      utterance.rate = 0.96;
+      utterance.volume = 1;
+
       window.speechSynthesis.speak(utterance);
+    } catch (e) {
+      console.warn('Speech synthesis playback error:', e);
     }
   };
 

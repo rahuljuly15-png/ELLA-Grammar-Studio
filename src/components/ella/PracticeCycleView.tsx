@@ -326,11 +326,11 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
 
             {/* Ella In-Step Guide Banner */}
             <div className="flex items-center gap-3 p-3.5 bg-gradient-to-r from-indigo-50/90 via-purple-50/50 to-indigo-50/70 border border-indigo-200/80 rounded-2xl shadow-2xs">
-              <div className="w-10 h-10 rounded-2xl bg-indigo-600 text-white flex items-center justify-center shrink-0 font-bold text-base shadow-xs shadow-indigo-200">
-                🦉
+              <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 text-white flex items-center justify-center shrink-0 font-bold text-lg shadow-xs shadow-indigo-200">
+                🧞‍♀️
               </div>
               <div className="flex-1 text-xs sm:text-sm font-semibold text-indigo-950">
-                <span className="text-indigo-700 font-extrabold mr-1.5">एला (Ella):</span>
+                <span className="text-indigo-700 font-extrabold mr-1.5">एला जिनी:</span>
                 हाय {studentName || 'Ishu'}! 👋 इन दोनों वाक्यों को बोलकर सुनो, तुम्हें क्या फर्क दिखा? 🧐
               </div>
               <button
@@ -420,11 +420,11 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
 
             {/* Ella In-Step Guide Banner */}
             <div className="flex items-center gap-3 p-3.5 bg-gradient-to-r from-amber-50/90 via-indigo-50/40 to-amber-50/60 border border-amber-200/80 rounded-2xl shadow-2xs">
-              <div className="w-10 h-10 rounded-2xl bg-amber-500 text-white flex items-center justify-center shrink-0 font-bold text-base shadow-xs shadow-amber-200">
-                🦉
+              <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-amber-500 to-purple-600 text-white flex items-center justify-center shrink-0 font-bold text-lg shadow-xs shadow-amber-200">
+                🧞‍♀️
               </div>
               <div className="flex-1 text-xs sm:text-sm font-semibold text-slate-800">
-                <span className="text-amber-800 font-extrabold mr-1.5">एला (Ella):</span>
+                <span className="text-amber-800 font-extrabold mr-1.5">एला जिनी:</span>
                 {selectedHypothesis !== null
                   ? isHypothesisCorrect
                     ? `कमाल कर दिया ${studentName || 'Ishu'}! 🎯 आपका अंदाज़ा 100% सही निकला! अब चलो सीक्रेट फॉर्मूला अनलॉक करें!`
@@ -574,11 +574,11 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
 
             {/* Ella In-Step Guide Banner */}
             <div className="flex items-center gap-3 p-3.5 bg-gradient-to-r from-amber-50/90 via-orange-50/40 to-amber-50/70 border border-amber-200/80 rounded-2xl shadow-2xs">
-              <div className="w-10 h-10 rounded-2xl bg-amber-600 text-white flex items-center justify-center shrink-0 font-bold text-base shadow-xs shadow-amber-200">
-                🦉
+              <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-amber-500 to-purple-600 text-white flex items-center justify-center shrink-0 font-bold text-lg shadow-xs shadow-amber-200">
+                🧞‍♀️
               </div>
               <div className="flex-1 text-xs sm:text-sm font-semibold text-slate-800">
-                <span className="text-amber-800 font-extrabold mr-1.5">एला (Ella):</span>
+                <span className="text-amber-800 font-extrabold mr-1.5">एला जिनी:</span>
                 ये रहा आज का असली सीक्रेट फॉर्मूला, {studentName || 'Ishu'}! 👑 इसे याद रखो, कभी गलती नहीं होगी!
               </div>
               <button
@@ -756,11 +756,11 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
 
             {/* Ella In-Step Guide Banner */}
             <div className="flex items-center gap-3 p-3.5 bg-gradient-to-r from-emerald-50/90 via-indigo-50/40 to-emerald-50/60 border border-emerald-200/80 rounded-2xl shadow-2xs">
-              <div className="w-10 h-10 rounded-2xl bg-emerald-600 text-white flex items-center justify-center shrink-0 font-bold text-base shadow-xs shadow-emerald-200">
-                🦉
+              <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white flex items-center justify-center shrink-0 font-bold text-lg shadow-xs shadow-emerald-200">
+                🧞‍♀️
               </div>
               <div className="flex-1 text-xs sm:text-sm font-semibold text-slate-800">
-                <span className="text-emerald-800 font-extrabold mr-1.5">एला (Ella):</span>
+                <span className="text-emerald-800 font-extrabold mr-1.5">एला जिनी:</span>
                 {studentSentence.trim().length > 0 && liveCheckResult.errors.length === 0
                   ? `सुपरस्टार ${studentName || 'Ishu'}! 🎉 क्या गजब का वाक्य बनाया है! 100% परफेक्ट!`
                   : liveCheckResult.errors.length > 0
@@ -1012,11 +1012,11 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
 
             {/* Ella In-Step Guide Banner */}
             <div className="flex items-center gap-3 p-3.5 bg-gradient-to-r from-purple-50/90 via-indigo-50/50 to-purple-50/70 border border-purple-200/80 rounded-2xl shadow-2xs">
-              <div className="w-10 h-10 rounded-2xl bg-purple-600 text-white flex items-center justify-center shrink-0 font-bold text-base shadow-xs shadow-purple-200">
-                🦉
+              <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-purple-500 to-indigo-600 text-white flex items-center justify-center shrink-0 font-bold text-lg shadow-xs shadow-purple-200">
+                🧞‍♀️
               </div>
               <div className="flex-1 text-xs sm:text-sm font-semibold text-purple-950">
-                <span className="text-purple-700 font-extrabold mr-1.5">एला (Ella):</span>
+                <span className="text-purple-700 font-extrabold mr-1.5">एला जिनी:</span>
                 मिशन पूरा हुआ {studentName || 'Ishu'}! 🏆 खुद को स्टार रेटिंग दो ताकि मैं सही समय पर रिवीजन याद दिला सकूँ!
               </div>
               <button

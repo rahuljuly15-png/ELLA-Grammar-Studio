@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Volume2, Sparkles, X, MessageCircle, ChevronUp, ChevronDown, Heart } from 'lucide-react';
+import { Volume2, VolumeX, Sparkles, ChevronDown, ChevronUp, Heart, Wand2 } from 'lucide-react';
 import type { StepKey } from './PracticeCycleView';
 import type { RuleCheckResult } from '../../engines/offlineRuleEngine';
 
@@ -30,88 +30,132 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
   const [isMinimized, setIsMinimized] = useState(false);
   const [mood, setMood] = useState<EllaMood>('waving');
   const [dialogue, setDialogue] = useState<string>('');
+  const [autoVoice, setAutoVoice] = useState(true);
   const [clickCount, setClickCount] = useState(0);
+
+  // Eye Tracking State: (dx, dy) offset for pupils
+  const [eyeOffset, setEyeOffset] = useState({ x: 0, y: 0 });
+  const avatarRef = useRef<HTMLDivElement>(null);
 
   const displayName = studentName?.trim() || 'Ishu';
 
-  // Random fun motivational quotes when student taps Ella
+  // Real-time Mouse / Touch Eye Tracking
+  useEffect(() => {
+    const handlePointerMove = (e: MouseEvent | TouchEvent) => {
+      if (!avatarRef.current) return;
+      const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+      const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+
+      const rect = avatarRef.current.getBoundingClientRect();
+      const eyeCenterX = rect.left + rect.width * 0.5;
+      const eyeCenterY = rect.top + rect.height * 0.42;
+
+      const deltaX = clientX - eyeCenterX;
+      const deltaY = clientY - eyeCenterY;
+      const distance = Math.hypot(deltaX, deltaY);
+
+      if (distance > 0) {
+        // Maximum pupil displacement in pixels
+        const maxRadius = 4.8;
+        const scale = Math.min(distance / 80, 1);
+        const pupilX = (deltaX / distance) * maxRadius * scale;
+        const pupilY = (deltaY / distance) * maxRadius * scale;
+        setEyeOffset({ x: pupilX, y: pupilY });
+      }
+    };
+
+    window.addEventListener('mousemove', handlePointerMove, { passive: true });
+    window.addEventListener('touchmove', handlePointerMove, { passive: true });
+
+    return () => {
+      window.removeEventListener('mousemove', handlePointerMove);
+      window.removeEventListener('touchmove', handlePointerMove);
+    };
+  }, []);
+
+  // Random fun motivational tips when Ishu taps on Ella Genie
   const funTips = [
     `शानदार जा रहे हो ${displayName}! हर गलती से हम एक नया नियम सीखते हैं! 🚀`,
-    `पता है ${displayName}? इंग्लिश बोलने का सबसे बड़ा सीक्रेट है रोज़ 5 मिनट प्रैक्टिस! ✨`,
-    `तुम्हारी प्रोग्रेस देखकर मुझे बहुत खुशी हो रही है ${displayName}! Keep shining! 🌟`,
-    `याद रखना ${displayName}: स्पेलिंग नहीं, बोलने की आवाज़ (Sound) ही असली नियम है! 🎧`,
-    `तुम बहुत तेजी से सीख रहे हो ${displayName}! You're a rockstar! 🎸`,
+    `पता है ${displayName}? इंग्लिश का असली सीक्रेट है: स्पेलिंग मत रटो, बस आवाज़ (Sound) सुनो! ✨`,
+    `तुम्हारा फोकस बहुत कमाल का है ${displayName}! You're a rockstar! 🎸`,
+    `जब भी कोई डाउट हो, बस मुझे याद करना! मैं तुम्हारी जादुई इंग्लिश जिनी हूँ! 🧞‍♀️`,
+    `तुम बहुत तेजी से सीख रहे हो ${displayName}! Keep shining bright! 🌟`,
   ];
 
   // Dynamic dialogue & mood engine based on real-time learner state
   useEffect(() => {
+    let newDialogue = '';
+    let newMood: EllaMood = 'waving';
+
     // Priority 1: Step 4 (Sentence Builder - Use)
     if (currentStep === 'use') {
       if (isSavedToDb) {
-        setMood('celebrating');
-        setDialogue(`वाह ${displayName}! आपकी आज की मेहनत लोकल डेटाबेस में सुरक्षित सेव हो गई! 💾✨`);
+        newMood = 'celebrating';
+        newDialogue = `वाह ${displayName}! आपकी आज की मेहनत सुरक्षित सेव हो गई! 💾✨`;
       } else if (studentSentence.trim().length > 0 && liveCheckResult.errors.length === 0) {
-        setMood('cheering');
-        setDialogue(`सुपरस्टार ${displayName}! 🎉 आपका वाक्य 100% सही और परफेक्ट है! अब 'प्रगति सेव करें' पर क्लिक करो!`);
+        newMood = 'cheering';
+        newDialogue = `सुपरस्टार ${displayName}! 🎉 आपका वाक्य 100% सही और परफेक्ट है! अब 'प्रगति सेव करें' पर क्लिक करो!`;
       } else if (liveCheckResult.errors.length > 0) {
-        setMood('guiding');
-        setDialogue(`अरे ${displayName}, एक छोटा सा सुधार बाकी है! 💡 नीचे दिए 'सुधारें (Apply Fix)' पर क्लिक करो!`);
+        newMood = 'guiding';
+        newDialogue = `अरे ${displayName}, एक छोटा सा सुधार बाकी है! 💡 नीचे 'सुधारें (Apply Fix)' पर क्लिक करो!`;
       } else {
-        setMood('guiding');
-        setDialogue(`चलो ${displayName}, अब आपकी बारी है! ऊपर दिए बॉक्स में अपना एक प्यारा सा वाक्य लिखो ✍️`);
+        newMood = 'guiding';
+        newDialogue = `चलो ${displayName}, अब अपनी बारी है! ऊपर दिए बॉक्स में अपना एक प्यारा सा वाक्य लिखो ✍️`;
       }
-      return;
-    }
-
-    // Priority 2: Step 2 (Hypothesize)
-    if (currentStep === 'hypothesize') {
+    } else if (currentStep === 'hypothesize') {
+      // Priority 2: Step 2 (Hypothesize)
       if (selectedHypothesis !== null) {
         if (isHypothesisCorrect) {
-          setMood('celebrating');
-          setDialogue(`कमाल कर दिया ${displayName}! 🎯 आपका अंदाज़ा 100% सही निकला! अब चलो सीक्रेट फॉर्मूला अनलॉक करें!`);
+          newMood = 'celebrating';
+          newDialogue = `कमाल कर दिया ${displayName}! 🎯 आपका अंदाज़ा 100% सही निकला! अब चलो सीक्रेट फॉर्मूला अनलॉक करें!`;
         } else {
-          setMood('thinking');
-          setDialogue(`कोई बात नहीं ${displayName}! एक बार शब्द को बोलकर देखो, फिर सोचो पहली आवाज़ क्या है? 💪`);
+          newMood = 'thinking';
+          newDialogue = `कोई बात नहीं ${displayName}! एक बार शब्द को बोलकर देखो, फिर सोचो पहली आवाज़ क्या है? 💪`;
         }
       } else {
-        setMood('thinking');
-        setDialogue(`सोचो-सोचो ${displayName}! 💡 क्या स्पेलिंग से नियम बनता है या बोलने की आवाज़ (Sound) से?`);
+        newMood = 'thinking';
+        newDialogue = `सोचो-सोचो ${displayName}! 💡 क्या स्पेलिंग से नियम बनता है या बोलने की आवाज़ (Sound) से?`;
       }
-      return;
+    } else if (currentStep === 'notice') {
+      // Priority 3: Step 1 (Notice)
+      newMood = 'waving';
+      newDialogue = `हाय ${displayName}! मैं हूँ एला, आपकी जादुई जिनी 🧞‍♀️! इन दोनों वाक्यों को सुनो, तुम्हें 'a' और 'an' में क्या फर्क दिखा?`;
+    } else if (currentStep === 'clarify') {
+      // Priority 4: Step 3 (Clarify)
+      newMood = 'guiding';
+      newDialogue = `ये रहा आज का असली सीक्रेट फॉर्मूला, ${displayName}! 👑 इसे याद रखो, कभी गलती नहीं होगी!`;
+    } else if (currentStep === 'schedule') {
+      // Priority 5: Step 5 (Schedule & FSRS)
+      newMood = 'celebrating';
+      newDialogue = `मिशन पूरा हुआ ${displayName}! 🏆 खुद को स्टार रेटिंग दो ताकि मैं सही समय पर रिवीजन याद दिला सकूँ!`;
     }
 
-    // Priority 3: Step 1 (Notice)
-    if (currentStep === 'notice') {
-      setMood('waving');
-      setDialogue(`हाय ${displayName}! 👋 इन दोनों वाक्यों को बोलकर सुनो, तुम्हें 'a' और 'an' में क्या फर्क दिखा?`);
-      return;
-    }
+    setMood(newMood);
+    setDialogue(newDialogue);
 
-    // Priority 4: Step 3 (Clarify)
-    if (currentStep === 'clarify') {
-      setMood('guiding');
-      setDialogue(`ये रहा आज का असली सीक्रेट फॉर्मूला, ${displayName}! 👑 इसे दिमाग में बैठा लो, कभी गलती नहीं होगी!`);
-      return;
+    // Auto-Speak feature: speak automatically on context change without requiring button press!
+    if (autoVoice && newDialogue) {
+      const timer = setTimeout(() => {
+        speakText(newDialogue);
+      }, 350);
+      return () => clearTimeout(timer);
     }
-
-    // Priority 5: Step 5 (Schedule & FSRS)
-    if (currentStep === 'schedule') {
-      setMood('celebrating');
-      setDialogue(`मिशन पूरा हुआ ${displayName}! 🏆 खुद को स्टार रेटिंग दो ताकि स्मार्ट टाइमर तुम्हारी अगली रिवीजन तय कर सके!`);
-      return;
-    }
-  }, [currentStep, selectedHypothesis, isHypothesisCorrect, liveCheckResult, studentSentence, isSavedToDb, displayName]);
+  }, [currentStep, selectedHypothesis, isHypothesisCorrect, liveCheckResult.errors.length, liveCheckResult.isValid, isSavedToDb, displayName, autoVoice]);
 
   const handleAvatarClick = () => {
     setMood('cheering');
     const nextIndex = (clickCount + 1) % funTips.length;
     setClickCount(nextIndex);
-    setDialogue(funTips[nextIndex]);
-    speakText(funTips[nextIndex]);
+    const tip = funTips[nextIndex];
+    setDialogue(tip);
+    speakText(tip);
   };
 
   return (
-    <div className="fixed bottom-4 right-4 z-40 flex flex-col items-end pointer-events-none select-none">
+    <div
+      ref={avatarRef}
+      className="fixed bottom-4 right-4 z-40 flex flex-col items-end pointer-events-none select-none"
+    >
       <AnimatePresence>
         {!isMinimized && (
           <motion.div
@@ -122,25 +166,42 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
             className="mb-2 max-w-xs sm:max-w-sm pointer-events-auto"
           >
             {/* Friendly Speech Bubble */}
-            <div className="relative p-4 bg-white/95 backdrop-blur-md border-2 border-indigo-200/90 rounded-3xl shadow-xl shadow-indigo-100/50 space-y-2">
+            <div className="relative p-4 bg-white/95 backdrop-blur-md border-2 border-indigo-200/90 rounded-3xl shadow-2xl shadow-indigo-200/60 space-y-2">
               <div className="flex items-center justify-between gap-2 border-b border-indigo-50 pb-1.5">
                 <div className="flex items-center gap-1.5 text-xs font-extrabold text-indigo-700">
                   <Sparkles className="w-3.5 h-3.5 text-amber-500 fill-amber-400" />
-                  <span>एला (Ella Assistant)</span>
-                  <span className="text-[10px] font-medium text-slate-400 bg-indigo-50 px-1.5 py-0.5 rounded-full">
-                    Your Buddy
+                  <span>एला जिनी (Ella Genie)</span>
+                  <span className="text-[10px] font-medium text-purple-700 bg-purple-50 border border-purple-200/60 px-1.5 py-0.2 rounded-full">
+                    Magic Assistant
                   </span>
                 </div>
 
                 <div className="flex items-center gap-1">
+                  {/* Auto Voice Toggle */}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const next = !autoVoice;
+                      setAutoVoice(next);
+                      if (next) speakText("ऑटो-वॉइस चालू है!");
+                    }}
+                    className={`p-1 rounded-lg transition-colors cursor-pointer flex items-center gap-1 text-[11px] font-bold ${
+                      autoVoice ? 'text-indigo-600 bg-indigo-50' : 'text-slate-400 hover:text-slate-600'
+                    }`}
+                    title={autoVoice ? "ऑटो-वॉइस चालू है (क्लिक करके म्यूट करें)" : "ऑटो-वॉइस बंद है (क्लिक करके चालू करें)"}
+                  >
+                    {autoVoice ? <Volume2 className="w-3.5 h-3.5" /> : <VolumeX className="w-3.5 h-3.5" />}
+                  </button>
+
                   <button
                     type="button"
                     onClick={() => speakText(dialogue)}
                     className="p-1 text-indigo-600 hover:text-indigo-800 hover:bg-indigo-50 rounded-lg transition-colors cursor-pointer"
-                    title="एला की आवाज़ सुनें (Listen Voice)"
+                    title="दोबारा सुनें"
                   >
                     <Volume2 className="w-3.5 h-3.5" />
                   </button>
+
                   <button
                     type="button"
                     onClick={() => setIsMinimized(true)}
@@ -157,26 +218,27 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
               </p>
 
               <div className="pt-1 flex items-center justify-between text-[11px] text-slate-400">
-                <span className="hover:text-indigo-600 cursor-pointer" onClick={handleAvatarClick}>
-                  💡 मुझे टैप करें नई टिप के लिए!
+                <span className="hover:text-indigo-600 cursor-pointer flex items-center gap-1" onClick={handleAvatarClick}>
+                  <Wand2 className="w-3 h-3 text-amber-500" />
+                  <span>टैप करें जादुई टिप के लिए!</span>
                 </span>
                 <Heart className="w-3 h-3 text-rose-400 fill-rose-300" />
               </div>
 
               {/* Tail pointing down to avatar */}
-              <div className="absolute -bottom-2 right-8 w-4 h-4 bg-white border-r-2 border-b-2 border-indigo-200 rotate-45 transform" />
+              <div className="absolute -bottom-2 right-9 w-4 h-4 bg-white border-r-2 border-b-2 border-indigo-200 rotate-45 transform" />
             </div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* The Animated Ella Mascot */}
+      {/* The Animated Magical Girl Genie Avatar with Real-Time Eye Tracking */}
       <motion.div
-        whileHover={{ scale: 1.06 }}
+        whileHover={{ scale: 1.08 }}
         whileTap={{ scale: 0.94 }}
         onClick={isMinimized ? () => setIsMinimized(false) : handleAvatarClick}
         className="pointer-events-auto cursor-pointer relative group flex items-center gap-2"
-        title={isMinimized ? "एला से बात करें (Click to Open)" : "टैप करें और नई प्रेरणा पाएँ!"}
+        title={isMinimized ? "एला जिनी से बात करें (Open)" : "टैप करें और जादुई प्रेरणा पाएँ!"}
       >
         {isMinimized && (
           <motion.div
@@ -184,99 +246,206 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
             animate={{ opacity: 1, x: 0 }}
             className="px-3 py-1.5 bg-white border border-indigo-200 shadow-md rounded-full text-xs font-bold text-indigo-700 flex items-center gap-1.5"
           >
-            <Sparkles className="w-3 h-3 text-amber-500" />
-            <span>एला से पूछें</span>
+            <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+            <span>एला जिनी 🧞‍♀️</span>
             <ChevronUp className="w-3 h-3 text-slate-400" />
           </motion.div>
         )}
 
-        <div className="relative w-15 h-15 sm:w-16 sm:h-16 rounded-3xl bg-gradient-to-tr from-indigo-600 via-violet-500 to-indigo-400 p-1 shadow-lg shadow-indigo-300/60 ring-3 ring-white">
-          {/* Animated SVG Character */}
-          <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-sm overflow-visible">
-            {/* Cute Owl / Robot Body */}
+        {/* Floating Genie Glow Container */}
+        <motion.div
+          animate={{ y: [0, -6, 0] }}
+          transition={{ repeat: Infinity, duration: 2.8, ease: 'easeInOut' }}
+          className="relative w-16 h-18 sm:w-18 sm:h-20 drop-shadow-xl overflow-visible"
+        >
+          {/* Animated SVG Girl Genie */}
+          <svg viewBox="0 0 100 115" className="w-full h-full overflow-visible">
             <defs>
-              <linearGradient id="ellaBodyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#818CF8" />
-                <stop offset="100%" stopColor="#4F46E5" />
+              {/* Hair Gradient */}
+              <linearGradient id="genieHairGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#C084FC" />
+                <stop offset="50%" stopColor="#9333EA" />
+                <stop offset="100%" stopColor="#6B21A8" />
               </linearGradient>
-              <linearGradient id="ellaBellyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#EEF2FF" />
-                <stop offset="100%" stopColor="#E0E7FF" />
+
+              {/* Magical Skin Tone */}
+              <linearGradient id="genieSkinGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stopColor="#FFF1F2" />
+                <stop offset="100%" stopColor="#FFE4E6" />
+              </linearGradient>
+
+              {/* Magical Swirling Genie Smoke Tail */}
+              <linearGradient id="genieTailGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#818CF8" stopOpacity="0.95" />
+                <stop offset="40%" stopColor="#A855F7" stopOpacity="0.85" />
+                <stop offset="100%" stopColor="#EC4899" stopOpacity="0.1" />
+              </linearGradient>
+
+              {/* Golden Accents */}
+              <linearGradient id="genieGoldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#FDE047" />
+                <stop offset="100%" stopColor="#D97706" />
               </linearGradient>
             </defs>
 
-            {/* Wings */}
+            {/* Floating Magical Cloud/Smoke Tail */}
             <motion.path
-              d={mood === 'waving' ? "M 18 50 C 6 42 2 24 16 26 C 24 28 26 44 22 52 Z" : "M 18 52 C 10 56 12 70 20 72 C 24 72 26 60 22 52 Z"}
-              fill="#4338CA"
-              animate={mood === 'waving' ? { rotate: [-8, 12, -8] } : {}}
-              transition={{ repeat: Infinity, duration: 0.8 }}
+              d="M 50 78 C 42 85 36 94 44 102 C 52 110 66 108 58 114 C 52 118 42 116 38 120"
+              fill="none"
+              stroke="url(#genieTailGrad)"
+              strokeWidth="9"
+              strokeLinecap="round"
+              animate={{
+                d: [
+                  "M 50 78 C 42 85 36 94 44 102 C 52 110 66 108 58 114 C 52 118 42 116 38 120",
+                  "M 50 78 C 58 85 64 94 56 102 C 48 110 34 108 42 114 C 48 118 58 116 62 120",
+                  "M 50 78 C 42 85 36 94 44 102 C 52 110 66 108 58 114 C 52 118 42 116 38 120",
+                ],
+              }}
+              transition={{ repeat: Infinity, duration: 2.2, ease: 'easeInOut' }}
             />
-            <path
-              d="M 82 52 C 90 56 88 70 80 72 C 76 72 74 60 78 52 Z"
-              fill="#4338CA"
+
+            {/* Long Flowing Magical Back Hair */}
+            <motion.path
+              d="M 28 32 C 14 45 10 70 20 85 C 28 75 32 60 30 45 Z"
+              fill="url(#genieHairGrad)"
+              animate={{ rotate: [-2, 3, -2] }}
+              transition={{ repeat: Infinity, duration: 2.5, ease: 'easeInOut' }}
+            />
+            <motion.path
+              d="M 72 32 C 86 45 90 70 80 85 C 72 75 68 60 70 45 Z"
+              fill="url(#genieHairGrad)"
+              animate={{ rotate: [2, -3, 2] }}
+              transition={{ repeat: Infinity, duration: 2.5, ease: 'easeInOut' }}
             />
 
-            {/* Body */}
-            <ellipse cx="50" cy="56" rx="36" ry="34" fill="url(#ellaBodyGrad)" />
+            {/* Genie Vest & Torso */}
+            <path d="M 40 60 L 60 60 L 56 78 L 44 78 Z" fill="#6366F1" />
+            {/* Golden Belt */}
+            <rect x="42" y="74" width="16" height="4" rx="2" fill="url(#genieGoldGrad)" />
 
-            {/* Belly */}
-            <ellipse cx="50" cy="62" rx="24" ry="22" fill="url(#ellaBellyGrad)" />
-
-            {/* Cute Feather patterns on belly */}
-            <path d="M 44 60 Q 50 63 56 60" stroke="#818CF8" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-            <path d="M 42 67 Q 50 70 58 67" stroke="#818CF8" strokeWidth="2.5" fill="none" strokeLinecap="round" />
-
-            {/* Eyes Outer Glasses / Rings */}
-            <circle cx="37" cy="42" r="14" fill="#FFFFFF" stroke="#312E81" strokeWidth="2.5" />
-            <circle cx="63" cy="42" r="14" fill="#FFFFFF" stroke="#312E81" strokeWidth="2.5" />
-            {/* Glasses Bridge */}
-            <path d="M 48 42 L 52 42" stroke="#312E81" strokeWidth="3" strokeLinecap="round" />
-
-            {/* Eyes Pupils */}
-            {mood === 'cheering' || mood === 'celebrating' ? (
-              // Happy squinting smiling eyes ^ ^
+            {/* Arms / Hand Gestures */}
+            {mood === 'waving' ? (
+              <motion.path
+                d="M 38 64 C 28 60 20 48 24 38 C 28 36 32 46 36 58 Z"
+                fill="url(#genieSkinGrad)"
+                animate={{ rotate: [-10, 15, -10] }}
+                transition={{ repeat: Infinity, duration: 0.9 }}
+              />
+            ) : mood === 'cheering' || mood === 'celebrating' ? (
               <>
-                <path d="M 31 43 Q 37 36 43 43" stroke="#1E1B4B" strokeWidth="3.5" fill="none" strokeLinecap="round" />
-                <path d="M 57 43 Q 63 36 69 43" stroke="#1E1B4B" strokeWidth="3.5" fill="none" strokeLinecap="round" />
-              </>
-            ) : mood === 'thinking' ? (
-              // Thinking looking-up eyes
-              <>
-                <circle cx="39" cy="38" r="6" fill="#1E1B4B" />
-                <circle cx="41" cy="36" r="2" fill="#FFFFFF" />
-                <circle cx="65" cy="38" r="6" fill="#1E1B4B" />
-                <circle cx="67" cy="36" r="2" fill="#FFFFFF" />
+                <motion.path
+                  d="M 38 64 C 28 50 20 34 26 28 C 30 32 34 48 38 58 Z"
+                  fill="url(#genieSkinGrad)"
+                  animate={{ y: [-2, 2, -2] }}
+                  transition={{ repeat: Infinity, duration: 0.6 }}
+                />
+                <motion.path
+                  d="M 62 64 C 72 50 80 34 74 28 C 70 32 66 48 62 58 Z"
+                  fill="url(#genieSkinGrad)"
+                  animate={{ y: [-2, 2, -2] }}
+                  transition={{ repeat: Infinity, duration: 0.6 }}
+                />
               </>
             ) : (
-              // Big curious friendly pupils
+              <path d="M 38 64 C 30 68 32 76 40 74 Z" fill="url(#genieSkinGrad)" />
+            )}
+
+            {/* Cute Head & Face */}
+            <circle cx="50" cy="42" r="22" fill="url(#genieSkinGrad)" />
+
+            {/* Cute Rosy Cheeks */}
+            <ellipse cx="37" cy="48" rx="4" ry="2.5" fill="#FB7185" opacity="0.65" />
+            <ellipse cx="63" cy="48" rx="4" ry="2.5" fill="#FB7185" opacity="0.65" />
+
+            {/* Front Bangs / Hair Style */}
+            <path
+              d="M 28 34 C 32 20 45 16 50 16 C 55 16 68 20 72 34 C 68 28 60 26 50 28 C 40 26 32 28 28 34 Z"
+              fill="url(#genieHairGrad)"
+            />
+            {/* Side Tendrils */}
+            <path d="M 29 32 C 26 40 28 50 30 52 C 32 46 31 38 31 32 Z" fill="url(#genieHairGrad)" />
+            <path d="M 71 32 C 74 40 72 50 70 52 C 68 46 69 38 69 32 Z" fill="url(#genieHairGrad)" />
+
+            {/* Golden Tiara with Ruby Gem */}
+            <polygon points="50,11 44,18 56,18" fill="url(#genieGoldGrad)" />
+            <circle cx="50" cy="16" r="2.5" fill="#EF4444" />
+
+            {/* ======================================================== */}
+            {/* INTERACTIVE CURSOR-TRACKING EYES                         */}
+            {/* ======================================================== */}
+            {/* Left Eye White */}
+            <ellipse cx="40" cy="42" rx="7.5" ry="9" fill="#FFFFFF" stroke="#312E81" strokeWidth="1.2" />
+            {/* Right Eye White */}
+            <ellipse cx="60" cy="42" rx="7.5" ry="9" fill="#FFFFFF" stroke="#312E81" strokeWidth="1.2" />
+
+            {/* Pupils tracking mouse cursor smoothly */}
+            {mood === 'cheering' || mood === 'celebrating' ? (
+              // Happy smiling closed eyes ^ ^
               <>
-                <circle cx="38" cy="42" r="6.5" fill="#1E1B4B" />
-                <circle cx="40" cy="40" r="2.2" fill="#FFFFFF" />
-                <circle cx="62" cy="42" r="6.5" fill="#1E1B4B" />
-                <circle cx="64" cy="40" r="2.2" fill="#FFFFFF" />
+                <path d="M 34 43 Q 40 37 46 43" stroke="#4C1D95" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+                <path d="M 54 43 Q 60 37 66 43" stroke="#4C1D95" strokeWidth="2.5" fill="none" strokeLinecap="round" />
+              </>
+            ) : (
+              <>
+                {/* Left Pupil (Tracks Cursor) */}
+                <g style={{ transform: `translate(${eyeOffset.x}px, ${eyeOffset.y}px)`, transition: 'transform 0.05s ease-out' }}>
+                  <ellipse cx="40" cy="42" rx="4.8" ry="6.2" fill="#4C1D95" />
+                  <ellipse cx="40" cy="43" rx="3.5" ry="4.5" fill="#7C3AED" />
+                  {/* Catchlight sparkles in eyes */}
+                  <circle cx="41.5" cy="39.5" r="1.8" fill="#FFFFFF" />
+                  <circle cx="38.5" cy="44.5" r="0.9" fill="#FFFFFF" />
+                </g>
+
+                {/* Right Pupil (Tracks Cursor) */}
+                <g style={{ transform: `translate(${eyeOffset.x}px, ${eyeOffset.y}px)`, transition: 'transform 0.05s ease-out' }}>
+                  <ellipse cx="60" cy="42" rx="4.8" ry="6.2" fill="#4C1D95" />
+                  <ellipse cx="60" cy="43" rx="3.5" ry="4.5" fill="#7C3AED" />
+                  {/* Catchlight sparkles in eyes */}
+                  <circle cx="61.5" cy="39.5" r="1.8" fill="#FFFFFF" />
+                  <circle cx="58.5" cy="44.5" r="0.9" fill="#FFFFFF" />
+                </g>
               </>
             )}
 
-            {/* Cute Rosy Cheeks */}
-            <ellipse cx="27" cy="49" rx="4.5" ry="3" fill="#FDA4AF" opacity="0.85" />
-            <ellipse cx="73" cy="49" rx="4.5" ry="3" fill="#FDA4AF" opacity="0.85" />
+            {/* Eyelashes */}
+            <path d="M 33 36 Q 40 33 47 36" stroke="#312E81" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+            <path d="M 53 36 Q 60 33 67 36" stroke="#312E81" strokeWidth="1.5" fill="none" strokeLinecap="round" />
 
-            {/* Beak */}
-            <polygon points="50,45 44,53 56,53" fill="#F59E0B" />
+            {/* Sweet Smiling Mouth */}
+            <path d="M 46 51 Q 50 54 54 51" stroke="#E11D48" strokeWidth="1.8" fill="none" strokeLinecap="round" />
 
-            {/* Graduation / Star Cap */}
-            <polygon points="50,12 28,21 50,28 72,21" fill="#1E1B4B" />
-            <rect x="42" y="24" width="16" height="5" fill="#312E81" rx="1.5" />
-            {/* Tassel */}
-            <path d="M 50 20 L 70 27 L 70 34" stroke="#F59E0B" strokeWidth="2" fill="none" />
-            <circle cx="70" cy="35" r="2" fill="#F59E0B" />
+            {/* Floating Magic Sparkles Around Genie */}
+            <motion.circle
+              cx="22"
+              cy="25"
+              r="2.5"
+              fill="#FDE047"
+              animate={{ scale: [0.6, 1.4, 0.6], opacity: [0.4, 1, 0.4] }}
+              transition={{ repeat: Infinity, duration: 1.8 }}
+            />
+            <motion.circle
+              cx="78"
+              cy="28"
+              r="2"
+              fill="#F43F5E"
+              animate={{ scale: [1.2, 0.5, 1.2], opacity: [1, 0.4, 1] }}
+              transition={{ repeat: Infinity, duration: 1.5 }}
+            />
+            <motion.circle
+              cx="76"
+              cy="65"
+              r="2.2"
+              fill="#A855F7"
+              animate={{ scale: [0.7, 1.3, 0.7], opacity: [0.5, 1, 0.5] }}
+              transition={{ repeat: Infinity, duration: 2 }}
+            />
           </svg>
 
           {/* Pulse ring indicator */}
-          <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-emerald-400 border-2 border-white rounded-full animate-ping" />
-          <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-emerald-500 border-2 border-white rounded-full" />
-        </div>
+          <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-amber-400 border-2 border-white rounded-full animate-ping" />
+          <span className="absolute -top-1 -right-1 w-3.5 h-3.5 bg-amber-500 border-2 border-white rounded-full shadow-xs" />
+        </motion.div>
       </motion.div>
     </div>
   );

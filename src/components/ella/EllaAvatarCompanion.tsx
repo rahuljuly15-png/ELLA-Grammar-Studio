@@ -532,14 +532,14 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
             {/* Comic dots pointing towards Ella */}
             {bubbleLayout.isLeft ? renderComicDotsLeft() : renderComicDotsRight()}
 
-            {/* Bubbly Cartoon Oval Speech Card (Compact & Auto-adjusting) */}
+            {/* Bubbly Cartoon Oval Speech Card (Compact, Auto-adjusting with gentle magical pastel gradient) */}
             <div
               style={{ width: bubbleLayout.bubbleW }}
-              className="relative px-3.5 sm:px-4 py-2.5 sm:py-3 bg-white/95 backdrop-blur-md border-2 border-indigo-200/90 rounded-[26px] sm:rounded-[30px] shadow-xl shadow-indigo-100/70 space-y-2 max-w-[320px]"
+              className="relative px-3.5 sm:px-4 py-2.5 sm:py-3 bg-gradient-to-b from-white via-indigo-50/25 to-purple-50/25 backdrop-blur-md border-2 border-indigo-200/90 rounded-[26px] sm:rounded-[30px] shadow-xl shadow-indigo-100/80 space-y-2 max-w-[320px]"
             >
               {/* Header: Name + Pause + Auto-Voice + Tuck into Lamp */}
-              <div className="flex items-center justify-between gap-1.5 border-b border-indigo-50 pb-1 select-none">
-                <div className="flex items-center gap-1 text-[11px] font-extrabold text-indigo-700">
+              <div className="flex items-center justify-between gap-1.5 border-b border-indigo-100/70 pb-1 select-none">
+                <div className="flex items-center gap-1 text-[11px] font-extrabold text-indigo-800">
                   <Sparkles className="w-3 h-3 text-amber-500 fill-amber-400 shrink-0" />
                   <span className="truncate">{t('genie_title')}</span>
                   {hasGeminiKey && (
@@ -574,7 +574,7 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
                       if (next && !isPaused) speakText(dialogue);
                     }}
                     className={`p-1 rounded-full transition-colors cursor-pointer text-[10px] font-bold flex items-center gap-0.5 ${
-                      autoVoice ? 'text-indigo-600 bg-indigo-50' : 'text-slate-400 hover:text-slate-600'
+                      autoVoice ? 'text-indigo-600 bg-indigo-50 border border-indigo-200/60' : 'text-slate-400 hover:text-slate-600'
                     }`}
                     title={autoVoice ? "टीचिंग पॉज़ / म्यूट करें" : "टीचिंग आवाज़ चालू करें"}
                   >
@@ -607,25 +607,32 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
                 </p>
               )}
 
-              {/* Action footer: 1-2 Quick Reaction Chips + Ask Ella button */}
-              <div className="flex flex-wrap items-center justify-between gap-1 pt-1 border-t border-slate-100">
+              {/* Action footer: 1-2 Quick Reaction Chips + Ask Ella button with soft pastel accents */}
+              <div className="flex flex-wrap items-center justify-between gap-1 pt-1 border-t border-indigo-50/80">
                 <div className="flex flex-wrap gap-1">
-                  {quickChips.slice(0, 2).map((chip, idx) => (
-                    <button
-                      key={idx}
-                      type="button"
-                      onClick={() => handleSendMessage(chip)}
-                      className="px-2 py-0.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-full text-[10px] font-medium transition-colors cursor-pointer"
-                    >
-                      {chip}
-                    </button>
-                  ))}
+                  {quickChips.slice(0, 2).map((chip, idx) => {
+                    const chipPastels = [
+                      'bg-sky-50 hover:bg-sky-100 text-sky-800 border-sky-200/80',
+                      'bg-purple-50 hover:bg-purple-100 text-purple-800 border-purple-200/80',
+                    ];
+                    const c = chipPastels[idx % chipPastels.length];
+                    return (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={() => handleSendMessage(chip)}
+                        className={`px-2 py-0.5 rounded-full text-[10px] font-bold border transition-colors cursor-pointer shadow-2xs ${c}`}
+                      >
+                        {chip}
+                      </button>
+                    );
+                  })}
                 </div>
 
                 <button
                   type="button"
                   onClick={() => setIsQuestionOpen(!isQuestionOpen)}
-                  className="text-[10px] font-bold text-indigo-600 hover:text-indigo-800 flex items-center gap-0.5 px-1.5 py-0.5 rounded-md hover:bg-indigo-50/80 cursor-pointer"
+                  className="text-[10px] font-extrabold text-indigo-700 hover:text-indigo-900 bg-indigo-50/80 hover:bg-indigo-100 border border-indigo-200/70 flex items-center gap-0.5 px-2 py-0.5 rounded-full cursor-pointer shadow-2xs"
                 >
                   <span>💬 {t('genie_ask_btn')}</span>
                 </button>

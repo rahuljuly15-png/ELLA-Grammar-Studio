@@ -328,7 +328,12 @@ function AppInner() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-800 flex flex-col font-sans selection:bg-indigo-600 selection:text-white">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50/40 via-purple-50/25 to-pink-50/30 text-slate-800 flex flex-col font-sans selection:bg-indigo-600 selection:text-white relative overflow-x-hidden">
+      {/* Ambient kid-friendly soft pastel light orbs */}
+      <div className="fixed top-0 left-0 w-96 h-96 bg-purple-200/25 rounded-full blur-3xl pointer-events-none -translate-x-1/2 -translate-y-1/2 z-0" />
+      <div className="fixed top-1/3 right-0 w-96 h-96 bg-amber-200/20 rounded-full blur-3xl pointer-events-none translate-x-1/3 z-0" />
+      <div className="fixed bottom-0 left-1/4 w-96 h-96 bg-sky-200/25 rounded-full blur-3xl pointer-events-none translate-y-1/3 z-0" />
+
       {/* Toast Notification */}
       {toastMessage && (
         <div className="fixed bottom-6 right-6 z-50 bg-white border border-emerald-300 text-slate-800 text-xs px-4 py-3 rounded-2xl shadow-xl flex items-center gap-2.5 animate-in fade-in duration-200">
@@ -346,7 +351,7 @@ function AppInner() {
       />
 
       {/* Main Container */}
-      <main className="flex-1 max-w-5xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
+      <main className="flex-1 max-w-5xl w-full mx-auto p-4 sm:p-6 lg:p-8 space-y-6 relative z-10">
         {/* Android Storage Cleaner Safety Alert: Proactive Backup Reminder */}
         {dbStats.sessionsCount >= 5 && !hasDismissedBackupReminder && (
           <div className="p-3 bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200/90 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs shadow-2xs animate-in fade-in duration-200">
@@ -375,21 +380,32 @@ function AppInner() {
             </div>
           </div>
         )}
-        {/* Student progress ribbon */}
-        <div className="p-3.5 bg-white border border-slate-200 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs shadow-2xs">
+
+        {/* Student progress ribbon with soft playful pastel highlights */}
+        <div className="p-3.5 bg-gradient-to-r from-indigo-50/70 via-purple-50/40 to-pink-50/50 border border-indigo-100/90 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs shadow-2xs">
           <div className="flex items-center gap-2 text-slate-700 font-semibold">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            <span className="text-indigo-700 font-bold">{t('ribbon_title')}</span>
-            <span aria-hidden="true" className="text-slate-300">·</span>
-            <span className="text-slate-500 font-normal">{t('classBadge')}</span>
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span className="text-indigo-800 font-extrabold text-[13px]">{t('ribbon_title')}</span>
+            <span aria-hidden="true" className="text-indigo-200 font-bold">·</span>
+            <span className="text-indigo-700 font-bold bg-white/80 border border-indigo-200/70 px-2 py-0.5 rounded-full text-[10px]">{t('classBadge')}</span>
           </div>
 
-          <div className="flex items-center gap-3 text-slate-500 font-medium">
-            <span>{t('ribbon_rounds')}: <strong className="text-slate-900 font-mono tabular-nums">{dbStats.sessionsCount}</strong></span>
-            <span aria-hidden="true" className="text-slate-300">·</span>
-            <span>{t('ribbon_errors')}: <strong className="text-amber-600 font-mono tabular-nums">{dbStats.errorsCount}</strong></span>
-            <span aria-hidden="true" className="text-slate-300">·</span>
-            <span>{t('ribbon_student')}: <strong className="text-slate-900">{studentName}</strong></span>
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-sky-50/90 border border-sky-200/80 text-sky-900 font-semibold shadow-2xs">
+              <span>🎯</span>
+              <span>{t('ribbon_rounds')}</span>
+              <strong className="text-sky-700 font-mono font-extrabold tabular-nums">{dbStats.sessionsCount}</strong>
+            </span>
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-amber-50/90 border border-amber-200/80 text-amber-900 font-semibold shadow-2xs">
+              <span>🌟</span>
+              <span>{t('ribbon_errors')}</span>
+              <strong className="text-amber-700 font-mono font-extrabold tabular-nums">{dbStats.errorsCount}</strong>
+            </span>
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-emerald-50/90 border border-emerald-200/80 text-emerald-900 font-semibold shadow-2xs">
+              <span>👤</span>
+              <span>{t('ribbon_student')}</span>
+              <strong className="text-emerald-800 font-extrabold">{studentName}</strong>
+            </span>
           </div>
         </div>
 

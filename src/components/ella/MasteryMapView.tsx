@@ -39,6 +39,36 @@ export const MasteryMapView: React.FC<MasteryMapViewProps> = ({
     }
   };
 
+  const getEngineCardBg = (engine: EngineType) => {
+    switch (engine) {
+      case 'sentence_lego':
+        return 'bg-gradient-to-b from-indigo-50/40 via-white to-white';
+      case 'time_mood_slider':
+        return 'bg-gradient-to-b from-emerald-50/40 via-white to-white';
+      case 'perspective_transformer':
+        return 'bg-gradient-to-b from-amber-50/40 via-white to-white';
+      case 'blueprint_studio':
+        return 'bg-gradient-to-b from-purple-50/40 via-white to-white';
+    }
+  };
+
+  const getLevelBadgeStyle = (level: number) => {
+    switch (level) {
+      case 1:
+        return 'bg-sky-100 text-sky-800 border-sky-200/80';
+      case 2:
+        return 'bg-purple-100 text-purple-800 border-purple-200/80';
+      case 3:
+        return 'bg-emerald-100 text-emerald-800 border-emerald-200/80';
+      case 4:
+        return 'bg-amber-100 text-amber-800 border-amber-200/80';
+      case 5:
+        return 'bg-rose-100 text-rose-800 border-rose-200/80';
+      default:
+        return 'bg-indigo-100 text-indigo-800 border-indigo-200/80';
+    }
+  };
+
   const getEngineCardBorder = (engine: EngineType, isSelected: boolean) => {
     if (isSelected) {
       return 'border-indigo-500 ring-2 ring-indigo-400/40 shadow-sm';
@@ -138,19 +168,19 @@ export const MasteryMapView: React.FC<MasteryMapViewProps> = ({
           return (
             <div
               key={topic.topicId}
-              className={`border rounded-3xl p-5 sm:p-6 space-y-4 transition-all flex flex-col justify-between ${
+              className={`border rounded-3xl p-5 sm:p-6 space-y-4 transition-all flex flex-col justify-between shadow-2xs ${
                 !available
                   ? 'bg-slate-50/70 border-slate-200 opacity-80'
-                  : `bg-white hover:shadow-md ${getEngineCardBorder(topic.engine, isSelected)}`
+                  : `${getEngineCardBg(topic.engine)} hover:shadow-md ${getEngineCardBorder(topic.engine, isSelected)}`
               }`}
             >
               <div className="space-y-2.5">
                 <div className="flex items-center justify-between text-xs">
-                  <span className="font-mono tabular-nums text-slate-500 font-bold bg-slate-100 px-2 py-0.5 rounded-md">
+                  <span className={`font-mono tabular-nums font-bold px-2.5 py-0.5 rounded-lg border shadow-2xs ${getLevelBadgeStyle(topic.level)}`}>
                     Level {topic.level}
                   </span>
                   <span
-                    className={`px-2.5 py-1 rounded-lg text-[11px] font-bold border flex items-center gap-1.5 ${getEngineHeaderBg(
+                    className={`px-2.5 py-1 rounded-xl text-[11px] font-bold border flex items-center gap-1.5 shadow-2xs ${getEngineHeaderBg(
                       topic.engine
                     )}`}
                   >

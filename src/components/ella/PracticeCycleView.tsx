@@ -211,6 +211,35 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
     { key: 'schedule', num: 5, label: t('step5_pill'), icon: Calendar, shortTitle: t('step5_pill') },
   ];
 
+  // Kid-Friendly Soft Pastel Thematic Styles for Each Step
+  const stepPillStyles: Record<StepKey, { active: string; completed: string; inactive: string }> = {
+    notice: {
+      active: 'bg-gradient-to-r from-sky-600 to-indigo-600 text-white shadow-sm shadow-sky-300 ring-2 ring-sky-500/20',
+      completed: 'bg-sky-50/90 text-sky-900 border border-sky-200/90 hover:bg-sky-100/80',
+      inactive: 'bg-white/80 text-slate-600 border border-slate-200/80 hover:border-sky-300 hover:text-sky-800',
+    },
+    hypothesize: {
+      active: 'bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-sm shadow-amber-300 ring-2 ring-amber-500/20',
+      completed: 'bg-amber-50/90 text-amber-900 border border-amber-200/90 hover:bg-amber-100/80',
+      inactive: 'bg-white/80 text-slate-600 border border-slate-200/80 hover:border-amber-300 hover:text-amber-800',
+    },
+    clarify: {
+      active: 'bg-gradient-to-r from-purple-600 to-violet-600 text-white shadow-sm shadow-purple-300 ring-2 ring-purple-500/20',
+      completed: 'bg-purple-50/90 text-purple-900 border border-purple-200/90 hover:bg-purple-100/80',
+      inactive: 'bg-white/80 text-slate-600 border border-slate-200/80 hover:border-purple-300 hover:text-purple-800',
+    },
+    use: {
+      active: 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-sm shadow-emerald-300 ring-2 ring-emerald-500/20',
+      completed: 'bg-emerald-50/90 text-emerald-900 border border-emerald-200/90 hover:bg-emerald-100/80',
+      inactive: 'bg-white/80 text-slate-600 border border-slate-200/80 hover:border-emerald-300 hover:text-emerald-800',
+    },
+    schedule: {
+      active: 'bg-gradient-to-r from-rose-500 to-pink-500 text-white shadow-sm shadow-rose-300 ring-2 ring-rose-500/20',
+      completed: 'bg-rose-50/90 text-rose-900 border border-rose-200/90 hover:bg-rose-100/80',
+      inactive: 'bg-white/80 text-slate-600 border border-slate-200/80 hover:border-rose-300 hover:text-rose-800',
+    },
+  };
+
   const stepOrder: StepKey[] = ['notice', 'hypothesize', 'clarify', 'use', 'schedule'];
   const currentStepIndex = stepOrder.indexOf(currentStep);
   const progressPercent = ((currentStepIndex + 1) / stepOrder.length) * 100;
@@ -218,20 +247,20 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
   return (
     <div className="space-y-6">
       {/* ======================================================== */}
-      {/* 1. TOPIC HEADER CARD (Clean, Friendly, Apple-style)      */}
+      {/* 1. TOPIC HEADER CARD (Warm, Inviting, Kid-friendly)      */}
       {/* ======================================================== */}
-      <div className="p-5 sm:p-6 bg-white/95 backdrop-blur-md border border-indigo-100 rounded-3xl shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="p-5 sm:p-6 bg-gradient-to-r from-white via-indigo-50/30 to-purple-50/30 border border-indigo-100/90 rounded-3xl shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-4">
-          <div className="w-13 h-13 rounded-2xl bg-gradient-to-tr from-indigo-600 via-indigo-500 to-violet-500 text-white font-extrabold flex items-center justify-center text-lg shadow-sm shadow-indigo-200 shrink-0">
+          <div className="w-13 h-13 rounded-2xl bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 text-white font-black flex items-center justify-center text-lg shadow-sm shadow-purple-200 shrink-0">
             L{topic.level}
           </div>
           <div>
             <div className="flex items-center gap-2 text-xs font-semibold text-slate-500">
-              <span className="text-indigo-600 font-bold tracking-wide uppercase">{topic.category}</span>
+              <span className="text-indigo-700 font-extrabold tracking-wide uppercase bg-indigo-50 border border-indigo-200/70 px-2 py-0.5 rounded-md text-[10px]">{topic.category}</span>
               <span aria-hidden="true" className="text-slate-300">·</span>
               <span className="font-mono text-slate-400">{topic.topicId}</span>
             </div>
-            <h1 className="text-lg sm:text-xl font-extrabold text-slate-900 tracking-tight mt-0.5">
+            <h1 className="text-lg sm:text-xl font-extrabold text-slate-900 tracking-tight mt-1">
               {topic.title}
             </h1>
             <p className="text-xs text-slate-500 mt-1 line-clamp-1 max-w-xl">
@@ -242,7 +271,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
 
         <button
           onClick={onOpenTopicModal}
-          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-bold text-indigo-700 bg-indigo-50/80 hover:bg-indigo-100 border border-indigo-200/70 rounded-2xl transition-all cursor-pointer shrink-0"
+          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-extrabold text-indigo-700 bg-white hover:bg-indigo-50 border border-indigo-200/80 rounded-2xl transition-all cursor-pointer shrink-0 shadow-2xs"
         >
           <span>{t('topic_choose_another')}</span>
           <ChevronDown className="w-4 h-4 text-indigo-600" />
@@ -252,46 +281,47 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
       {/* ======================================================== */}
       {/* 2. DUOLINGO-STYLE PROGRESS TRACKER & STEPPER PILLS       */}
       {/* ======================================================== */}
-      <div className="bg-white border border-slate-200/80 rounded-2xl p-3 sm:p-4 shadow-xs space-y-3">
+      <div className="bg-white/95 backdrop-blur-xs border border-indigo-100/90 rounded-2xl p-3 sm:p-4 shadow-xs space-y-3">
         {/* Animated Progress Bar */}
         <div className="flex items-center justify-between text-xs font-bold text-slate-500 px-1">
-          <span className="flex items-center gap-1.5 text-indigo-700 font-extrabold">
-            <Flame className="w-4 h-4 text-amber-500" />
+          <span className="flex items-center gap-1.5 text-indigo-800 font-extrabold">
+            <Flame className="w-4 h-4 text-amber-500 fill-amber-400" />
             <span>{t('step_progress_prefix')} {currentStepIndex + 1} / 5: {cycleStepsList[currentStepIndex].shortTitle}</span>
           </span>
-          <span className="text-slate-400 font-mono">{Math.round(progressPercent)}% {t('step_complete_suffix')}</span>
+          <span className="text-slate-500 font-mono font-bold">{Math.round(progressPercent)}% {t('step_complete_suffix')}</span>
         </div>
 
         <div className="h-2.5 w-full bg-slate-100 rounded-full overflow-hidden p-0.5 border border-slate-200/60">
           <motion.div
-            className="h-full bg-gradient-to-r from-indigo-500 via-purple-500 to-emerald-500 rounded-full"
+            className="h-full bg-gradient-to-r from-sky-400 via-indigo-500 via-purple-500 to-emerald-400 rounded-full"
             initial={false}
             animate={{ width: `${progressPercent}%` }}
             transition={{ duration: 0.35, ease: 'easeOut' }}
           />
         </div>
 
-        {/* 5-Step Segmented Navigation Pills (Single sleek horizontal row on mobile 360px) */}
+        {/* 5-Step Segmented Navigation Pills (Single sleek horizontal row with individual pastel identity) */}
         <div className="flex items-center sm:grid sm:grid-cols-5 gap-1.5 pt-1 overflow-x-auto no-scrollbar scroll-smooth pb-0.5">
           {cycleStepsList.map((stepItem, idx) => {
             const Icon = stepItem.icon;
             const isActive = currentStep === stepItem.key;
             const isCompleted = idx < currentStepIndex;
+            const theme = stepPillStyles[stepItem.key];
 
             return (
               <button
                 key={stepItem.key}
                 onClick={() => setCurrentStep(stepItem.key)}
-                className={`flex items-center justify-center gap-1.5 py-1.5 sm:py-2 px-2.5 sm:px-3 rounded-xl text-xs font-bold transition-all shrink-0 sm:shrink cursor-pointer ${
+                className={`flex items-center justify-center gap-1.5 py-1.5 sm:py-2 px-2.5 sm:px-3 rounded-xl text-xs font-bold transition-all shrink-0 sm:shrink cursor-pointer shadow-2xs ${
                   isActive
-                    ? 'bg-indigo-600 text-white shadow-xs shadow-indigo-300 ring-2 ring-indigo-500/20'
+                    ? theme.active
                     : isCompleted
-                    ? 'bg-emerald-50/80 text-emerald-800 hover:bg-emerald-100/70 border border-emerald-200/60'
-                    : 'bg-slate-50 text-slate-600 hover:text-slate-900 hover:bg-slate-100 border border-slate-200/60'
+                    ? theme.completed
+                    : theme.inactive
                 }`}
               >
                 {isCompleted && !isActive ? (
-                  <CheckCircle className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                  <CheckCircle className="w-3.5 h-3.5 shrink-0" />
                 ) : (
                   <Icon className="w-3.5 h-3.5 shrink-0" />
                 )}
@@ -316,10 +346,10 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -14 }}
             transition={{ duration: 0.25, ease: 'easeOut' }}
-            className="bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-8 pb-28 sm:pb-8 space-y-6 shadow-xs"
+            className="bg-gradient-to-b from-sky-50/50 via-white to-white border border-sky-100 rounded-3xl p-6 sm:p-8 pb-28 sm:pb-8 space-y-6 shadow-xs"
           >
             <div className="space-y-1.5">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold text-indigo-700 bg-indigo-50 border border-indigo-200/60">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold text-sky-800 bg-sky-100/90 border border-sky-200/80 shadow-2xs">
                 <BookOpen className="w-3.5 h-3.5" />
                 <span>{t('step1_badge')}</span>
               </div>
@@ -333,40 +363,54 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
 
             {/* Contrast Flashcards Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-1">
-              {steps['1_notice']?.pairs.map((pair, idx) => (
-                <div
-                  key={idx}
-                  className="group relative p-5 bg-gradient-to-b from-slate-50 to-white border border-slate-200/90 rounded-2xl space-y-3 hover:border-indigo-300 hover:shadow-md transition-all duration-200"
-                >
-                  <div className="flex items-center justify-between">
-                    <span className="text-[11px] font-bold font-mono text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-md">
-                      {t('step1_example_label')} #{idx + 1}
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => speakText(pair.sentence)}
-                      className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium text-slate-600 hover:text-indigo-700 hover:bg-indigo-50 border border-slate-200/60 rounded-lg transition-colors cursor-pointer"
-                      title={language === 'en' ? "Listen pronunciation" : "उच्चारण सुनें (Listen)"}
-                    >
-                      <Volume2 className="w-3.5 h-3.5 text-indigo-500" />
-                      <span>{t('step1_listen_btn')}</span>
-                    </button>
-                  </div>
+              {steps['1_notice']?.pairs.map((pair, idx) => {
+                const cardColors = idx % 2 === 0
+                  ? {
+                      bg: 'bg-gradient-to-br from-sky-50/80 via-white to-blue-50/40 border-sky-200/90 hover:border-sky-300 hover:shadow-sky-100/70',
+                      pill: 'bg-sky-100 text-sky-800 border-sky-200/80',
+                      highlight: 'bg-sky-100 text-sky-900 border-sky-200/80',
+                    }
+                  : {
+                      bg: 'bg-gradient-to-br from-purple-50/80 via-white to-indigo-50/40 border-purple-200/90 hover:border-purple-300 hover:shadow-purple-100/70',
+                      pill: 'bg-purple-100 text-purple-800 border-purple-200/80',
+                      highlight: 'bg-purple-100 text-purple-900 border-purple-200/80',
+                    };
 
-                  <div className="text-base sm:text-lg font-bold text-slate-900 font-mono tracking-tight leading-snug">
-                    {pair.sentence}
-                  </div>
+                return (
+                  <div
+                    key={idx}
+                    className={`group relative p-5 border rounded-2xl space-y-3 shadow-2xs hover:shadow-md transition-all duration-200 ${cardColors.bg}`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className={`text-[11px] font-bold font-mono px-2.5 py-0.5 rounded-lg border shadow-2xs ${cardColors.pill}`}>
+                        {t('step1_example_label')} #{idx + 1}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => speakText(pair.sentence)}
+                        className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold text-slate-600 hover:text-indigo-700 bg-white/80 hover:bg-white border border-slate-200/80 rounded-lg transition-colors cursor-pointer shadow-2xs"
+                        title={language === 'en' ? "Listen pronunciation" : "उच्चारण सुनें (Listen)"}
+                      >
+                        <Volume2 className="w-3.5 h-3.5 text-indigo-500" />
+                        <span>{t('step1_listen_btn')}</span>
+                      </button>
+                    </div>
 
-                  <div className="pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between gap-2 text-xs">
-                    <span className="text-amber-900 font-bold font-mono bg-amber-100/80 px-2.5 py-1 rounded-lg border border-amber-200/60">
-                      ✨ {pair.highlightWord}
-                    </span>
-                    <span className="text-slate-600 text-[11px] font-medium bg-slate-100/80 px-2.5 py-1 rounded-lg">
-                      {language === 'en' ? 'Sound: ' : 'ध्वनि: '}<strong className="text-slate-900">{pair.soundHintHi}</strong>
-                    </span>
+                    <div className="text-base sm:text-lg font-bold text-slate-900 font-mono tracking-tight leading-snug">
+                      {pair.sentence}
+                    </div>
+
+                    <div className="pt-3 border-t border-slate-100/90 flex flex-wrap items-center justify-between gap-2 text-xs">
+                      <span className={`font-bold font-mono px-2.5 py-1 rounded-lg border shadow-2xs ${cardColors.highlight}`}>
+                        ✨ {pair.highlightWord}
+                      </span>
+                      <span className="text-slate-700 text-[11px] font-medium bg-white/90 border border-slate-200/80 px-2.5 py-1 rounded-lg shadow-2xs">
+                        {language === 'en' ? 'Sound: ' : 'ध्वनि: '}<strong className="text-slate-900">{pair.soundHintHi}</strong>
+                      </span>
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
             {/* Step 1 Footer CTA */}
@@ -375,7 +419,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => setCurrentStep('hypothesize')}
-                className="inline-flex items-center gap-2.5 px-6 py-3 text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-2xl transition-all shadow-sm shadow-indigo-300 cursor-pointer"
+                className="inline-flex items-center gap-2.5 px-6 py-3 text-sm font-bold text-white bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-700 hover:to-indigo-700 rounded-2xl transition-all shadow-sm shadow-sky-300 cursor-pointer"
               >
                 <span>{t('step1_next_btn')}</span>
                 <ArrowRight className="w-4 h-4" />
@@ -394,10 +438,10 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -14 }}
             transition={{ duration: 0.25, ease: 'easeOut' }}
-            className="bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-8 pb-28 sm:pb-8 space-y-6 shadow-xs"
+            className="bg-gradient-to-b from-amber-50/40 via-white to-white border border-amber-100 rounded-3xl p-6 sm:p-8 pb-28 sm:pb-8 space-y-6 shadow-xs"
           >
             <div className="space-y-1.5">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold text-amber-800 bg-amber-50 border border-amber-200/60">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold text-amber-900 bg-amber-100/90 border border-amber-200/80 shadow-2xs">
                 <HelpCircle className="w-3.5 h-3.5 text-amber-600" />
                 <span>{t('step2_badge')}</span>
               </div>
@@ -407,7 +451,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
             </div>
 
             {/* Friendly Inductive Question Tile */}
-            <div className="p-5 bg-gradient-to-r from-amber-50/80 via-indigo-50/40 to-amber-50/60 border border-amber-200/80 rounded-2xl flex items-start gap-3">
+            <div className="p-5 bg-gradient-to-r from-amber-50/90 via-orange-50/50 to-amber-50/90 border border-amber-200/90 rounded-2xl flex items-start gap-3 shadow-2xs">
               <QuestionIcon className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
               <p className="text-sm sm:text-base font-bold text-slate-900 leading-relaxed">
                 {steps['2_hypothesize']?.questionHi}
@@ -420,29 +464,37 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
                 const isSelected = selectedHypothesis === idx;
                 const letter = String.fromCharCode(65 + idx);
 
+                const optionPastels = [
+                  { letter: 'bg-sky-100 text-sky-800 border-sky-200', card: 'bg-gradient-to-r from-sky-50/30 via-white to-white hover:border-sky-300 hover:bg-sky-50/40' },
+                  { letter: 'bg-purple-100 text-purple-800 border-purple-200', card: 'bg-gradient-to-r from-purple-50/30 via-white to-white hover:border-purple-300 hover:bg-purple-50/40' },
+                  { letter: 'bg-rose-100 text-rose-800 border-rose-200', card: 'bg-gradient-to-r from-rose-50/30 via-white to-white hover:border-rose-300 hover:bg-rose-50/40' },
+                  { letter: 'bg-amber-100 text-amber-800 border-amber-200', card: 'bg-gradient-to-r from-amber-50/30 via-white to-white hover:border-amber-300 hover:bg-amber-50/40' },
+                ];
+                const pastel = optionPastels[idx % optionPastels.length];
+
                 return (
                   <motion.div
                     key={idx}
                     whileHover={{ scale: 1.01 }}
                     whileTap={{ scale: 0.99 }}
                     onClick={() => setSelectedHypothesis(idx)}
-                    className={`p-4 sm:p-5 rounded-2xl border text-xs sm:text-sm cursor-pointer transition-all space-y-3 ${
+                    className={`p-4 sm:p-5 rounded-2xl border text-xs sm:text-sm cursor-pointer transition-all space-y-3 shadow-2xs ${
                       isSelected
                         ? opt.isCorrect
                           ? 'bg-emerald-50/90 border-emerald-400 text-slate-900 ring-2 ring-emerald-400/30 shadow-xs'
                           : 'bg-amber-50/90 border-amber-400 text-slate-900 ring-2 ring-amber-400/30 shadow-xs'
-                        : 'bg-white border-slate-200 hover:border-indigo-300 hover:bg-slate-50/60 text-slate-800 shadow-2xs'
+                        : `${pastel.card} border-slate-200/90 text-slate-800`
                     }`}
                   >
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex items-center gap-3">
                         <span
-                          className={`w-7 h-7 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 ${
+                          className={`w-7 h-7 rounded-xl font-bold flex items-center justify-center text-xs shrink-0 shadow-2xs ${
                             isSelected
                               ? opt.isCorrect
                                 ? 'bg-emerald-600 text-white'
                                 : 'bg-amber-600 text-white'
-                              : 'bg-slate-100 text-slate-700'
+                              : `${pastel.letter} border`
                           }`}
                         >
                           {letter}
@@ -551,11 +603,11 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -14 }}
             transition={{ duration: 0.25, ease: 'easeOut' }}
-            className="bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-8 pb-28 sm:pb-8 space-y-6 shadow-xs"
+            className="bg-gradient-to-b from-purple-50/50 via-white to-white border border-purple-100 rounded-3xl p-6 sm:p-8 pb-28 sm:pb-8 space-y-6 shadow-xs"
           >
             <div className="space-y-1.5">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold text-amber-800 bg-amber-50 border border-amber-200/60">
-                <Sparkles className="w-3.5 h-3.5 text-amber-600" />
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold text-purple-900 bg-purple-100/90 border border-purple-200/80 shadow-2xs">
+                <Sparkles className="w-3.5 h-3.5 text-purple-600" />
                 <span>{t('step3_badge')}</span>
               </div>
               <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
@@ -564,7 +616,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
             </div>
 
             {/* Golden Rule Hero Banner */}
-            <div className="p-6 bg-gradient-to-br from-amber-50 via-indigo-50/50 to-amber-100/50 border-2 border-amber-200/90 rounded-3xl space-y-3 shadow-xs">
+            <div className="p-6 bg-gradient-to-br from-amber-50/90 via-yellow-50/70 to-orange-50/50 border-2 border-amber-300/90 rounded-3xl space-y-3 shadow-xs">
               <div className="flex items-center gap-2 text-xs font-extrabold text-amber-900 uppercase tracking-wider">
                 <Award className="w-4 h-4 text-amber-600" />
                 <span>{t('step3_golden_rule')}</span>
@@ -585,32 +637,53 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
                 {t('step3_quick_examples')}
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
-                {steps['3_clarify']?.examples.map((ex, idx) => (
-                  <div
-                    key={idx}
-                    className="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-2 hover:border-indigo-300 hover:bg-white transition-all shadow-2xs"
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="text-base font-bold font-mono text-indigo-700">
-                        {ex.word}
-                      </span>
-                      <button
-                        type="button"
-                        onClick={() => speakText(ex.word)}
-                        className="p-1.5 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors cursor-pointer"
-                        title={language === 'en' ? "Listen pronunciation" : "उच्चारण सुनें"}
-                      >
-                        <Volume2 className="w-4 h-4" />
-                      </button>
+                {steps['3_clarify']?.examples.map((ex, idx) => {
+                  const exampleThemes = [
+                    {
+                      card: 'bg-gradient-to-b from-sky-50/80 to-white border-sky-200/90 hover:border-sky-300 shadow-sky-100/60',
+                      word: 'text-sky-800',
+                      badge: 'bg-sky-100/90 text-sky-900 border-sky-200/80',
+                    },
+                    {
+                      card: 'bg-gradient-to-b from-purple-50/80 to-white border-purple-200/90 hover:border-purple-300 shadow-purple-100/60',
+                      word: 'text-purple-800',
+                      badge: 'bg-purple-100/90 text-purple-900 border-purple-200/80',
+                    },
+                    {
+                      card: 'bg-gradient-to-b from-emerald-50/80 to-white border-emerald-200/90 hover:border-emerald-300 shadow-emerald-100/60',
+                      word: 'text-emerald-800',
+                      badge: 'bg-emerald-100/90 text-emerald-900 border-emerald-200/80',
+                    },
+                  ];
+                  const exTheme = exampleThemes[idx % exampleThemes.length];
+
+                  return (
+                    <div
+                      key={idx}
+                      className={`p-4 border rounded-2xl space-y-2 hover:bg-white transition-all shadow-2xs ${exTheme.card}`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <span className={`text-base font-bold font-mono ${exTheme.word}`}>
+                          {ex.word}
+                        </span>
+                        <button
+                          type="button"
+                          onClick={() => speakText(ex.word)}
+                          className="p-1.5 text-slate-500 hover:text-indigo-600 hover:bg-white/80 rounded-lg transition-colors cursor-pointer"
+                          title={language === 'en' ? "Listen pronunciation" : "उच्चारण सुनें"}
+                        >
+                          <Volume2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                      <div className={`text-xs font-bold px-2 py-0.5 rounded-md inline-block border shadow-2xs ${exTheme.badge}`}>
+                        {language === 'en' ? 'Sound: ' : 'ध्वनि: '}{ex.sound}
+                      </div>
+                      <div className="text-xs text-slate-600 leading-snug">
+                        {ex.reason}
+                      </div>
                     </div>
-                    <div className="text-xs text-amber-900 font-bold bg-amber-100/80 px-2 py-0.5 rounded-md inline-block">
-                      {language === 'en' ? 'Sound: ' : 'ध्वनि: '}{ex.sound}
-                    </div>
-                    <div className="text-xs text-slate-600 leading-snug">
-                      {ex.reason}
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
 
@@ -707,11 +780,11 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -14 }}
             transition={{ duration: 0.25, ease: 'easeOut' }}
-            className="bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-8 pb-28 sm:pb-8 space-y-6 shadow-xs"
+            className="bg-gradient-to-b from-emerald-50/50 via-white to-white border border-emerald-100 rounded-3xl p-6 sm:p-8 pb-28 sm:pb-8 space-y-6 shadow-xs"
           >
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100">
               <div className="space-y-1">
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold text-emerald-800 bg-emerald-50 border border-emerald-200/60">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold text-emerald-900 bg-emerald-100/90 border border-emerald-200/80 shadow-2xs">
                   <PenTool className="w-3.5 h-3.5 text-emerald-600" />
                   <span>{t('step4_badge')}</span>
                 </div>
@@ -721,7 +794,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
               </div>
 
               <div className="flex items-center gap-2">
-                <span className="text-[11px] font-bold text-emerald-800 bg-emerald-50/90 border border-emerald-200/80 px-3 py-1 rounded-full flex items-center gap-1.5 shadow-2xs">
+                <span className="text-[11px] font-bold text-emerald-900 bg-emerald-50/90 border border-emerald-200/80 px-3 py-1 rounded-full flex items-center gap-1.5 shadow-2xs">
                   <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
                   <span>{language === 'en' ? '⚡ Instant Offline Checker' : '⚡ सुपरफास्ट ऑफ़लाइन चेकर'}</span>
                 </span>
@@ -730,31 +803,40 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
 
             {/* Quick Test Inspiration Chips */}
             {steps['5_free_production']?.sampleSolutions && (
-              <div className="p-4 bg-slate-50/80 border border-slate-200/80 rounded-2xl space-y-2">
+              <div className="p-4 bg-gradient-to-r from-emerald-50/60 via-teal-50/40 to-sky-50/40 border border-emerald-200/80 rounded-2xl space-y-2">
                 <div className="flex items-center justify-between text-xs">
                   <span className="font-bold text-slate-700 flex items-center gap-1.5">
-                    <Lightbulb className="w-3.5 h-3.5 text-amber-500" />
+                    <Lightbulb className="w-3.5 h-3.5 text-amber-500 fill-amber-400" />
                     <span>{language === 'en' ? 'Click to Test Example:' : 'परीक्षण के लिए उदाहरण चुनें:'}</span>
                   </span>
                   <button
                     type="button"
                     onClick={onEscapeHatch}
-                    className="text-indigo-600 hover:text-indigo-800 text-xs font-medium cursor-pointer"
+                    className="text-emerald-700 hover:text-emerald-900 text-xs font-bold cursor-pointer"
                   >
                     {t('step4_escape_btn')}
                   </button>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  {steps['5_free_production'].sampleSolutions.map((sample, idx) => (
-                    <button
-                      key={idx}
-                      type="button"
-                      onClick={() => setStudentSentence(sample)}
-                      className="px-3 py-1.5 rounded-xl text-xs font-mono bg-white border border-slate-200 hover:border-indigo-400 hover:bg-indigo-50/70 text-slate-800 transition-all cursor-pointer font-medium shadow-2xs"
-                    >
-                      {sample}
-                    </button>
-                  ))}
+                  {steps['5_free_production'].sampleSolutions.map((sample, idx) => {
+                    const chipPastels = [
+                      'bg-sky-50 text-sky-900 border-sky-200 hover:bg-sky-100/80',
+                      'bg-purple-50 text-purple-900 border-purple-200 hover:bg-purple-100/80',
+                      'bg-emerald-50 text-emerald-900 border-emerald-200 hover:bg-emerald-100/80',
+                      'bg-amber-50 text-amber-900 border-amber-200 hover:bg-amber-100/80',
+                    ];
+                    const chipColor = chipPastels[idx % chipPastels.length];
+                    return (
+                      <button
+                        key={idx}
+                        type="button"
+                        onClick={() => setStudentSentence(sample)}
+                        className={`px-3 py-1.5 rounded-xl text-xs font-mono border transition-all cursor-pointer font-bold shadow-2xs ${chipColor}`}
+                      >
+                        {sample}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             )}
@@ -937,11 +1019,11 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -14 }}
             transition={{ duration: 0.25, ease: 'easeOut' }}
-            className="bg-white border border-slate-200/80 rounded-3xl p-6 sm:p-8 pb-28 sm:pb-8 space-y-6 shadow-xs"
+            className="bg-gradient-to-b from-rose-50/50 via-white to-white border border-rose-100 rounded-3xl p-6 sm:p-8 pb-28 sm:pb-8 space-y-6 shadow-xs"
           >
             <div className="space-y-1.5">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold text-purple-800 bg-purple-50 border border-purple-200/60">
-                <Brain className="w-3.5 h-3.5 text-purple-600" />
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold text-rose-900 bg-rose-100/90 border border-rose-200/80 shadow-2xs">
+                <Brain className="w-3.5 h-3.5 text-rose-600" />
                 <span>{t('step5_badge')}</span>
               </div>
               <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight">
@@ -953,8 +1035,8 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
             </div>
 
             {/* Victory Celebration Card */}
-            <div className="p-5 bg-gradient-to-r from-emerald-50 via-teal-50 to-indigo-50 border border-emerald-200/90 rounded-2xl flex items-center gap-4">
-              <div className="w-12 h-12 rounded-2xl bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-sm shadow-emerald-200">
+            <div className="p-5 bg-gradient-to-r from-emerald-50 via-teal-50 to-indigo-50 border border-emerald-200/90 rounded-2xl flex items-center gap-4 shadow-2xs">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-500 text-white flex items-center justify-center shrink-0 shadow-sm shadow-emerald-200">
                 <Trophy className="w-6 h-6" />
               </div>
               <div>
@@ -968,14 +1050,14 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
             </div>
 
             {/* Next Due Date Banner */}
-            <div className="p-6 bg-gradient-to-r from-indigo-50/90 via-purple-50/40 to-indigo-50/90 border border-indigo-200/80 rounded-2xl space-y-3">
+            <div className="p-6 bg-gradient-to-r from-indigo-50/90 via-purple-50/40 to-indigo-50/90 border border-indigo-200/80 rounded-2xl space-y-3 shadow-2xs">
               <div className="font-bold text-indigo-900 flex items-center justify-between text-xs sm:text-sm">
                 <div className="flex items-center gap-2">
                   <Calendar className="w-4 h-4 text-indigo-600" />
                   <span>{language === 'en' ? 'Next Smart Review Date:' : 'आगामी समीक्षा तिथि (Next Review Date):'}</span>
                 </div>
                 {reviewState?.next_due_date && (
-                  <span className="text-xs font-mono font-bold text-indigo-700 bg-white/80 px-2.5 py-0.5 rounded-full border border-indigo-200">
+                  <span className="text-xs font-mono font-bold text-indigo-700 bg-white/80 px-2.5 py-0.5 rounded-full border border-indigo-200 shadow-2xs">
                     {language === 'en' ? 'Target Retention: 90%' : 'लक्ष्य प्रतिधारण: 90%'}
                   </span>
                 )}
@@ -994,12 +1076,12 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
                     })}
                   </div>
                   <div className="flex flex-wrap items-center gap-3 text-xs text-slate-600">
-                    <span>
+                    <span className="px-2.5 py-1 bg-white/90 border border-emerald-200/80 rounded-lg text-emerald-900 font-medium">
                       {language === 'en' ? 'Accuracy Level:' : 'सटीकता स्तर (Accuracy):'}{' '}
                       <strong className="text-emerald-700 font-mono">{reviewState.production_accuracy_score}%</strong>
                     </span>
                     <span aria-hidden="true" className="text-slate-300">·</span>
-                    <span>
+                    <span className="px-2.5 py-1 bg-white/90 border border-indigo-200/80 rounded-lg text-indigo-900 font-medium">
                       {language === 'en' ? 'Recall Score:' : 'स्मृति स्कोर (Recall):'}{' '}
                       <strong className="text-indigo-700 font-mono">{reviewState.rule_recall_score}%</strong>
                     </span>
@@ -1017,7 +1099,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="p-3 bg-indigo-100 text-indigo-900 font-bold text-xs rounded-xl text-center border border-indigo-200"
+                className="p-3 bg-gradient-to-r from-purple-50 to-indigo-50 text-indigo-900 font-bold text-xs rounded-xl text-center border border-indigo-200 shadow-2xs"
               >
                 ✨ {ratedFeedback}
               </motion.div>
@@ -1030,14 +1112,14 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
                 <span>{language === 'en' ? 'Memory Scorecard (FSRS Stability & Power):' : 'मेमोरी स्कोरकार्ड (Memory Power & Level):'}</span>
               </h3>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl space-y-1">
+                <div className="p-3.5 bg-gradient-to-b from-indigo-50/80 via-white to-white border border-indigo-200/90 rounded-2xl space-y-1 shadow-2xs">
                   <span className="text-[11px] font-semibold text-slate-500 block">{language === 'en' ? 'Memory Power' : 'मेमोरी पावर (Stability)'}</span>
                   <span className="text-base font-bold font-mono text-indigo-700">
                     {reviewState?.stability ? `${reviewState.stability.toFixed(1)} ${language === 'en' ? 'days' : 'दिन'}` : (language === 'en' ? '3.5 days' : '3.5 दिन')}
                   </span>
                 </div>
 
-                <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl space-y-1">
+                <div className="p-3.5 bg-gradient-to-b from-emerald-50/80 via-white to-white border border-emerald-200/90 rounded-2xl space-y-1 shadow-2xs">
                   <span className="text-[11px] font-semibold text-slate-500 block">{language === 'en' ? 'Retention Chance' : 'याद रहने का चांस (Recall)'}</span>
                   <span className="text-base font-bold font-mono text-emerald-700">
                     {reviewState?.stability
@@ -1046,14 +1128,14 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
                   </span>
                 </div>
 
-                <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl space-y-1">
+                <div className="p-3.5 bg-gradient-to-b from-amber-50/80 via-white to-white border border-amber-200/90 rounded-2xl space-y-1 shadow-2xs">
                   <span className="text-[11px] font-semibold text-slate-500 block">{language === 'en' ? 'Difficulty Level' : 'चुनौती स्तर (Level)'}</span>
                   <span className="text-base font-bold font-mono text-amber-700">
                     {reviewState?.difficulty ? `${reviewState.difficulty.toFixed(1)} / 10` : '4.5 / 10'}
                   </span>
                 </div>
 
-                <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl space-y-1">
+                <div className="p-3.5 bg-gradient-to-b from-purple-50/80 via-white to-white border border-purple-200/90 rounded-2xl space-y-1 shadow-2xs">
                   <span className="text-[11px] font-semibold text-slate-500 block">{language === 'en' ? 'Practice Reps' : 'प्रैक्टिस राउंड्स (Reps)'}</span>
                   <span className="text-base font-bold font-mono text-purple-700">
                     {reviewState?.reps ?? 1} {language === 'en' ? 'reps' : 'बार'}
@@ -1063,7 +1145,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
             </div>
 
             {/* Interactive Self-Rating Buttons */}
-            <div className="p-5 bg-slate-50/90 border border-slate-200 rounded-2xl space-y-3">
+            <div className="p-5 bg-gradient-to-r from-slate-50 via-indigo-50/20 to-purple-50/20 border border-indigo-100/90 rounded-2xl space-y-3 shadow-2xs">
               <div className="flex items-center justify-between text-xs">
                 <span className="font-bold text-slate-800 flex items-center gap-1.5">
                   <RotateCcw className="w-3.5 h-3.5 text-indigo-600" />
@@ -1078,7 +1160,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
                 <button
                   type="button"
                   onClick={() => handleFSRSRating(FSRS_RATINGS.AGAIN)}
-                  className="p-3.5 rounded-xl border border-rose-200 bg-white hover:bg-rose-50 text-rose-800 font-bold text-xs flex flex-col items-center justify-center gap-1 shadow-2xs transition-all cursor-pointer hover:border-rose-300"
+                  className="p-3.5 rounded-xl border border-rose-200 bg-gradient-to-b from-rose-50/80 via-white to-white hover:bg-rose-100/80 text-rose-900 font-bold text-xs flex flex-col items-center justify-center gap-1 shadow-2xs transition-all cursor-pointer hover:border-rose-300"
                 >
                   <span className="text-sm">🔴 {t('fsrs_again_label')}</span>
                   <span className="text-[11px] font-normal text-rose-600">{t('fsrs_again_sub')}</span>
@@ -1087,7 +1169,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
                 <button
                   type="button"
                   onClick={() => handleFSRSRating(FSRS_RATINGS.HARD)}
-                  className="p-3.5 rounded-xl border border-amber-200 bg-white hover:bg-amber-50 text-amber-800 font-bold text-xs flex flex-col items-center justify-center gap-1 shadow-2xs transition-all cursor-pointer hover:border-amber-300"
+                  className="p-3.5 rounded-xl border border-amber-200 bg-gradient-to-b from-amber-50/80 via-white to-white hover:bg-amber-100/80 text-amber-900 font-bold text-xs flex flex-col items-center justify-center gap-1 shadow-2xs transition-all cursor-pointer hover:border-amber-300"
                 >
                   <span className="text-sm">🟡 {t('fsrs_hard_label')}</span>
                   <span className="text-[11px] font-normal text-amber-600">{t('fsrs_hard_sub')}</span>
@@ -1096,7 +1178,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
                 <button
                   type="button"
                   onClick={() => handleFSRSRating(FSRS_RATINGS.GOOD)}
-                  className="p-3.5 rounded-xl border border-emerald-200 bg-white hover:bg-emerald-50 text-emerald-800 font-bold text-xs flex flex-col items-center justify-center gap-1 shadow-2xs transition-all cursor-pointer hover:border-emerald-300"
+                  className="p-3.5 rounded-xl border border-emerald-200 bg-gradient-to-b from-emerald-50/80 via-white to-white hover:bg-emerald-100/80 text-emerald-900 font-bold text-xs flex flex-col items-center justify-center gap-1 shadow-2xs transition-all cursor-pointer hover:border-emerald-300"
                 >
                   <span className="text-sm">🟢 {t('fsrs_good_label')}</span>
                   <span className="text-[11px] font-normal text-emerald-600">{t('fsrs_good_sub')}</span>
@@ -1105,10 +1187,10 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
                 <button
                   type="button"
                   onClick={() => handleFSRSRating(FSRS_RATINGS.EASY)}
-                  className="p-3.5 rounded-xl border border-indigo-200 bg-white hover:bg-indigo-50 text-indigo-800 font-bold text-xs flex flex-col items-center justify-center gap-1 shadow-2xs transition-all cursor-pointer hover:border-indigo-300"
+                  className="p-3.5 rounded-xl border border-sky-200 bg-gradient-to-b from-sky-50/80 via-white to-white hover:bg-sky-100/80 text-sky-900 font-bold text-xs flex flex-col items-center justify-center gap-1 shadow-2xs transition-all cursor-pointer hover:border-sky-300"
                 >
                   <span className="text-sm">🔵 {t('fsrs_easy_label')}</span>
-                  <span className="text-[11px] font-normal text-indigo-600">{t('fsrs_easy_sub')}</span>
+                  <span className="text-[11px] font-normal text-sky-600">{t('fsrs_easy_sub')}</span>
                 </button>
               </div>
             </div>

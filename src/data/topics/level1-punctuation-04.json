@@ -1,0 +1,134 @@
+{
+  "topicId": "level1-punctuation-04",
+  "title": "Capitalization & Punctuation (विराम चिह्न और बड़े अक्षर)",
+  "level": 1,
+  "category": "Basic Foundations",
+  "descriptionHi": "वाक्य का पहला अक्षर व Proper Noun कैपिटल; Full Stop (.), Question Mark (?), Comma (,) और Exclamation (!)।",
+  "steps": {
+    "1_notice": {
+      "stepTitleHi": "1. ध्यान दें (Notice)",
+      "instructionHi": "इन वाक्यों को ध्यान से देखें। विराम चिह्नों और बड़े अक्षरों (Capitals) का क्या प्रभाव पड़ता है?",
+      "pairs": [
+        {
+          "sentence": "rahul lives in delhi. ➔ Rahul lives in Delhi.",
+          "highlightWord": "Rahul and Delhi",
+          "soundHintHi": "वाक्य का पहला अक्षर ('R') और किसी व्यक्ति/स्थान का विशेष नाम (Rahul, Delhi) हमेशा Capital होता है।"
+        },
+        {
+          "sentence": "You are happy today. ➔ Are you happy today?",
+          "highlightWord": ". (Full stop) vs ? (Question mark)",
+          "soundHintHi": "साधारण कथन के अंत में पूर्ण विराम (.) और प्रश्न पूछने पर प्रश्नवाचक चिह्न (?) लगता है।"
+        },
+        {
+          "sentence": "I bought apples, bananas, and oranges.",
+          "highlightWord": ", (Comma) in a list",
+          "soundHintHi": "एक से अधिक वस्तुओं की सूची में हल्का विराम देने के लिए अल्पविराम (,) लगाते हैं।"
+        },
+        {
+          "sentence": "Wow! What a beautiful painting it is!",
+          "highlightWord": "! (Exclamation mark)",
+          "soundHintHi": "हर्ष, आश्चर्य या विस्मय व्यक्त करने वाले शब्दों के बाद विस्मयादिबोधक चिह्न (!) लगता है।"
+        }
+      ]
+    },
+    "2_hypothesize": {
+      "stepTitleHi": "2. नियम का अनुमान लगाएँ (Hypothesize)",
+      "questionHi": "अंग्रेजी में विराम चिह्नों (Punctuation Marks) का मुख्य उद्देश्य क्या है?",
+      "options": [
+        {
+          "textHi": "विराम चिह्न केवल सजावट के लिए होते हैं, इनके बिना भी वाक्य का अर्थ बिल्कुल वही रहता है।",
+          "isCorrect": false,
+          "feedbackHi": "गलत! एक कॉमा वाक्य का पूरा अर्थ बदल सकता है! (उदा. 'Let's eat, Grandpa!' बनाम 'Let's eat Grandpa!')"
+        },
+        {
+          "textHi": "विराम चिह्न पाठक को बताते हैं कि कहाँ रुकना है, बात खत्म हुई या प्रश्न पूछा गया, जिससे वाक्य का भाव स्पष्ट होता है।",
+          "isCorrect": true,
+          "feedbackHi": "शाबाश! विराम चिह्न लिखित भाषा की आवाज़ और भाव हैं।"
+        },
+        {
+          "textHi": "वाक्य में हर शब्द का पहला अक्षर कैपिटल होना चाहिए।",
+          "isCorrect": false,
+          "feedbackHi": "गलत! केवल वाक्य का पहला अक्षर, सर्वनाम 'I' और Proper Nouns ही कैपिटल होते हैं।"
+        }
+      ]
+    },
+    "3_clarify": {
+      "stepTitleHi": "3. सुनहरा नियम (Clarify - Golden Rule)",
+      "goldenRuleHi": "विराम चिह्नों के 4 स्तंभ: 1. Capital Letter = वाक्य का पहला अक्षर, सर्वनाम 'I' (अकेला), और Proper Nouns (Rohan, India, Sunday, July)। 2. Full Stop (.) = साधारण वाक्य (Statement) का अंत। 3. Question Mark (?) = प्रश्न (What, Why, Do, Are) का अंत। 4. Exclamation Mark (!) = तीव्र भावना, आश्चर्य (Wow!, Hurrah!)।",
+      "theRuleHi": "Comma (,) = सूची में शब्दों को अलग करने और वाक्य में थोड़ा रुकने के लिए। Apostrophe (') = अधिकार (Rohan's book) या संक्षिप्त रूप (don't = do not) के लिए।",
+      "examples": [
+        {
+          "word": "I am a student.",
+          "sound": "Capital 'I' & Full stop",
+          "reason": "अंग्रेजी में 'I' (मैं) जहाँ भी आए हमेशा बड़ा (Capital) लिखा जाता है"
+        },
+        {
+          "word": "Where do you live?",
+          "sound": "Question mark",
+          "reason": "प्रश्नवाचक वाक्य के अंत में हमेशा '?' आएगा"
+        },
+        {
+          "word": "Monday, August, India",
+          "sound": "Proper Noun Caps",
+          "reason": "दिनों, महीनों और देशों के नाम हमेशा Capital से शुरू होते हैं"
+        },
+        {
+          "word": "Ouch! It hurts.",
+          "sound": "Exclamation mark",
+          "reason": "अचानक दर्द या भाव प्रकट करने के लिए '!'"
+        }
+      ]
+    },
+    "4_guided_practice": {
+      "stepTitleHi": "4. निर्देशित अभ्यास (Guided Practice)",
+      "instructionHi": "वाक्यों में सही विराम चिह्न या कैपिटल अक्षर चुनें:",
+      "questions": [
+        {
+          "id": "pc-1",
+          "sentence": "Which sentence is punctuated correctly?",
+          "options": [
+            "my friend lives in jaipur",
+            "My friend lives in jaipur.",
+            "My friend lives in Jaipur."
+          ],
+          "correctAnswer": "My friend lives in Jaipur.",
+          "explanationHi": "वाक्य का पहला अक्षर 'M' और शहर का नाम 'Jaipur' का 'J' कैपिटल होगा, और अंत में पूर्ण विराम (.) लगेगा।"
+        },
+        {
+          "id": "pc-2",
+          "sentence": "What time does the school open ___",
+          "options": [".", "?", "!"],
+          "correctAnswer": "?",
+          "explanationHi": "यह एक प्रश्न (What time...) है, इसलिए अंत में '?' आएगा।"
+        },
+        {
+          "id": "pc-3",
+          "sentence": "We bought pens ___ pencils and erasers.",
+          "options": [",", ".", "?"],
+          "correctAnswer": ",",
+          "explanationHi": "सूची में शब्दों को अलग करने के लिए अल्पविराम (Comma) का उपयोग होगा।"
+        }
+      ]
+    },
+    "5_free_production": {
+      "stepTitleHi": "5. स्वयं वाक्य बनाएँ (Production Task)",
+      "promptHi": "पहला अक्षर Capital और सही विराम चिह्न (. या ?) लगाकर एक पूर्ण वाक्य लिखें:",
+      "placeholderHi": "उदा. My brother lives in Mumbai.",
+      "sampleSolutions": [
+        "My brother lives in Mumbai.",
+        "Where is your English notebook?",
+        "Hurrah! We won the match."
+      ]
+    },
+    "6_reflection": {
+      "stepTitleHi": "6. आत्म-मूल्यांकन (Review & Reflection)",
+      "promptHi": "आज विराम चिह्नों (Punctuation) के बारे में क्या याद रखना है?",
+      "recapPointsHi": [
+        "वाक्य हमेशा Capital letter से शुरू करें और अंत में . या ? जरूर लगाएं।",
+        "Proper Noun (नाम, शहर, दिन, माह) और अकेला 'I' हमेशा Capital लिखें।",
+        "शब्दों की सूची में कॉमा (,) का प्रयोग करें।",
+        "तीव्र भावना या आश्चर्य के लिए विस्मयादिबोधक (!) लगाएं।"
+      ]
+    }
+  }
+}

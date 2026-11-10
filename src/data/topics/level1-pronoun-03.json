@@ -1,0 +1,130 @@
+{
+  "topicId": "level1-pronoun-03",
+  "title": "Pronouns: Personal, Possessive & Demonstrative (सर्वनाम)",
+  "level": 1,
+  "category": "Basic Foundations",
+  "descriptionHi": "संज्ञा की पुनरावृत्ति रोकने वाले शब्द; अधिकार (mine/yours) व संकेत (this/that/these/those)।",
+  "steps": {
+    "1_notice": {
+      "stepTitleHi": "1. ध्यान दें (Notice)",
+      "instructionHi": "इन वाक्यों को ध्यान से देखें। रेखांकित शब्दों के रूप कैसे बदल रहे हैं?",
+      "pairs": [
+        {
+          "sentence": "Rohan called Priya, and she helped him immediately.",
+          "highlightWord": "she vs him",
+          "soundHintHi": "क्रिया से पहले कर्ता रूप (Subject: she) और क्रिया के बाद कर्म रूप (Object: him) आता है।"
+        },
+        {
+          "sentence": "This is my pen, but that blue pen is yours.",
+          "highlightWord": "my pen vs yours",
+          "soundHintHi": "'my' के बाद संज्ञा (pen) जरूरी है, जबकि 'yours' अकेला आकर पूर्ण अधिकार दर्शाता है।"
+        },
+        {
+          "sentence": "This is my book here, but those are your books on the table.",
+          "highlightWord": "This vs those",
+          "soundHintHi": "पास के एकवचन के लिए 'This' और दूर के बहुवचन के लिए 'Those' का प्रयोग होता है।"
+        },
+        {
+          "sentence": "My brother and I completed the homework.",
+          "highlightWord": "My brother and I",
+          "soundHintHi": "कर्ता के स्थान पर कभी 'Myself' न बोलें; 'My brother and I' ही व्याकरण सम्मत है।"
+        }
+      ]
+    },
+    "2_hypothesize": {
+      "stepTitleHi": "2. नियम का अनुमान लगाएँ (Hypothesize)",
+      "questionHi": "ऊपर दिए गए उदाहरणों को देखकर बताएं कि सर्वनाम (Pronoun) का सही रूप किस पर निर्भर करता है?",
+      "options": [
+        {
+          "textHi": "सर्वनाम का रूप हमेशा एक जैसा रहता है, चाहे वह कर्ता (Subject) बने या कर्म (Object)।",
+          "isCorrect": false,
+          "feedbackHi": "गलत! ध्यान दें: 'he' क्रिया से पहले आता है और 'him' क्रिया के बाद बदल जाता है।"
+        },
+        {
+          "textHi": "वाक्य में सर्वनाम की भूमिका (काम करने वाला कर्ता, क्रिया का असर लेने वाला कर्म, या अधिकार दर्शाना) के अनुसार उसका रूप बदलता है।",
+          "isCorrect": true,
+          "feedbackHi": "बिल्कुल सही! I ➔ me ➔ my/mine, He ➔ him ➔ his, She ➔ her ➔ hers में भूमिका के अनुसार बदलाव होता है।"
+        },
+        {
+          "textHi": "सर्वनाम केवल वाक्य के अंत में ही उपयोग किए जाते हैं।",
+          "isCorrect": false,
+          "feedbackHi": "गलत! सर्वनाम वाक्य के आरंभ (Subject), मध्य या अंत कहीं भी आ सकते हैं।"
+        }
+      ]
+    },
+    "3_clarify": {
+      "stepTitleHi": "3. सुनहरा नियम (Clarify - Golden Rule)",
+      "goldenRuleHi": "सर्वनाम (Pronoun) का स्वर्णिम नियम: क्रिया से पहले कर्ता रूप (I, We, You, He, She, They) लगाएँ। क्रिया या Preposition (to, with, for, between) के बाद कर्म रूप (me, us, you, him, her, them) लगाएँ।",
+      "theRuleHi": "अधिकार (Possession): संज्ञा के साथ 'my/your/our/their' (उदा. my bag) लेकिन बिना संज्ञा अकेले आने पर 'mine/yours/ours/theirs' (उदा. That bag is mine)। संकेत (Demonstrative): पास के लिए This/These, दूर के लिए That/Those।",
+      "examples": [
+        {
+          "word": "He invited my friend and me",
+          "sound": "Object Case",
+          "reason": "Preposition/Verb के बाद 'me' आएगा, 'I' या 'myself' नहीं"
+        },
+        {
+          "word": "This bag is mine",
+          "sound": "Possessive Pronoun",
+          "reason": "संज्ञा के बिना अकेले अधिकार दर्शाने के लिए 'mine'"
+        },
+        {
+          "word": "These mangoes are sweet",
+          "sound": "Demonstrative Plural",
+          "reason": "पास की बहुवचन वस्तुओं के लिए 'These'"
+        },
+        {
+          "word": "Between you and me",
+          "sound": "Preposition Trap",
+          "reason": "'Between' के बाद हमेशा Object रूप (me) आता है"
+        }
+      ]
+    },
+    "4_guided_practice": {
+      "stepTitleHi": "4. निर्देशित अभ्यास (Guided Practice)",
+      "instructionHi": "वाक्यों में सही सर्वनाम रूप चुनें:",
+      "questions": [
+        {
+          "id": "pn-1",
+          "sentence": "My teacher gave a prize to Rohan and ___ (I / me).",
+          "options": ["I", "me"],
+          "correctAnswer": "me",
+          "explanationHi": "Preposition 'to' के बाद कर्म रूप (Object pronoun) 'me' आएगा।"
+        },
+        {
+          "id": "pn-2",
+          "sentence": "Is this umbrella ___ or his? (your / yours)",
+          "options": ["your", "yours"],
+          "correctAnswer": "yours",
+          "explanationHi": "संज्ञा के बिना अकेले अधिकार दर्शाने के लिए 'yours' सही है ('your umbrella' या 'yours')।"
+        },
+        {
+          "id": "pn-3",
+          "sentence": "___ are my best friends standing near the gate. (This / Those)",
+          "options": ["This", "Those"],
+          "correctAnswer": "Those",
+          "explanationHi": "दूर स्थित बहुवचन (friends) के लिए 'Those' का प्रयोग होगा।"
+        }
+      ]
+    },
+    "5_free_production": {
+      "stepTitleHi": "5. स्वयं वाक्य बनाएँ (Production Task)",
+      "promptHi": "अब 'mine' या 'with him' या 'These' का प्रयोग करके अपना एक अंग्रेजी वाक्य लिखें:",
+      "placeholderHi": "उदा. That red bicycle is mine.",
+      "sampleSolutions": [
+        "That red bicycle is mine.",
+        "I went to the market with him.",
+        "These books belong to my sister."
+      ]
+    },
+    "6_reflection": {
+      "stepTitleHi": "6. आत्म-मूल्यांकन (Review & Reflection)",
+      "promptHi": "आज सर्वनाम (Pronoun) के बारे में आपने क्या सीखा?",
+      "recapPointsHi": [
+        "Subject (कर्ता) = I, He, She, We, They (क्रिया से पहले)",
+        "Object (कर्म) = me, him, her, us, them (क्रिया व Preposition के बाद)",
+        "Possessive: 'my book' (Adjective) बनाम 'The book is mine' (Pronoun)",
+        "Demonstrative: पास के लिए This/These, दूर के लिए That/Those"
+      ]
+    }
+  }
+}

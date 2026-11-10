@@ -1,0 +1,130 @@
+{
+  "topicId": "level2-adverb-06",
+  "title": "Adverbs: Manner, Time & Place (क्रिया विशेषण)",
+  "level": 2,
+  "category": "वर्णन और संबंध",
+  "descriptionHi": "क्रिया की रीति (How: quickly), समय (When: yesterday) और स्थान (Where: outside) का सटीक वर्णन।",
+  "steps": {
+    "1_notice": {
+      "stepTitleHi": "1. ध्यान दें (Notice)",
+      "instructionHi": "इन वाक्यों को ध्यान से देखें। क्रिया की विशेषता बताने वाले शब्दों पर गौर करें:",
+      "pairs": [
+        {
+          "sentence": "The brave soldier fought bravely in the battle.",
+          "highlightWord": "brave vs bravely",
+          "soundHintHi": "'brave' सिपाही (संज्ञा) की विशेषता है, जबकि 'bravely' लड़ने (क्रिया) का तरीका बताता है।"
+        },
+        {
+          "sentence": "The cheetah runs fast. (Never say 'fastly')",
+          "highlightWord": "fast (not fastly)",
+          "soundHintHi": "अंग्रेजी में 'fastly' कोई शब्द नहीं है! 'fast' विशेषण और क्रिया विशेषण दोनों है।"
+        },
+        {
+          "sentence": "We will submit our project tomorrow.",
+          "highlightWord": "tomorrow",
+          "soundHintHi": "क्रिया कब होगी (समय) बताने वाला शब्द: tomorrow, yesterday, now, soon।"
+        },
+        {
+          "sentence": "The children are playing outside happily.",
+          "highlightWord": "outside & happily",
+          "soundHintHi": "'outside' स्थान (Where) और 'happily' तरीका (How) दर्शाता है।"
+        }
+      ]
+    },
+    "2_hypothesize": {
+      "stepTitleHi": "2. नियम का अनुमान लगाएँ (Hypothesize)",
+      "questionHi": "विशेषण (Adjective) और क्रिया-विशेषण (Adverb) में क्या अंतर है?",
+      "options": [
+        {
+          "textHi": "दोनों एक ही हैं और दोनों हमेशा केवल संज्ञा (Noun) की विशेषता बताते हैं।",
+          "isCorrect": false,
+          "feedbackHi": "गलत! विशेषण संज्ञा की विशेषता बताता है, जबकि क्रिया-विशेषण क्रिया (Verb) के तरीके, समय या स्थान को बताता है।"
+        },
+        {
+          "textHi": "विशेषण संज्ञा/सर्वनाम का वर्णन करता है (उदा. quick runner), जबकि क्रिया-विशेषण क्रिया का वर्णन करता है (उदा. ran quickly)।",
+          "isCorrect": true,
+          "feedbackHi": "बिल्कुल सही! Adjective ➔ 'कैसा व्यक्ति/वस्तु', Adverb ➔ 'काम कैसे/कब/कहाँ हुआ'।"
+        },
+        {
+          "textHi": "सभी क्रिया-विशेषण केवल '-ly' पर ही समाप्त होते हैं।",
+          "isCorrect": false,
+          "feedbackHi": "गलत! fast, hard, well, late, now, here जैसे कई Adverbs बिना '-ly' के होते हैं।"
+        }
+      ]
+    },
+    "3_clarify": {
+      "stepTitleHi": "3. सुनहरा नियम (Clarify - Golden Rule)",
+      "goldenRuleHi": "क्रिया-विशेषण (Adverb) के 3 मुख्य भेद: 1. Adverb of Manner (कैसे? How?) = quickly, slowly, softly, bravely. 2. Adverb of Time (कब? When?) = today, yesterday, soon, always. 3. Adverb of Place (कहाँ? Where?) = here, there, inside, everywhere.",
+      "theRuleHi": "विशेष अपवाद (Exceptions): 1. 'good' का Adverb 'well' होता है (उदा. He plays well, 'plays good' गलत है)। 2. 'fast' का रूप नहीं बदलता (He runs fast, 'fastly' गलत है)। 3. 'hard' का Adverb भी 'hard' होता है (He works hard; 'hardly' का अर्थ 'मुश्किल से/ना के बराबर' होता है)।",
+      "examples": [
+        {
+          "word": "speaks politely",
+          "sound": "Adverb of Manner",
+          "reason": "बोलने (क्रिया) का तरीका बताता है"
+        },
+        {
+          "word": "runs fast",
+          "sound": "Irregular Adverb",
+          "reason": "'fastly' गलत है, 'fast' ही क्रिया विशेषण है"
+        },
+        {
+          "word": "arrived early",
+          "sound": "Adverb of Time",
+          "reason": "पहुंचने का समय बताता है"
+        },
+        {
+          "word": "works hard",
+          "sound": "Hard vs Hardly",
+          "reason": "'hard' = मेहनत से, 'hardly' = मुश्किल से / लगभग नहीं"
+        }
+      ]
+    },
+    "4_guided_practice": {
+      "stepTitleHi": "4. निर्देशित अभ्यास (Guided Practice)",
+      "instructionHi": "वाक्यों में सही क्रिया-विशेषण (Adverb) चुनें:",
+      "questions": [
+        {
+          "id": "adv-1",
+          "sentence": "The tortoise walked very ___ (slow / slowly).",
+          "options": ["slow", "slowly"],
+          "correctAnswer": "slowly",
+          "explanationHi": "चलने (walked - क्रिया) की रीति बताने के लिए Adverb 'slowly' आएगा।"
+        },
+        {
+          "id": "adv-2",
+          "sentence": "She sings very ___ (good / well).",
+          "options": ["good", "well"],
+          "correctAnswer": "well",
+          "explanationHi": "गाने (sings - क्रिया) की विशेषता बताने के लिए 'well' (Adverb) आता है, 'good' (Adjective) नहीं।"
+        },
+        {
+          "id": "adv-3",
+          "sentence": "The athlete ran very ___ (fast / fastly).",
+          "options": ["fast", "fastly"],
+          "correctAnswer": "fast",
+          "explanationHi": "अंग्रेजी में 'fastly' शब्द नहीं होता, सही शब्द 'fast' है।"
+        }
+      ]
+    },
+    "5_free_production": {
+      "stepTitleHi": "5. स्वयं वाक्य बनाएँ (Production Task)",
+      "promptHi": "अब 'quickly' या 'fluently' या 'runs fast' का उपयोग करके अपना वाक्य लिखें:",
+      "placeholderHi": "उदा. She solved the math problem quickly.",
+      "sampleSolutions": [
+        "She solved the math problem quickly.",
+        "He speaks English fluently.",
+        "The deer ran fast to escape."
+      ]
+    },
+    "6_reflection": {
+      "stepTitleHi": "6. आत्म-मूल्यांकन (Review & Reflection)",
+      "promptHi": "आज क्रिया-विशेषण (Adverb) के बारे में क्या नया सीखा?",
+      "recapPointsHi": [
+        "Adverb बताता है कि क्रिया कैसे (How), कब (When) और कहाँ (Where) हुई।",
+        "Adjective + ly = Adverb (quick ➔ quickly, soft ➔ softly)",
+        "सावधान: 'fastly' नहीं, केवल 'fast' होता है; 'good' का Adverb 'well' होता है।",
+        "Hard = कड़ी मेहनत, Hardly = मुश्किल से / लगभग नहीं"
+      ]
+    }
+  }
+}

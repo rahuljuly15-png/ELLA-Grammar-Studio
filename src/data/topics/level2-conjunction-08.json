@@ -1,0 +1,130 @@
+{
+  "topicId": "level2-conjunction-08",
+  "title": "Conjunctions (FANBOYS) & Interjections (समुच्चयबोधक व विस्मयादिबोधक)",
+  "level": 2,
+  "category": "वर्णन और संबंध",
+  "descriptionHi": "वाक्य जोड़ने वाले शब्द (FANBOYS: For, And, Nor, But, Or, Yet, So) और विस्मय के भाव (Alas!, Hurrah!, Wow!)।",
+  "steps": {
+    "1_notice": {
+      "stepTitleHi": "1. ध्यान दें (Notice)",
+      "instructionHi": "इन वाक्यों को ध्यान से देखें। दो विचारों को जोड़ने वाले शब्दों पर गौर करें:",
+      "pairs": [
+        {
+          "sentence": "Rohan is intelligent, but he is very lazy.",
+          "highlightWord": "but (विपरीत भाव)",
+          "soundHintHi": "'and' समान विचारों को जोड़ता है, जबकि 'but' विपरीत/उलटे विचारों को जोड़ता है।"
+        },
+        {
+          "sentence": "It was raining heavily, so we cancelled the cricket match.",
+          "highlightWord": "so (परिणाम)",
+          "soundHintHi": "'because' कारण बताता है, जबकि 'so' उस कारण से हुआ परिणाम (Result) बताता है।"
+        },
+        {
+          "sentence": "You can have either hot tea or cold coffee.",
+          "highlightWord": "either...or (विकल्प)",
+          "soundHintHi": "दो विकल्पों में से किसी एक को चुनने के लिए 'either...or' का प्रयोग होता है।"
+        },
+        {
+          "sentence": "Hurrah! Our school won the championship trophy.",
+          "highlightWord": "Hurrah! (हर्षोल्लास)",
+          "soundHintHi": "अचानक खुशी, जीत या आश्चर्य व्यक्त करने वाले शब्द (Interjections) के बाद '!' लगता है।"
+        }
+      ]
+    },
+    "2_hypothesize": {
+      "stepTitleHi": "2. नियम का अनुमान लगाएँ (Hypothesize)",
+      "questionHi": "दो उपवाक्यों (Clauses) को जोड़ने वाले Conjunctions (FANBOYS) का चुनाव किस आधार पर किया जाता है?",
+      "options": [
+        {
+          "textHi": "'and', 'but' और 'so' को किसी भी वाक्य में बिना अर्थ देखे अदल-बदल कर लगा सकते हैं।",
+          "isCorrect": false,
+          "feedbackHi": "गलत! यदि अर्थ विपरीत है तो 'but' ही आएगा, परिणाम है तो 'so' और जोड़ना है तो 'and'।"
+        },
+        {
+          "textHi": "दोनों वाक्यों के आपसी संबंध (समानता, विरोध, विकल्प, कारण या परिणाम) के अनुसार सही संयोजक चुना जाता है।",
+          "isCorrect": true,
+          "feedbackHi": "शाबाश! FANBOYS (For, And, Nor, But, Or, Yet, So) वाक्यों के तर्कसंगत संबंध को जोड़ते हैं।"
+        },
+        {
+          "textHi": "Conjunctions केवल एक शब्द के वाक्यों में ही आते हैं।",
+          "isCorrect": false,
+          "feedbackHi": "गलत! Conjunctions का काम ही दो या दो से अधिक शब्दों या वाक्यों को आपस में जोड़ना है।"
+        }
+      ]
+    },
+    "3_clarify": {
+      "stepTitleHi": "3. सुनहरा नियम (Clarify - Golden Rule)",
+      "goldenRuleHi": "FANBOYS फॉर्मूला: F (For = क्योंकि), A (And = और), N (Nor = न ही), B (But = लेकिन/परंतु), O (Or = या/अथवा), Y (Yet = फिर भी), S (So = इसलिए)।",
+      "theRuleHi": "जोड़ीदार संयोजक (Correlative Conjunctions): 1. Either...or (या तो...या), 2. Neither...nor (न तो...न ही), 3. Not only...but also (न केवल...बल्कि भी)। विस्मयादिबोधक (Interjections): Wow! (आश्चर्य), Hurrah! (जीत/खुशी), Alas! (शोक/दुख), Ouch! (दर्द), Bravo! (प्रशंसा)।",
+      "examples": [
+        {
+          "word": "He studied hard, but failed",
+          "sound": "Contrast (But)",
+          "reason": "मेहनत की लेकिन परिणाम उलटा रहा (विरोधाभास)"
+        },
+        {
+          "word": "I was ill, so I stayed home",
+          "sound": "Result (So)",
+          "reason": "बीमार होने का परिणाम घर पर रहना था"
+        },
+        {
+          "word": "Neither Ram nor Shyam",
+          "sound": "Correlative Pair",
+          "reason": "दोनों में से कोई भी नहीं"
+        },
+        {
+          "word": "Bravo! Well played.",
+          "sound": "Interjection",
+          "reason": "शाबाशी या प्रशंसा का विस्मय सूचक शब्द"
+        }
+      ]
+    },
+    "4_guided_practice": {
+      "stepTitleHi": "4. निर्देशित अभ्यास (Guided Practice)",
+      "instructionHi": "वाक्यों में सही समुच्चयबोधक (Conjunction) या विस्मयादिबोधक चुनें:",
+      "questions": [
+        {
+          "id": "conj-1",
+          "sentence": "He ran fast, ___ he missed the school bus. (and / but / so)",
+          "options": ["and", "but", "so"],
+          "correctAnswer": "but",
+          "explanationHi": "तेज दौड़ा फिर भी बस छूट गई (विपरीत परिणाम), इसलिए 'but' आएगा।"
+        },
+        {
+          "id": "conj-2",
+          "sentence": "She worked hard, ___ she scored top marks. (but / so / or)",
+          "options": ["but", "so", "or"],
+          "correctAnswer": "so",
+          "explanationHi": "कड़ी मेहनत का परिणाम पूरे अंक मिलना था, इसलिए 'so' आएगा।"
+        },
+        {
+          "id": "conj-3",
+          "sentence": "___! We have lost our golden opportunity. (Hurrah / Alas / Wow)",
+          "options": ["Hurrah", "Alas", "Wow"],
+          "correctAnswer": "Alas",
+          "explanationHi": "दुख या हानि व्यक्त करने के लिए 'Alas!' का प्रयोग होता है।"
+        }
+      ]
+    },
+    "5_free_production": {
+      "stepTitleHi": "5. स्वयं वाक्य बनाएँ (Production Task)",
+      "promptHi": "अब 'but' या 'so' या 'Hurrah!' का प्रयोग करके एक अंग्रेजी वाक्य लिखें:",
+      "placeholderHi": "उदा. I wanted to play, but it started raining.",
+      "sampleSolutions": [
+        "I wanted to play, but it started raining.",
+        "He was tired, so he went to sleep early.",
+        "Hurrah! Our school team won the debate."
+      ]
+    },
+    "6_reflection": {
+      "stepTitleHi": "6. आत्म-मूल्यांकन (Review & Reflection)",
+      "promptHi": "आज Conjunctions और Interjections के बारे में क्या याद रखना है?",
+      "recapPointsHi": [
+        "FANBOYS: For, And, Nor, But, Or, Yet, So वाक्यों को जोड़ते हैं।",
+        "जोड़ = and | विरोध = but | परिणाम = so | कारण = because",
+        "Either...or (विकल्प), Neither...nor (दोनों नहीं)",
+        "Interjections (Alas, Hurrah, Wow) के साथ विस्मयादिबोधक (!) चिह्न अवश्य लगाएँ।"
+      ]
+    }
+  }
+}

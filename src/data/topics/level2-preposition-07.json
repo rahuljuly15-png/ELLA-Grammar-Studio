@@ -1,0 +1,130 @@
+{
+  "topicId": "level2-preposition-07",
+  "title": "Prepositions: Place & Time (संबंधबोधक)",
+  "level": 2,
+  "category": "वर्णन और संबंध",
+  "descriptionHi": "स्थान (in, on, at, under, between, among) और समय (at 5 PM, on Monday, in July) का सटीक संबंध।",
+  "steps": {
+    "1_notice": {
+      "stepTitleHi": "1. ध्यान दें (Notice)",
+      "instructionHi": "इन वाक्यों को ध्यान से देखें। समय और स्थान के लिए अलग-अलग Prepositions का उपयोग कैसे हुआ है?",
+      "pairs": [
+        {
+          "sentence": "The train arrives at 5 PM on Monday in July.",
+          "highlightWord": "at vs on vs in",
+          "soundHintHi": "निश्चित समय/घड़ी = at 5 PM | दिन/तारीख = on Monday | महीना/वर्ष = in July"
+        },
+        {
+          "sentence": "She is sitting at her desk, with her phone in her bag on the table.",
+          "highlightWord": "at desk vs in bag vs on table",
+          "soundHintHi": "निश्चित बिंदु = at, बंद दायरा = in, और सतह के ऊपर स्पर्श = on"
+        },
+        {
+          "sentence": "Divide the sweets between Rahul and Amit, but share the story among all students.",
+          "highlightWord": "between two vs among many",
+          "soundHintHi": "केवल 2 व्यक्तियों/वस्तुओं के लिए 'between' और 2 से अधिक के लिए 'among' का प्रयोग होता है।"
+        },
+        {
+          "sentence": "He was swimming in the pool when the dog jumped into the water.",
+          "highlightWord": "in pool vs into water",
+          "soundHintHi": "पहले से अंदर स्थिर = in, बाहर से गति करते हुए अंदर प्रवेश = into"
+        }
+      ]
+    },
+    "2_hypothesize": {
+      "stepTitleHi": "2. नियम का अनुमान लगाएँ (Hypothesize)",
+      "questionHi": "समय और स्थान दर्शाते समय Prepositions (at, on, in) का चुनाव किस आधार पर होता है?",
+      "options": [
+        {
+          "textHi": "हम किसी भी समय या दिन के आगे कोई भी Preposition (at, on, in) मनमर्जी से लगा सकते हैं।",
+          "isCorrect": false,
+          "feedbackHi": "गलत! अंग्रेजी में समय और स्थान के लिए निश्चित पदानुक्रम (Hierarchy) नियम है।"
+        },
+        {
+          "textHi": "सटीक बिंदु व निश्चित घड़ी समय के लिए 'at', दिन व तारीख के लिए 'on', तथा बड़े क्षेत्र, महीने व वर्ष के लिए 'in' का नियम लागू होता है।",
+          "isCorrect": true,
+          "feedbackHi": "शाबाश! यही त्रिकोण नियम है: सबसे संकीर्ण (at) ➔ मध्यम (on) ➔ सबसे व्यापक (in)।"
+        },
+        {
+          "textHi": "Preposition केवल संज्ञा से पहले नहीं बल्कि हमेशा वाक्य के अंत में ही आती है।",
+          "isCorrect": false,
+          "feedbackHi": "गलत! Preposition प्रायः संज्ञा या सर्वनाम के ठीक पहले आकर संबंध बताती है।"
+        }
+      ]
+    },
+    "3_clarify": {
+      "stepTitleHi": "3. सुनहरा नियम (Clarify - Golden Rule)",
+      "goldenRuleHi": "समय का त्रिकोण (Time Triangle): 1. at = सटीक समय (at 6 o'clock, at noon, at midnight)। 2. on = दिन व दिनांक (on Sunday, on 15th August)। 3. in = महीने, साल, मौसम व लंबी अवधि (in January, in 2026, in summer, in the morning)।",
+      "theRuleHi": "स्थान व स्थिति के नियम: 1. on = सतह पर स्पर्श (on the roof)। 2. in = घिरी हुई जगह (in the room, in Delhi)। 3. at = विशिष्ट स्थान बिंदु (at the bus stop)। 4. between = केवल 2 के बीच। 5. among = 2 से अधिक के बीच। 6. into = गति के साथ अंदर जाना (jumped into the river)। ध्यान रहे: 'enter into the room' गलत है, केवल 'entered the room' कहें!",
+      "examples": [
+        {
+          "word": "at 7:30 AM",
+          "sound": "Clock Time",
+          "reason": "घड़ी के निश्चित समय के साथ हमेशा 'at'"
+        },
+        {
+          "word": "on Sunday",
+          "sound": "Day of week",
+          "reason": "सप्ताह के दिनों के नाम के साथ हमेशा 'on'"
+        },
+        {
+          "word": "in 1947 / in August",
+          "sound": "Year & Month",
+          "reason": "वर्ष और महीने के साथ हमेशा 'in'"
+        },
+        {
+          "word": "between Ram and Shyam",
+          "sound": "Two persons",
+          "reason": "दो व्यक्तियों के बीच वितरण के लिए 'between'"
+        }
+      ]
+    },
+    "4_guided_practice": {
+      "stepTitleHi": "4. निर्देशित अभ्यास (Guided Practice)",
+      "instructionHi": "वाक्यों में सही संबंधबोधक (Preposition) चुनें:",
+      "questions": [
+        {
+          "id": "pp-1",
+          "sentence": "Our final exams will begin ___ Monday. (in / on / at)",
+          "options": ["in", "on", "at"],
+          "correctAnswer": "on",
+          "explanationHi": "सप्ताह के दिनों (Monday, Tuesday...) के साथ हमेशा 'on' आता है।"
+        },
+        {
+          "id": "pp-2",
+          "sentence": "The train leaves the station ___ 8:15 PM sharp. (at / in / on)",
+          "options": ["at", "in", "on"],
+          "correctAnswer": "at",
+          "explanationHi": "घड़ी के निश्चित समय (8:15 PM) के साथ हमेशा 'at' का प्रयोग होता है।"
+        },
+        {
+          "id": "pp-3",
+          "sentence": "The teacher distributed the notebooks ___ all forty students. (between / among)",
+          "options": ["between", "among"],
+          "correctAnswer": "among",
+          "explanationHi": "दो से अधिक (40 छात्रों) के बीच वितरण के लिए 'among' आता है।"
+        }
+      ]
+    },
+    "5_free_production": {
+      "stepTitleHi": "5. स्वयं वाक्य बनाएँ (Production Task)",
+      "promptHi": "अब 'at 5 PM' या 'on Monday' या 'between two friends' का उपयोग करके अपना वाक्य लिखें:",
+      "placeholderHi": "उदा. I will meet you at 5 PM on Monday.",
+      "sampleSolutions": [
+        "I will meet you at 5 PM on Monday.",
+        "The cat jumped into the box.",
+        "We play cricket in the evening."
+      ]
+    },
+    "6_reflection": {
+      "stepTitleHi": "6. आत्म-मूल्यांकन (Review & Reflection)",
+      "promptHi": "आज Prepositions (संबंधबोधक) के बारे में क्या याद रखना है?",
+      "recapPointsHi": [
+        "घड़ी का समय (Clock time) = at (at 9 AM, at noon)",
+        "दिन और तारीख (Days & Dates) = on (on Monday, on 15 August)",
+        "महीना, साल व लंबा समय = in (in June, in 2024, in summer)",
+        "दो के बीच = between, दो से अधिक के बीच = among; गति के साथ अंदर = into"
+      ]
+    }
+  }
+}

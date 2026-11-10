@@ -1,6 +1,11 @@
 import articlesData from './topics/level1-articles-01.json';
 import nounData from './topics/level1-noun-02.json';
+import pronounData from './topics/level1-pronoun-03.json';
+import punctuationData from './topics/level1-punctuation-04.json';
 import adjectiveData from './topics/level2-adjective-05.json';
+import adverbData from './topics/level2-adverb-06.json';
+import prepositionData from './topics/level2-preposition-07.json';
+import conjunctionData from './topics/level2-conjunction-08.json';
 import svaData from './topics/level3-subject-verb-agreement-10.json';
 import tensesData from './topics/level3-tenses-timeline-11.json';
 import activePassiveData from './topics/level5-active-passive-15.json';
@@ -76,7 +81,12 @@ export interface FullTopicData {
 export const TOPIC_REGISTRY: Record<string, FullTopicData> = {
   'level1-articles-01': articlesData as unknown as FullTopicData,
   'level1-noun-02': nounData as unknown as FullTopicData,
+  'level1-pronoun-03': pronounData as unknown as FullTopicData,
+  'level1-punctuation-04': punctuationData as unknown as FullTopicData,
   'level2-adjective-05': adjectiveData as unknown as FullTopicData,
+  'level2-adverb-06': adverbData as unknown as FullTopicData,
+  'level2-preposition-07': prepositionData as unknown as FullTopicData,
+  'level2-conjunction-08': conjunctionData as unknown as FullTopicData,
   'level3-subject-verb-agreement-10': svaData as unknown as FullTopicData,
   'level3-tenses-timeline-11': tensesData as unknown as FullTopicData,
   'level5-active-passive-15': activePassiveData as unknown as FullTopicData,

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   BookOpen,
   HelpCircle,
@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import type { FullTopicData } from '../../data/topicLoader';
 import type { RuleCheckResult, RuleError } from '../../engines/offlineRuleEngine';
+import { db, type ReviewState } from '../../db/dexieDb';
 
 export type StepKey = 'use' | 'notice' | 'hypothesize' | 'clarify' | 'schedule';
 
@@ -51,8 +52,29 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
   const [currentStep, setCurrentStep] = useState<StepKey>('use');
   const [selectedHypothesis, setSelectedHypothesis] = useState<number | null>(null);
   const [revealedHints, setRevealedHints] = useState<Record<number, boolean>>({});
-  const [recallScore, setRecallScore] = useState<number>(4);
-  const [accuracyScore, setAccuracyScore] = useState<number>(4);
+  const [reviewState, setReviewState] = useState<ReviewState | null>(null);
+  const [isLoadingReview, setIsLoadingReview] = useState<boolean>(false);
+
+  useEffect(() => {
+    let isMounted = true;
+    setIsLoadingReview(true);
+    db.review_states
+      .where({ student_id: 1, topic_id: activeTopic.topicId })
+      .first()
+      .then((res) => {
+        if (isMounted) {
+          setReviewState(res || null);
+          setIsLoadingReview(false);
+        }
+      })
+      .catch((err) => {
+        console.error('Error fetching review state:', err);
+        if (isMounted) setIsLoadingReview(false);
+      });
+    return () => {
+      isMounted = false;
+    };
+  }, [activeTopic.topicId, isSavedToDb]);
 
   const steps = activeTopic.steps;
 
@@ -541,76 +563,58 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
       )}
 
       {/* ======================================================== */}
-      {/* STEP 5: SCHEDULE & SPACED REPETITION                     */}
+      {/* STEP 5: SCHEDULE & REVIEW                                */}
       {/* ======================================================== */}
       {currentStep === 'schedule' && (
         <div className="bg-white border border-slate-200/90 rounded-3xl p-6 sm:p-7 space-y-5 shadow-xs">
           <div>
             <span className="text-xs font-bold text-indigo-600 uppercase tracking-wider">
-              चरण 6 • दोहराव कार्यक्रम (Dual-Rating Spaced Repetition)
+              चरण 4 • समीक्षा स्थिति (Spaced Repetition Review)
             </span>
             <h3 className="text-base sm:text-lg font-bold text-slate-900 mt-0.5">
-              अगली समीक्षा की तारीख और आत्म-मूल्यांकन
+              अगली समीक्षा की तारीख और स्थिति
             </h3>
             <p className="text-xs text-slate-600 mt-1">
-              स्मृति को स्थायी बनाने के लिए FSRS (Free Spaced Repetition Scheduler) स्वचालित रूप से दोहराव का समय निर्धारित करता है।
+              इस विषय के लिए निर्धारित अगली समीक्षा का समय।
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
-            <div className="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-3">
-              <div className="flex justify-between items-center text-xs">
-                <span className="font-bold text-slate-800">1. नियम याद करने की क्षमता (Recall):</span>
-                <span className="font-mono text-indigo-600 font-bold tabular-nums">
-                  {recallScore} / 5
-                </span>
-              </div>
-              <input
-                type="range"
-                min="1"
-                max="5"
-                value={recallScore}
-                onChange={(e) => setRecallScore(Number(e.target.value))}
-                className="w-full accent-indigo-600 cursor-pointer"
-              />
-              <div className="flex justify-between text-[11px] text-slate-500 font-medium">
-                <span>कठिन लगा</span>
-                <span>सामान्य</span>
-                <span>बहुत आसान</span>
-              </div>
-            </div>
+          {/* TODO: Implement full FSRS scheduler algorithm here (Stage 3 roadmap) */}
 
-            <div className="p-4 bg-slate-50 border border-slate-200 rounded-2xl space-y-3">
-              <div className="flex justify-between items-center text-xs">
-                <span className="font-bold text-slate-800">2. वाक्य निर्माण सटीकता (Accuracy):</span>
-                <span className="font-mono text-emerald-600 font-bold tabular-nums">
-                  {accuracyScore} / 5
-                </span>
-              </div>
-              <input
-                type="range"
-                min="1"
-                max="5"
-                value={accuracyScore}
-                onChange={(e) => setAccuracyScore(Number(e.target.value))}
-                className="w-full accent-emerald-600 cursor-pointer"
-              />
-              <div className="flex justify-between text-[11px] text-slate-500 font-medium">
-                <span>गलती हुई</span>
-                <span>संकेत से ठीक</span>
-                <span>बिना गलती के</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="p-4 bg-indigo-50 border border-indigo-200 rounded-2xl space-y-1.5 text-xs">
-            <div className="font-bold text-indigo-900 flex items-center gap-2">
+          <div className="p-5 bg-indigo-50/70 border border-indigo-200 rounded-2xl space-y-3">
+            <div className="font-bold text-indigo-900 flex items-center gap-2 text-sm">
               <Calendar className="w-4 h-4 text-indigo-600" />
-              <span>प्रस्तावित दोहराव समय (Next Due Date):</span>
+              <span>निर्धारित समीक्षा (Next Review Date):</span>
             </div>
-            <p className="text-slate-700">
-              आपके मूल्यांकन के अनुसार, यह विषय <strong>3 दिन बाद (Day +3)</strong> आपकी रिवीजन सूची में स्वतः आ जाएगा।
-            </p>
+
+            {isLoadingReview ? (
+              <p className="text-xs text-slate-500">डेटाबेस से समीक्षा लोड हो रही है...</p>
+            ) : reviewState?.next_due_date ? (
+              <div className="space-y-2">
+                <div className="text-base sm:text-lg font-bold text-slate-900 font-mono">
+                  {new Date(reviewState.next_due_date).toLocaleDateString('hi-IN', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric',
+                  })}
+                </div>
+                <div className="flex flex-wrap items-center gap-3 text-xs text-slate-600">
+                  <span>
+                    सटीकता स्तर (Accuracy):{' '}
+                    <strong className="text-emerald-700 font-mono">{reviewState.production_accuracy_score}%</strong>
+                  </span>
+                  <span aria-hidden="true" className="text-slate-300">·</span>
+                  <span>
+                    नियम स्मरण (Recall):{' '}
+                    <strong className="text-indigo-700 font-mono">{reviewState.rule_recall_score}%</strong>
+                  </span>
+                </div>
+              </div>
+            ) : (
+              <div className="text-sm font-semibold text-slate-600">
+                अभी कोई समीक्षा तय नहीं
+              </div>
+            )}
           </div>
 
           <div className="flex justify-end pt-4 border-t border-slate-100">

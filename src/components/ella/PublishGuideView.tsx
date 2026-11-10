@@ -257,7 +257,7 @@ jobs:
               </div>
               <div className="p-6 bg-slate-50 space-y-4">
                 <div className="flex justify-between items-center">
-                  <div className="font-bold text-slate-900 text-sm">ELLA Grammar Studio v2.1</div>
+                  <div className="font-bold text-slate-900 text-sm">ELLA Grammar Studio v3.0</div>
                   <div className="text-xs bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-md">
                     100% Free & Local-First PWA
                   </div>

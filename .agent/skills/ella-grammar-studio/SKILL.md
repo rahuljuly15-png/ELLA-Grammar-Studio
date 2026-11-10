@@ -5,7 +5,7 @@ description: Bilingual (Hindi-English) Inductive Grammar Engine, Evaluator & Tut
 
 # ELLA Grammar Studio Skill
 
-This skill allows AI agents to interface with **ELLA Grammar Studio v2.1** — a zero-cost, local-first, bilingual inductive English grammar learning platform designed for Indian school students (Classes 6–10).
+This skill allows AI agents to interface with **ELLA Grammar Studio v3.0** — a zero-cost, local-first, bilingual inductive English grammar learning platform designed for Indian school students (Classes 6–10).
 
 ---
 

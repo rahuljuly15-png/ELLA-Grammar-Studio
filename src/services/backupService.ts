@@ -27,7 +27,7 @@ export async function exportDatabaseToJson(customFilename?: string): Promise<voi
   const payload: ExportDataPayload = {
     version: 2,
     exportedAt: new Date().toISOString(),
-    appName: 'ELLA Grammar Studio v2.1',
+    appName: 'ELLA Grammar Studio v3.0',
     data: {
       students,
       grammar_points,

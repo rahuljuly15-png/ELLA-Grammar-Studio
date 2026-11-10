@@ -275,7 +275,7 @@ export default function App() {
       <footer className="mt-auto border-t border-slate-200 bg-white py-6 px-6 text-center text-xs text-slate-500">
         <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
-            <span className="font-bold text-slate-700">ELLA Grammar Studio v2.1</span>
+            <span className="font-bold text-slate-700">ELLA Grammar Studio v3.0</span>
             <span aria-hidden="true" className="text-slate-300">·</span>
             <span>Local-First PWA • Dexie.js • ₹0 Free Model</span>
           </div>

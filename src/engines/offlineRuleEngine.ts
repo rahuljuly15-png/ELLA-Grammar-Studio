@@ -407,6 +407,141 @@ export function checkSentenceOffline(sentence: string, _topicId?: string): RuleC
     });
   }
 
+  // Pattern 2.11: 'entered into the room' -> 'entered the room'
+  const enterIntoRegex = /\b(enter(?:ed|ing|s)?)\s+into\s+((?:the\s+|a\s+|an\s+|this\s+|that\s+|my\s+|our\s+|his\s+|her\s+|their\s+)?(?:room|house|classroom|hall|building|office|kitchen|bus|car|train|shop))\b/gi;
+  while ((match = enterIntoRegex.exec(trimmed)) !== null) {
+    const verb = match[1];
+    const place = match[2];
+    errors.push({
+      ruleId: 'enter_into_redundant',
+      matchedText: match[0],
+      suggestedText: `${verb} ${place}`,
+      index: match.index,
+      explanationHi: `'${verb}' में 'अंदर जाना' का अर्थ पहले से शामिल है, इसलिए भौतिक स्थान के साथ 'into' लगाना अनावश्यक है।`,
+      severity: 'error',
+      confidence: 'high',
+      inductiveHintHi: 'Enter के साथ Into नहीं लगाया जाता (केवल Enter the room)।',
+    });
+  }
+
+  // Pattern 2.12: 'listen me' -> 'listen to me'
+  const listenToRegex = /\b(listen(?:ed|ing|s)?)\s+(me|him|her|us|them|the teacher|your parents)\b/gi;
+  while ((match = listenToRegex.exec(trimmed)) !== null) {
+    const verb = match[1];
+    const target = match[2];
+    errors.push({
+      ruleId: 'listen_requires_to',
+      matchedText: match[0],
+      suggestedText: `${verb} to ${target}`,
+      index: match.index,
+      explanationHi: `'${verb}' के बाद किसी व्यक्ति या श्रोता का उल्लेख होने पर 'to' Preposition (उदा. '${verb} to ${target}') लगाना अनिवार्य है।`,
+      severity: 'error',
+      confidence: 'high',
+      inductiveHintHi: 'Listen के बाद हमेशा To आता है (Listen to me)।',
+    });
+  }
+
+  // Pattern 2.13: 'prefer tea than coffee' -> 'prefer tea to coffee'
+  const preferToRegex = /\b(prefer(?:red|ring|s)?)\s+([a-zA-Z]+)\s+than\s+([a-zA-Z]+)\b/gi;
+  while ((match = preferToRegex.exec(trimmed)) !== null) {
+    const verb = match[1];
+    const item1 = match[2];
+    const item2 = match[3];
+    errors.push({
+      ruleId: 'prefer_requires_to',
+      matchedText: match[0],
+      suggestedText: `${verb} ${item1} to ${item2}`,
+      index: match.index,
+      explanationHi: `'${verb}' के साथ दो चीज़ों की पसंद की तुलना में 'than' नहीं, 'to' Preposition लगती है (उदा. '${verb} ${item1} to ${item2}')।`,
+      severity: 'error',
+      confidence: 'high',
+      inductiveHintHi: 'Prefer के साथ Than नहीं, To लगाया जाता है।',
+    });
+  }
+
+  // Pattern 2.14: 'cope up with' -> 'cope with'
+  const copeUpWithRegex = /\b(cop(?:e|ed|ing|es))\s+up\s+with\b/gi;
+  while ((match = copeUpWithRegex.exec(trimmed)) !== null) {
+    const verb = match[1];
+    errors.push({
+      ruleId: 'cope_with_no_up',
+      matchedText: match[0],
+      suggestedText: `${verb} with`,
+      index: match.index,
+      explanationHi: `अंग्रेजी में सही मुहावरा '${verb} with' (सामना करना) है, 'up' लगाना व्याकरण में अमान्य है।`,
+      severity: 'error',
+      confidence: 'high',
+      inductiveHintHi: 'Cope के साथ Up नहीं आता, केवल Cope with होता है।',
+    });
+  }
+
+  // Pattern 2.15: 'Between you and I' -> 'Between you and me'
+  const betweenYouAndIRegex = /\b([Bb]etween)\s+(you\s+and\s+I)\b/g;
+  while ((match = betweenYouAndIRegex.exec(trimmed)) !== null) {
+    const betweenWord = match[1];
+    errors.push({
+      ruleId: 'between_you_and_me',
+      matchedText: match[0],
+      suggestedText: `${betweenWord} you and me`,
+      index: match.index,
+      explanationHi: `'between' एक Preposition है, जिसके बाद Objective Case ('me') आता है, 'I' नहीं।`,
+      severity: 'error',
+      confidence: 'high',
+      inductiveHintHi: 'Between के बाद me आता है (Between you and me)।',
+    });
+  }
+
+  // Pattern 2.16: 'I and Rahul' -> 'Rahul and I' (Politeness 231 rule)
+  const pronounOrderRegex = /\b([Ii])\s+and\s+([A-Z][a-z]+|my\s+friend|my\s+brother|my\s+sister)\b/g;
+  while ((match = pronounOrderRegex.exec(trimmed)) !== null) {
+    const otherPerson = match[2];
+    const capitalizedOther = otherPerson.startsWith('my')
+      ? (match.index === 0 ? 'My' + otherPerson.slice(2) : otherPerson)
+      : otherPerson;
+    errors.push({
+      ruleId: 'polite_pronoun_order_231',
+      matchedText: match[0],
+      suggestedText: `${capitalizedOther} and I`,
+      index: match.index,
+      explanationHi: `अंग्रेजी शिष्टाचार (231 नियम) के अनुसार स्वयं ('I') को हमेशा दूसरे व्यक्ति के बाद रखा जाता है (उदा. '${capitalizedOther} and I')।`,
+      severity: 'warning',
+      confidence: 'high',
+      inductiveHintHi: 'दूसरों का नाम पहले और स्वयं (I) को बाद में रखा जाता है।',
+    });
+  }
+
+  // Pattern 2.17: 'could able to' -> 'could'
+  const couldAbleToRegex = /\b(could(?:n't| not)?)\s+able\s+to\b/gi;
+  while ((match = couldAbleToRegex.exec(trimmed)) !== null) {
+    const modalPart = match[1];
+    errors.push({
+      ruleId: 'could_able_to_redundant',
+      matchedText: match[0],
+      suggestedText: modalPart,
+      index: match.index,
+      explanationHi: `'${modalPart}' और 'able to' दोनों ही क्षमता दर्शाते हैं; दोनों को एक साथ लगाना वर्जित है।`,
+      severity: 'error',
+      confidence: 'high',
+      inductiveHintHi: 'Could के साथ able to नहीं लगाया जाता।',
+    });
+  }
+
+  // Pattern 2.18: 'Myself Rahul' -> 'I am Rahul'
+  const myselfIntroRegex = /\b([Mm]yself)\s+([A-Z][a-z]+)\b/g;
+  while ((match = myselfIntroRegex.exec(trimmed)) !== null) {
+    const name = match[2];
+    errors.push({
+      ruleId: 'myself_as_subject_forbidden',
+      matchedText: match[0],
+      suggestedText: `I am ${name}`,
+      index: match.index,
+      explanationHi: `'Myself' एक Reflexive Pronoun है जो वाक्य का कर्ता नहीं बन सकता। परिचय देने के लिए 'I am ${name}' या 'My name is ${name}' कहें।`,
+      severity: 'error',
+      confidence: 'high',
+      inductiveHintHi: 'परिचय देते समय Myself नहीं, I am बोलें।',
+    });
+  }
+
   // ========================================================
   // RULE SET 3: SUBJECT-VERB AGREEMENT & DOUBLE COMPARATIVES
   // ========================================================

@@ -82,6 +82,16 @@ describe('offlineRuleEngine - 40+ WRONG sentences from Indian ESL learners', () 
     { sentence: 'You should studies daily', expectedRule: 'modal_requires_base_verb', expectedMatch: 'should studies', expectedSuggest: 'should study' },
     { sentence: 'He can has my notebook', expectedRule: 'modal_requires_base_verb', expectedMatch: 'can has', expectedSuggest: 'can have' },
     { sentence: 'She will goes to market', expectedRule: 'modal_requires_base_verb', expectedMatch: 'will goes', expectedSuggest: 'will go' },
+
+    // 16. Expanded Indian ESL: Enter into, Listen me, Prefer than, Cope up with, etc.
+    { sentence: 'He entered into the room quietly', expectedRule: 'enter_into_redundant', expectedMatch: 'entered into the room', expectedSuggest: 'entered the room' },
+    { sentence: 'Why don\'t you listen me carefully', expectedRule: 'listen_requires_to', expectedMatch: 'listen me', expectedSuggest: 'listen to me' },
+    { sentence: 'I prefer tea than coffee always', expectedRule: 'prefer_requires_to', expectedMatch: 'prefer tea than coffee', expectedSuggest: 'prefer tea to coffee' },
+    { sentence: 'He cannot cope up with this stress', expectedRule: 'cope_with_no_up', expectedMatch: 'cope up with', expectedSuggest: 'cope with' },
+    { sentence: 'This secret is between you and I', expectedRule: 'between_you_and_me', expectedMatch: 'between you and I', expectedSuggest: 'between you and me' },
+    { sentence: 'I and Rahul went to the market', expectedRule: 'polite_pronoun_order_231', expectedMatch: 'I and Rahul', expectedSuggest: 'Rahul and I' },
+    { sentence: 'He could not able to finish the work', expectedRule: 'could_able_to_redundant', expectedMatch: 'could not able to', expectedSuggest: 'could not' },
+    { sentence: 'Myself Rahul from Jaipur', expectedRule: 'myself_as_subject_forbidden', expectedMatch: 'Myself Rahul', expectedSuggest: 'I am Rahul' },
   ];
 
   wrongCases.forEach((testCase, idx) => {
@@ -174,6 +184,17 @@ describe('offlineRuleEngine - 50+ CORRECT look-alikes that must NOT be flagged',
     // Single comparatives
     'Rohan is taller than Amit',
     'She is smarter than her classmates',
+
+    // Expanded rules correct look-alikes
+    'He entered the room silently',
+    'Please listen to me carefully',
+    'I prefer tea to coffee',
+    'She can cope with difficult situations',
+    'This is strictly between you and me',
+    'Rahul and I are good friends',
+    'He was able to complete the work',
+    'I completed the project myself',
+    'They entered into an agreement yesterday',
   ];
 
   correctCases.forEach((sentence, idx) => {

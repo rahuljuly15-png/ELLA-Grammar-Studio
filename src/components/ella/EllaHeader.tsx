@@ -4,11 +4,8 @@ import {
   MapPin,
   AlertTriangle,
   Settings,
-  Download,
   ShieldCheck,
-  Globe,
   Sparkles,
-  Share2,
 } from 'lucide-react';
 import { PWAInstallButton } from './PWAInstallButton';
 
@@ -17,18 +14,15 @@ export type EllaView = 'cycle' | 'mastery_map' | 'error_vault' | 'publish' | 'se
 interface EllaHeaderProps {
   currentView: EllaView;
   setCurrentView: (view: EllaView) => void;
-  onExportBackup: () => void;
-  onOpenPublishModal: () => void;
-  sessionsCount: number;
   errorsCount: number;
+  onOpenPublishModal?: () => void;
+  onExportBackup?: () => void;
+  sessionsCount?: number;
 }
 
 export const EllaHeader: React.FC<EllaHeaderProps> = ({
   currentView,
   setCurrentView,
-  onExportBackup,
-  onOpenPublishModal,
-  sessionsCount,
   errorsCount,
 }) => {
   return (
@@ -53,7 +47,7 @@ export const EllaHeader: React.FC<EllaHeaderProps> = ({
         </div>
       </div>
 
-      {/* Zone 2: Navigation Links (Clean, soft, single-line tabs) */}
+      {/* Zone 2: Navigation Links (Clean, student-focused tabs) */}
       <nav className="flex items-center gap-1 p-1 bg-slate-100/90 border border-slate-200 rounded-xl overflow-x-auto">
         <button
           onClick={() => setCurrentView('cycle')}
@@ -92,18 +86,6 @@ export const EllaHeader: React.FC<EllaHeaderProps> = ({
         </button>
 
         <button
-          onClick={() => setCurrentView('publish')}
-          className={`flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold rounded-lg transition-all whitespace-nowrap ${
-            currentView === 'publish'
-              ? 'bg-white text-emerald-700 shadow-xs'
-              : 'text-slate-600 hover:text-slate-900'
-          }`}
-        >
-          <Globe className="w-3.5 h-3.5 text-emerald-600" />
-          <span>शेयर व गाइड</span>
-        </button>
-
-        <button
           onClick={() => setCurrentView('settings')}
           className={`flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold rounded-lg transition-all whitespace-nowrap ${
             currentView === 'settings'
@@ -116,23 +98,14 @@ export const EllaHeader: React.FC<EllaHeaderProps> = ({
         </button>
       </nav>
 
-      {/* Zone 3: Primary Action & 100% Offline */}
+      {/* Zone 3: 100% Offline & PWA App Install */}
       <div className="flex items-center gap-2.5 shrink-0 justify-end">
-        <div className="hidden xl:flex items-center gap-1.5 text-xs text-emerald-800 bg-emerald-50 border border-emerald-200/80 px-2.5 py-1.5 rounded-xl font-semibold">
+        <div className="flex items-center gap-1.5 text-xs text-emerald-800 bg-emerald-50 border border-emerald-200/80 px-2.5 py-1.5 rounded-xl font-semibold">
           <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
           <span>100% ऑफ़लाइन</span>
         </div>
 
         <PWAInstallButton />
-
-        <button
-          onClick={onOpenPublishModal}
-          className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 rounded-xl transition-all shadow-xs shadow-emerald-200 cursor-pointer"
-        >
-          <Share2 className="w-3.5 h-3.5" />
-          <span className="hidden sm:inline">लाइव लिंक देखें</span>
-          <span className="sm:hidden">शेयर</span>
-        </button>
       </div>
     </header>
   );

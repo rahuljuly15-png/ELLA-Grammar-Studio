@@ -321,9 +321,6 @@ export default function App() {
       <EllaHeader
         currentView={currentView}
         setCurrentView={setCurrentView}
-        onExportBackup={handleExportBackup}
-        onOpenPublishModal={() => setCurrentView('publish')}
-        sessionsCount={dbStats.sessionsCount}
         errorsCount={dbStats.errorsCount}
       />
 
@@ -416,7 +413,7 @@ export default function App() {
           <div className="flex items-center gap-2">
             <span className="font-bold text-slate-700">ELLA Grammar Studio v3.0</span>
             <span aria-hidden="true" className="text-slate-300">·</span>
-            <span>Local-First PWA • Dexie.js • ₹0 Free Model</span>
+            <span>100% ऑफ़लाइन PWA • सुरक्षित व मुफ़्त</span>
           </div>
           <div className="text-slate-600">
             कक्षा 6–10 के विद्यार्थियों के लिए सरल, आकर्षक व 100% मुफ़्त

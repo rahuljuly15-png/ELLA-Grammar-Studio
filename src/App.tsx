@@ -30,7 +30,20 @@ export default function App() {
   const [selfNote, setSelfNote] = useState<string>('');
   const [savedSessionId, setSavedSessionId] = useState<number | null>(null);
   const [isSavedToDb, setIsSavedToDb] = useState(false);
-  const [studentName, setStudentName] = useState('Rahul Sharma');
+  const [studentName, setStudentName] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('ella_student_name');
+      if (saved && saved.trim()) return saved;
+    }
+    return 'Ishu';
+  });
+
+  const handleUpdateStudentName = (name: string) => {
+    setStudentName(name);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('ella_student_name', name);
+    }
+  };
 
   // Database stats
   const [dbStats, setDbStats] = useState<{ sessionsCount: number; errorsCount: number; reviewsCount: number }>({
@@ -160,6 +173,10 @@ export default function App() {
   const handleDeleteAllData = async () => {
     if (window.confirm('क्या आप वाकई इस डिवाइस से अपना सारा अभ्यास रिकॉर्ड हमेशा के लिए हटाना चाहते हैं?')) {
       const res = await deleteStudentData(1);
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('ella_student_name');
+      }
+      setStudentName('Ishu');
       showToast(res.message);
       await refreshStats();
     }
@@ -254,7 +271,7 @@ export default function App() {
         {currentView === 'settings' && (
           <SettingsView
             studentName={studentName}
-            setStudentName={setStudentName}
+            setStudentName={handleUpdateStudentName}
             dbStats={dbStats}
             onExportBackup={handleExportBackup}
             onImportBackup={handleImportBackup}

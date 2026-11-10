@@ -101,6 +101,10 @@ export interface TranslationDictionary {
   genie_input_placeholder: string;
   genie_send_btn: string;
   genie_thinking: string;
+  genie_pause_btn: string;
+  genie_resume_btn: string;
+  genie_paused_badge: string;
+  genie_drag_tooltip: string;
 
   // Learning Map
   map_title: string;
@@ -270,6 +274,10 @@ export const TRANSLATIONS: Record<Language, TranslationDictionary> = {
     genie_input_placeholder: 'एला से कोई भी सवाल पूछें (उदा. an hour क्यों आया?)...',
     genie_send_btn: 'भेजें',
     genie_thinking: 'एला सोच रही है...',
+    genie_pause_btn: 'जिनी को रोकें / पॉज़ करें',
+    genie_resume_btn: 'जिनी को पुनः शुरू करें (Resume)',
+    genie_paused_badge: 'पॉज़्ड (Paused)',
+    genie_drag_tooltip: 'पकड़कर स्क्रीन पर कहीं भी ले जाएँ',
 
     // Learning Map
     map_title: 'लर्निंग मैप (21 टॉपिक्स)',
@@ -438,6 +446,10 @@ export const TRANSLATIONS: Record<Language, TranslationDictionary> = {
     genie_input_placeholder: 'Ask Ella any grammar question (e.g. Why an hour?)...',
     genie_send_btn: 'Send',
     genie_thinking: 'Ella is thinking...',
+    genie_pause_btn: 'Pause Genie',
+    genie_resume_btn: 'Resume Genie',
+    genie_paused_badge: 'Paused',
+    genie_drag_tooltip: 'Drag anywhere on screen',
 
     // Learning Map
     map_title: 'Learning Map (21 Topics)',

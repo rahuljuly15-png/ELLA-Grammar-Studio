@@ -381,29 +381,28 @@ function AppInner() {
           </div>
         )}
 
-        {/* Student progress ribbon with soft playful pastel highlights */}
-        <div className="p-3.5 bg-gradient-to-r from-indigo-50/70 via-purple-50/40 to-pink-50/50 border border-indigo-100/90 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs shadow-2xs">
-          <div className="flex items-center gap-2 text-slate-700 font-semibold">
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
-            <span className="text-indigo-800 font-extrabold text-[13px]">{t('ribbon_title')}</span>
-            <span aria-hidden="true" className="text-indigo-200 font-bold">·</span>
-            <span className="text-indigo-700 font-bold bg-white/80 border border-indigo-200/70 px-2 py-0.5 rounded-full text-[10px]">{t('classBadge')}</span>
+        {/* Student progress ribbon with soft playful pastel highlights (Compact 1-row on mobile) */}
+        <div className="p-2 sm:p-3.5 bg-gradient-to-r from-indigo-50/70 via-purple-50/40 to-pink-50/50 border border-indigo-100/90 rounded-2xl flex items-center justify-between gap-2 text-xs shadow-2xs">
+          <div className="flex items-center gap-1.5 sm:gap-2 text-slate-700 font-semibold shrink-0">
+            <span className="w-2 sm:w-2.5 h-2 sm:h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span className="text-indigo-800 font-extrabold text-xs sm:text-[13px]">{t('ribbon_title')}</span>
+            <span aria-hidden="true" className="text-indigo-200 font-bold hidden sm:inline">·</span>
+            <span className="text-indigo-700 font-bold bg-white/80 border border-indigo-200/70 px-2 py-0.5 rounded-full text-xs hidden sm:inline">{t('classBadge')}</span>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-sky-50/90 border border-sky-200/80 text-sky-900 font-semibold shadow-2xs">
+          <div className="flex items-center gap-1.5 sm:gap-3 text-xs overflow-x-auto no-scrollbar">
+            <span className="inline-flex items-center gap-1 px-2 sm:px-3 py-0.5 sm:py-1 rounded-xl bg-sky-50/90 border border-sky-200/80 text-sky-900 font-semibold shadow-2xs whitespace-nowrap">
               <span>🎯</span>
-              <span>{t('ribbon_rounds')}</span>
+              <span className="hidden sm:inline">{t('ribbon_rounds')}</span>
               <strong className="text-sky-700 font-mono font-extrabold tabular-nums">{dbStats.sessionsCount}</strong>
             </span>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-amber-50/90 border border-amber-200/80 text-amber-900 font-semibold shadow-2xs">
+            <span className="inline-flex items-center gap-1 px-2 sm:px-3 py-0.5 sm:py-1 rounded-xl bg-amber-50/90 border border-amber-200/80 text-amber-900 font-semibold shadow-2xs whitespace-nowrap">
               <span>🌟</span>
-              <span>{t('ribbon_errors')}</span>
+              <span className="hidden sm:inline">{t('ribbon_errors')}</span>
               <strong className="text-amber-700 font-mono font-extrabold tabular-nums">{dbStats.errorsCount}</strong>
             </span>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-emerald-50/90 border border-emerald-200/80 text-emerald-900 font-semibold shadow-2xs">
+            <span className="inline-flex items-center gap-1 px-2 sm:px-3 py-0.5 sm:py-1 rounded-xl bg-emerald-50/90 border border-emerald-200/80 text-emerald-900 font-semibold shadow-2xs whitespace-nowrap">
               <span>👤</span>
-              <span>{t('ribbon_student')}</span>
               <strong className="text-emerald-800 font-extrabold">{studentName}</strong>
             </span>
           </div>

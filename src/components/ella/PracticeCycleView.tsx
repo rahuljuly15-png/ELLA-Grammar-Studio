@@ -22,6 +22,7 @@ import {
   HelpCircle as QuestionIcon,
   Flame,
   Award,
+  Lock,
 } from 'lucide-react';
 import type { FullTopicData } from '../../data/topicLoader';
 import type { RuleCheckResult, RuleError } from '../../engines/offlineRuleEngine';
@@ -83,6 +84,8 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
   const [isLoadingReview, setIsLoadingReview] = useState<boolean>(false);
   const [ratedFeedback, setRatedFeedback] = useState<string | null>(null);
   const [showAdvancedStats, setShowAdvancedStats] = useState<boolean>(false);
+  // Pedagogical step gating (Audit UX-04): Students can always navigate backwards, but must unlock steps in sequence
+  const [maxUnlockedStepIndex, setMaxUnlockedStepIndex] = useState<number>(0);
 
   // Reset hypothesis, hints, and step to 'notice' on topic change
   useEffect(() => {
@@ -90,6 +93,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
     setRevealedHints({});
     setGuidedAnswers({});
     setCurrentStep('notice');
+    setMaxUnlockedStepIndex(0);
   }, [activeTopic.topicId]);
 
   // Load FSRS Review State from Dexie
@@ -248,23 +252,23 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
   return (
     <div className="space-y-6">
       {/* ======================================================== */}
-      {/* 1. TOPIC HEADER CARD (Warm, Inviting, Kid-friendly)      */}
+      {/* 1. TOPIC HEADER CARD (Compact on mobile, Audit UX-02)    */}
       {/* ======================================================== */}
-      <div className="p-5 sm:p-6 bg-gradient-to-r from-white via-indigo-50/30 to-purple-50/30 border border-indigo-100/90 rounded-3xl shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div className="flex items-center gap-4">
-          <div className="w-13 h-13 rounded-2xl bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 text-white font-black flex items-center justify-center text-lg shadow-sm shadow-purple-200 shrink-0">
+      <div className="p-3.5 sm:p-6 bg-gradient-to-r from-white via-indigo-50/30 to-purple-50/30 border border-indigo-100/90 rounded-3xl shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+        <div className="flex items-center gap-3 sm:gap-4">
+          <div className="w-11 h-11 sm:w-13 sm:h-13 rounded-2xl bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 text-white font-black flex items-center justify-center text-base sm:text-lg shadow-sm shadow-purple-200 shrink-0">
             L{topic.level}
           </div>
           <div>
             <div className="flex items-center gap-2 text-xs font-semibold text-slate-500">
-              <span className="text-indigo-700 font-extrabold tracking-wide uppercase bg-indigo-50 border border-indigo-200/70 px-2 py-0.5 rounded-md text-[10px]">{topic.category}</span>
+              <span className="text-indigo-700 font-extrabold tracking-wide uppercase bg-indigo-50 border border-indigo-200/70 px-2 py-0.5 rounded-md text-xs">{topic.category}</span>
               <span aria-hidden="true" className="text-slate-300">·</span>
-              <span className="font-mono text-slate-400">{topic.topicId}</span>
+              <span className="font-mono text-slate-400 text-xs">{topic.topicId}</span>
             </div>
-            <h1 className="text-lg sm:text-xl font-extrabold text-slate-900 tracking-tight mt-1">
+            <h1 className="text-base sm:text-xl font-extrabold text-slate-900 tracking-tight mt-0.5 sm:mt-1">
               {topic.title}
             </h1>
-            <p className="text-xs text-slate-500 mt-1 line-clamp-1 max-w-xl">
+            <p className="text-xs text-slate-500 mt-0.5 line-clamp-1 max-w-xl">
               {topic.descriptionHi}
             </p>
           </div>
@@ -272,7 +276,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
 
         <button
           onClick={onOpenTopicModal}
-          className="inline-flex items-center justify-center gap-2 px-4 py-2.5 text-xs font-extrabold text-indigo-700 bg-white hover:bg-indigo-50 border border-indigo-200/80 rounded-2xl transition-all cursor-pointer shrink-0 shadow-2xs"
+          className="inline-flex items-center justify-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 text-xs font-extrabold text-indigo-700 bg-white hover:bg-indigo-50 border border-indigo-200/80 rounded-2xl transition-all cursor-pointer shrink-0 shadow-2xs self-start sm:self-center"
         >
           <span>{t('topic_choose_another')}</span>
           <ChevronDown className="w-4 h-4 text-indigo-600" />
@@ -301,27 +305,40 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
           />
         </div>
 
-        {/* 5-Step Segmented Navigation Pills (Single sleek horizontal row with individual pastel identity) */}
+        {/* 5-Step Segmented Navigation Pills (Pedagogically Gated: backward navigation is always free; forward requires completing steps) */}
         <div className="flex items-center sm:grid sm:grid-cols-5 gap-1.5 pt-1 overflow-x-auto no-scrollbar scroll-smooth pb-0.5">
           {cycleStepsList.map((stepItem, idx) => {
             const Icon = stepItem.icon;
             const isActive = currentStep === stepItem.key;
             const isCompleted = idx < currentStepIndex;
+            const isLocked = idx > maxUnlockedStepIndex;
             const theme = stepPillStyles[stepItem.key];
 
             return (
               <button
                 key={stepItem.key}
-                onClick={() => setCurrentStep(stepItem.key)}
-                className={`flex items-center justify-center gap-1.5 py-1.5 sm:py-2 px-2.5 sm:px-3 rounded-xl text-xs font-bold transition-all shrink-0 sm:shrink cursor-pointer shadow-2xs ${
-                  isActive
-                    ? theme.active
+                disabled={isLocked}
+                onClick={() => {
+                  if (!isLocked) setCurrentStep(stepItem.key);
+                }}
+                title={
+                  isLocked
+                    ? (language === 'en' ? 'Complete earlier steps first to unlock' : 'अनलॉक करने के लिए पहले पिछला कदम पूरा करें')
+                    : ''
+                }
+                className={`flex items-center justify-center gap-1.5 py-1.5 sm:py-2 px-2.5 sm:px-3 rounded-xl text-xs font-bold transition-all shrink-0 sm:shrink shadow-2xs ${
+                  isLocked
+                    ? 'bg-slate-100/70 text-slate-400 border border-slate-200/60 cursor-not-allowed opacity-60 shadow-none'
+                    : isActive
+                    ? `${theme.active} cursor-pointer`
                     : isCompleted
-                    ? theme.completed
-                    : theme.inactive
+                    ? `${theme.completed} cursor-pointer`
+                    : `${theme.inactive} cursor-pointer`
                 }`}
               >
-                {isCompleted && !isActive ? (
+                {isLocked ? (
+                  <Lock className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                ) : isCompleted && !isActive ? (
                   <CheckCircle className="w-3.5 h-3.5 shrink-0" />
                 ) : (
                   <Icon className="w-3.5 h-3.5 shrink-0" />
@@ -419,7 +436,10 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                onClick={() => setCurrentStep('hypothesize')}
+                onClick={() => {
+                  setCurrentStep('hypothesize');
+                  setMaxUnlockedStepIndex((prev) => Math.max(prev, 1));
+                }}
                 className="inline-flex items-center gap-2.5 px-6 py-3 text-sm font-bold text-white bg-gradient-to-r from-sky-600 to-indigo-600 hover:from-sky-700 hover:to-indigo-700 rounded-2xl transition-all shadow-sm shadow-sky-300 cursor-pointer"
               >
                 <span>{t('step1_next_btn')}</span>
@@ -580,6 +600,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
                 onClick={() => {
                   if (selectedHypothesis !== null) {
                     setCurrentStep('clarify');
+                    setMaxUnlockedStepIndex((prev) => Math.max(prev, 2));
                   }
                 }}
                 className={`inline-flex items-center justify-center gap-2 px-6 py-3 text-xs sm:text-sm font-bold rounded-2xl transition-all shadow-sm ${
@@ -770,7 +791,10 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                onClick={() => setCurrentStep('use')}
+                onClick={() => {
+                  setCurrentStep('use');
+                  setMaxUnlockedStepIndex((prev) => Math.max(prev, 3));
+                }}
                 className="inline-flex items-center gap-2 px-6 py-3 text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-2xl transition-all shadow-sm shadow-indigo-300 cursor-pointer"
               >
                 <span>{t('step3_next_btn')}</span>
@@ -1009,7 +1033,10 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                onClick={() => setCurrentStep('schedule')}
+                onClick={() => {
+                  setCurrentStep('schedule');
+                  setMaxUnlockedStepIndex(4);
+                }}
                 className="inline-flex items-center gap-2 px-6 py-3 text-sm font-bold text-white bg-indigo-600 hover:bg-indigo-700 rounded-2xl transition-all shadow-sm shadow-indigo-300 cursor-pointer"
               >
                 <span>{t('step4_next_btn')}</span>

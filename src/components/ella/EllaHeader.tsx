@@ -44,7 +44,7 @@ export const EllaHeader: React.FC<EllaHeaderProps> = ({
             <span className="text-lg font-bold tracking-tight text-slate-900 whitespace-nowrap">
               {t('appName')}
             </span>
-            <span className="text-[11px] font-extrabold text-indigo-700 bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-200/90 px-2.5 py-0.5 rounded-full shadow-2xs">
+            <span className="text-xs font-extrabold text-indigo-700 bg-gradient-to-r from-indigo-50 to-purple-50 border border-indigo-200/90 px-2.5 py-0.5 rounded-full shadow-2xs">
               {t('classBadge')}
             </span>
           </div>
@@ -135,7 +135,7 @@ export const EllaHeader: React.FC<EllaHeaderProps> = ({
             title="हिन्दी में बदलें"
           >
             <span className="text-xs">🇮🇳</span>
-            <span className="text-[11px] font-bold">हिन्दी</span>
+            <span className="text-xs font-bold">हिन्दी</span>
           </button>
           <button
             type="button"
@@ -148,11 +148,14 @@ export const EllaHeader: React.FC<EllaHeaderProps> = ({
             title="Switch to English"
           >
             <span className="text-xs">🇬🇧</span>
-            <span className="text-[11px] font-bold">English</span>
+            <span className="text-xs font-bold">English</span>
           </button>
         </div>
 
-        <div className="hidden sm:flex items-center gap-1.5 text-xs text-emerald-800 bg-emerald-50 border border-emerald-200/80 px-2.5 py-1.5 rounded-xl font-semibold">
+        <div
+          className="hidden sm:flex items-center gap-1.5 text-xs text-emerald-800 bg-emerald-50 border border-emerald-200/80 px-2.5 py-1.5 rounded-xl font-semibold shadow-2xs"
+          title={language === 'en' ? 'Core practice & offline rules work 100% offline with zero data cost.' : 'कोर अभ्यास व नियम 100% ऑफ़लाइन काम करते हैं। शून्य इंटरनेट डेटा खर्च।'}
+        >
           <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
           <span>{t('badge_offline')}</span>
         </div>

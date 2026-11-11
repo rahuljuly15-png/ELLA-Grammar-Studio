@@ -107,7 +107,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
       setPinInput('');
       setTimeout(() => setPinSuccess(null), 3000);
     } else {
-      setPinError('गलत सिक्योरिटी पिन (Wrong PIN)। डिफ़ॉल्ट पिन 1507 या ella2026 है।');
+      setPinError(language === 'en' ? 'Incorrect Security PIN. Please contact your teacher or administrator.' : 'गलत सिक्योरिटी पिन दर्ज किया गया। कृपया शिक्षक या व्यवस्थापक से संपर्क करें।');
     }
   };
 
@@ -827,12 +827,12 @@ export const SettingsView: React.FC<SettingsViewProps> = ({
                     type="button"
                     onClick={() => {
                       localStorage.setItem('ella_dev_pin', '1507');
-                      setPinChangeMsg('पिन डिफ़ॉल्ट (1507) पर रीसेट कर दिया गया!');
+                      setPinChangeMsg(language === 'en' ? 'PIN reset to default successfully!' : 'पिन डिफ़ॉल्ट पर रीसेट कर दिया गया!');
                       setTimeout(() => setPinChangeMsg(null), 3000);
                     }}
                     className="px-3.5 py-2.5 bg-slate-700 hover:bg-slate-600 border border-slate-600 text-slate-300 rounded-xl text-xs font-medium cursor-pointer"
                   >
-                    1507 पर रीसेट करें
+                    {language === 'en' ? 'Reset to Default PIN' : 'डिफ़ॉल्ट पिन पर रीसेट करें'}
                   </button>
                 </div>
 

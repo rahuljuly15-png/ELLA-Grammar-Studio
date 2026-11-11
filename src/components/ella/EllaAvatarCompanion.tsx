@@ -539,11 +539,11 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
             >
               {/* Header: Name + Pause + Auto-Voice + Tuck into Lamp */}
               <div className="flex items-center justify-between gap-1.5 border-b border-indigo-100/70 pb-1 select-none">
-                <div className="flex items-center gap-1 text-[11px] font-extrabold text-indigo-800">
-                  <Sparkles className="w-3 h-3 text-amber-500 fill-amber-400 shrink-0" />
+                <div className="flex items-center gap-1 text-xs font-extrabold text-indigo-800">
+                  <Sparkles className="w-3.5 h-3.5 text-amber-500 fill-amber-400 shrink-0" />
                   <span className="truncate">{t('genie_title')}</span>
                   {hasGeminiKey && (
-                    <span className="text-[9px] font-bold text-amber-700 bg-amber-50 border border-amber-200/80 px-1 py-0.2 rounded-full flex items-center gap-0.5 shrink-0">
+                    <span className="text-xs font-bold text-amber-700 bg-amber-50 border border-amber-200/80 px-1.5 py-0.2 rounded-full flex items-center gap-0.5 shrink-0">
                       <Zap className="w-2.5 h-2.5 text-amber-500 fill-amber-400" />
                       <span>AI</span>
                     </span>
@@ -633,7 +633,7 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
                         key={idx}
                         type="button"
                         onClick={() => handleSendMessage(chip)}
-                        className={`px-2 py-0.5 rounded-full text-[10px] font-bold border transition-colors cursor-pointer shadow-2xs ${c}`}
+                        className={`px-2.5 py-1 rounded-full text-xs font-bold border transition-colors cursor-pointer shadow-2xs ${c}`}
                       >
                         {chip}
                       </button>
@@ -644,7 +644,7 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
                 <button
                   type="button"
                   onClick={() => setIsQuestionOpen(!isQuestionOpen)}
-                  className="text-[10px] font-extrabold text-indigo-700 hover:text-indigo-900 bg-indigo-50/80 hover:bg-indigo-100 border border-indigo-200/70 flex items-center gap-0.5 px-2 py-0.5 rounded-full cursor-pointer shadow-2xs"
+                  className="text-xs font-extrabold text-indigo-700 hover:text-indigo-900 bg-indigo-50/80 hover:bg-indigo-100 border border-indigo-200/70 flex items-center gap-0.5 px-2.5 py-1 rounded-full cursor-pointer shadow-2xs"
                 >
                   <span>💬 {t('genie_ask_btn')}</span>
                 </button>
@@ -665,7 +665,7 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
                     value={userInput}
                     onChange={(e) => setUserInput(e.target.value)}
                     placeholder={t('genie_input_placeholder')}
-                    className="flex-1 px-2.5 py-1 bg-slate-50 border border-slate-200 rounded-full text-[11px] text-slate-800 placeholder-slate-400 focus:outline-none focus:border-indigo-400"
+                    className="flex-1 px-3 py-1.5 bg-slate-50 border border-slate-200 rounded-full text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-indigo-400"
                   />
 
                   {/* Speech Recognition Mic */}
@@ -1006,7 +1006,7 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
             }}
             className="mt-1 flex items-center justify-center cursor-pointer"
           >
-            <span className="text-[10px] font-extrabold bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white px-2 py-0.5 rounded-full shadow-md flex items-center gap-1 transition-transform hover:scale-105 border border-amber-300">
+            <span className="text-xs font-extrabold bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white px-2.5 py-0.5 rounded-full shadow-md flex items-center gap-1 transition-transform hover:scale-105 border border-amber-300">
               <span>🪔</span>
               <span>{isLampMode ? (language === 'en' ? 'Open' : 'खोलें') : (language === 'en' ? 'Lamp' : 'चिराग')}</span>
             </span>

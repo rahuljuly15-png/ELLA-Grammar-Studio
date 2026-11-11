@@ -8,6 +8,7 @@ import {
   Sparkles,
   BookOpen,
   Lock,
+  GraduationCap,
 } from 'lucide-react';
 import { CLASS_7_SYLLABUS, ENGINES_META, type CurriculumTopic, type EngineType } from '../../data/curriculum';
 import { isTopicAvailable } from '../../data/topicLoader';
@@ -19,12 +20,15 @@ interface MasteryMapViewProps {
   onSelectTopic: (topicId: string) => void;
 }
 
+export type ClassFilter = 'all' | 'class6_7' | 'class8' | 'class9_10';
+
 export const MasteryMapView: React.FC<MasteryMapViewProps> = ({
   activeTopicId,
   onSelectTopic,
 }) => {
   const { language, t } = useLanguage();
   const [selectedEngineFilter, setSelectedEngineFilter] = useState<EngineType | 'all'>('all');
+  const [selectedClassFilter, setSelectedClassFilter] = useState<ClassFilter>('all');
 
   const getEngineIcon = (engine: EngineType) => {
     switch (engine) {
@@ -99,11 +103,20 @@ export const MasteryMapView: React.FC<MasteryMapViewProps> = ({
   };
 
   const filteredTopics = CLASS_7_SYLLABUS.filter((topic: CurriculumTopic) => {
-    return selectedEngineFilter === 'all' || topic.engine === selectedEngineFilter;
+    const matchesEngine = selectedEngineFilter === 'all' || topic.engine === selectedEngineFilter;
+    let matchesClass = true;
+    if (selectedClassFilter === 'class6_7') {
+      matchesClass = topic.level === 1 || topic.level === 2;
+    } else if (selectedClassFilter === 'class8') {
+      matchesClass = topic.level === 3 || topic.level === 4;
+    } else if (selectedClassFilter === 'class9_10') {
+      matchesClass = topic.level === 5 || topic.level === 6;
+    }
+    return matchesEngine && matchesClass;
   });
 
   return (
-    <div className="space-y-8 animate-in fade-in duration-150">
+    <div className="space-y-6 animate-in fade-in duration-150">
       {/* Overview Banner */}
       <div className="p-6 sm:p-7 bg-white border border-indigo-100 rounded-3xl flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xs">
         <div>
@@ -121,8 +134,49 @@ export const MasteryMapView: React.FC<MasteryMapViewProps> = ({
           </p>
         </div>
 
-        {/* Engine Filter Tabs */}
-        <div className="flex flex-wrap items-center gap-1.5 p-1 bg-slate-100 rounded-2xl">
+        <div className="text-right hidden md:block">
+          <span className="text-xs font-mono font-bold text-indigo-700 bg-indigo-50 border border-indigo-200 px-3 py-1.5 rounded-full">
+            {filteredTopics.length} / 21 {language === 'en' ? 'Topics' : 'विषय'}
+          </span>
+        </div>
+      </div>
+
+      {/* Grade / Class Filter Pills & Engine Selector (Audit UX-05) */}
+      <div className="space-y-3">
+        {/* Class Filter Bar */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 bg-gradient-to-r from-indigo-50/70 via-purple-50/40 to-white border border-indigo-100 rounded-2xl shadow-2xs">
+          <div className="flex items-center gap-2 text-xs font-extrabold text-indigo-900 shrink-0">
+            <GraduationCap className="w-4 h-4 text-indigo-600" />
+            <span>{language === 'en' ? 'Filter by Grade / Class:' : 'कक्षा के अनुसार विषय चुनें:'}</span>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-1.5">
+            {[
+              { id: 'all', labelEn: 'All Classes (21)', labelHi: 'सभी कक्षाएँ (21)' },
+              { id: 'class6_7', labelEn: 'Class 6–7 (Foundations)', labelHi: '🎒 कक्षा 6–7 (बुनियादी)' },
+              { id: 'class8', labelEn: 'Class 8 (Intermediate)', labelHi: '📘 कक्षा 8 (माध्यमिक)' },
+              { id: 'class9_10', labelEn: 'Class 9–10 (Board Exam)', labelHi: '🎓 कक्षा 9–10 (बोर्ड परीक्षा)' },
+            ].map((cls) => {
+              const isSelected = selectedClassFilter === cls.id;
+              return (
+                <button
+                  key={cls.id}
+                  onClick={() => setSelectedClassFilter(cls.id as ClassFilter)}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer shadow-2xs ${
+                    isSelected
+                      ? 'bg-indigo-600 text-white shadow-indigo-200'
+                      : 'bg-white hover:bg-indigo-50 text-slate-700 border border-slate-200/80 hover:border-indigo-300'
+                  }`}
+                >
+                  {language === 'en' ? cls.labelEn : cls.labelHi}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Engine Filter Bar */}
+        <div className="flex flex-wrap items-center gap-1.5 p-1 bg-slate-100/80 border border-slate-200/70 rounded-2xl overflow-x-auto no-scrollbar">
           <button
             onClick={() => setSelectedEngineFilter('all')}
             className={`px-3.5 py-1.5 text-xs font-bold rounded-xl transition-all cursor-pointer ${
@@ -137,14 +191,14 @@ export const MasteryMapView: React.FC<MasteryMapViewProps> = ({
             <button
               key={meta.id}
               onClick={() => setSelectedEngineFilter(meta.id)}
-              className={`flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold rounded-xl transition-all cursor-pointer ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold rounded-xl transition-all cursor-pointer whitespace-nowrap ${
                 selectedEngineFilter === meta.id
                   ? 'bg-white text-indigo-700 shadow-xs'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
               {getEngineIcon(meta.id)}
-              <span className="hidden sm:inline">
+              <span>
                 {language === 'en' ? meta.titleEn : meta.titleHi}
               </span>
             </button>
@@ -176,11 +230,20 @@ export const MasteryMapView: React.FC<MasteryMapViewProps> = ({
             >
               <div className="space-y-2.5">
                 <div className="flex items-center justify-between text-xs">
-                  <span className={`font-mono tabular-nums font-bold px-2.5 py-0.5 rounded-lg border shadow-2xs ${getLevelBadgeStyle(topic.level)}`}>
-                    Level {topic.level}
-                  </span>
+                  <div className="flex items-center gap-1.5">
+                    <span className={`font-mono tabular-nums font-bold px-2 py-0.5 rounded-lg border shadow-2xs ${getLevelBadgeStyle(topic.level)}`}>
+                      L{topic.level}
+                    </span>
+                    <span className="text-xs font-bold text-slate-700 bg-white/90 border border-slate-200/90 px-2 py-0.5 rounded-lg shadow-2xs">
+                      {topic.level <= 2
+                        ? (language === 'en' ? 'Class 6–7' : 'कक्षा 6–7')
+                        : topic.level <= 4
+                        ? (language === 'en' ? 'Class 8' : 'कक्षा 8')
+                        : (language === 'en' ? 'Class 9–10' : 'कक्षा 9–10')}
+                    </span>
+                  </div>
                   <span
-                    className={`px-2.5 py-1 rounded-xl text-[11px] font-bold border flex items-center gap-1.5 shadow-2xs ${getEngineHeaderBg(
+                    className={`px-2.5 py-1 rounded-xl text-xs font-bold border flex items-center gap-1.5 shadow-2xs ${getEngineHeaderBg(
                       topic.engine
                     )}`}
                   >

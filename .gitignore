@@ -10,5 +10,7 @@ coverage/
 public/assets/aistudio/
 AI Analysis/
 *.zip
+*.apk
+android/
 extracted_pwa/
 extracted_android/

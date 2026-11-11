@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Volume2, VolumeX, Sparkles, ChevronDown, ChevronUp, Mic, MicOff, Send, Zap, Pause, Play, Move } from 'lucide-react';
+import { Volume2, VolumeX, Sparkles, ChevronDown, ChevronUp, Mic, MicOff, Send, Zap, Pause, Play, Move, RotateCcw } from 'lucide-react';
 import type { StepKey } from './PracticeCycleView';
 import type { RuleCheckResult } from '../../engines/offlineRuleEngine';
 import type { FullTopicData } from '../../data/topicLoader';
@@ -68,8 +68,8 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
   activeTopic,
 }) => {
   const { language, t } = useLanguage();
-  // Lamp Mode: true = collapsed into Golden Magic Lamp (चिराग), false = dialogue bubble expanded
-  const [isLampMode, setIsLampMode] = useState(false);
+  // Lamp Mode: true = collapsed into Golden Magic Lamp (चिराग) by default to prevent blocking content, false = dialogue bubble expanded
+  const [isLampMode, setIsLampMode] = useState(true);
   // Expandable Q&A input: false = slim compact tip, true = input field & mic visible
   const [isQuestionOpen, setIsQuestionOpen] = useState(false);
   const [mood, setMood] = useState<EllaMood>('waving');
@@ -551,6 +551,18 @@ export const EllaAvatarCompanion: React.FC<EllaAvatarCompanionProps> = ({
                 </div>
 
                 <div className="flex items-center gap-1 shrink-0">
+                  {/* Reset to Safe Corner Button (Visible if user dragged avatar away from corner) */}
+                  {customCoords !== null && (
+                    <button
+                      type="button"
+                      onClick={() => setCustomCoords(null)}
+                      className="p-1 rounded-full text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 transition-colors cursor-pointer text-[10px]"
+                      title={language === 'en' ? 'Reset to bottom corner' : 'कोने में वापस रखें'}
+                    >
+                      <RotateCcw className="w-3 h-3" />
+                    </button>
+                  )}
+
                   {/* Pause / Resume Button */}
                   <button
                     type="button"

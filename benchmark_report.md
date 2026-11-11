@@ -1,6 +1,6 @@
 # ELLA Grammar Studio - Automated Benchmark Report
 
-**Generated at**: 2026-11-10T19:40:33.583Z  
+**Generated at**: 2026-11-11T02:40:19.724Z  
 **Evaluator**: ELLA Automated ESL Benchmark Runner  
 **Target Audience**: Indian English Learners (Classes 6–10)
 
@@ -13,7 +13,7 @@
 | **Precision** | **100%** | Zero False Positives |
 | **Recall (Sensitivity)** | **100%** | Optimal |
 | **F1-Score** | **100%** | Optimal |
-| **Average Processing Latency** | **27.72 μs** | Instantaneous (<1ms) |
+| **Average Processing Latency** | **42.85 μs** | Instantaneous (<1ms) |
 | **Infrastructure Cost** | **₹0.00** | 100% Offline Client-Side |
 
 ---

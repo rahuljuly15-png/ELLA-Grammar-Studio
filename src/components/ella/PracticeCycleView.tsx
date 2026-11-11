@@ -82,6 +82,7 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
   const [reviewState, setReviewState] = useState<ReviewState | null>(null);
   const [isLoadingReview, setIsLoadingReview] = useState<boolean>(false);
   const [ratedFeedback, setRatedFeedback] = useState<string | null>(null);
+  const [showAdvancedStats, setShowAdvancedStats] = useState<boolean>(false);
 
   // Reset hypothesis, hints, and step to 'notice' on topic change
   useEffect(() => {
@@ -475,10 +476,19 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
                 return (
                   <motion.div
                     key={idx}
+                    role="radio"
+                    aria-checked={isSelected}
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        setSelectedHypothesis(idx);
+                      }
+                    }}
                     whileHover={{ scale: 1.01 }}
                     whileTap={{ scale: 0.99 }}
                     onClick={() => setSelectedHypothesis(idx)}
-                    className={`p-4 sm:p-5 rounded-2xl border text-xs sm:text-sm cursor-pointer transition-all space-y-3 shadow-2xs ${
+                    className={`p-4 sm:p-5 rounded-2xl border text-xs sm:text-sm cursor-pointer transition-all space-y-3 shadow-2xs focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 ${
                       isSelected
                         ? opt.isCorrect
                           ? 'bg-emerald-50/90 border-emerald-400 text-slate-900 ring-2 ring-emerald-400/30 shadow-xs'
@@ -1105,44 +1115,94 @@ export const PracticeCycleView: React.FC<PracticeCycleViewProps> = ({
               </motion.div>
             )}
 
-            {/* FSRS Cognitive Metrics Grid */}
-            <div className="space-y-2">
-              <h3 className="text-xs font-bold text-slate-600 flex items-center gap-1.5 uppercase tracking-wide">
-                <Clock className="w-3.5 h-3.5 text-indigo-500" />
-                <span>{language === 'en' ? 'Memory Scorecard (FSRS Stability & Power):' : 'मेमोरी स्कोरकार्ड (Memory Power & Level):'}</span>
-              </h3>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                <div className="p-3.5 bg-gradient-to-b from-indigo-50/80 via-white to-white border border-indigo-200/90 rounded-2xl space-y-1 shadow-2xs">
-                  <span className="text-[11px] font-semibold text-slate-500 block">{language === 'en' ? 'Memory Power' : 'मेमोरी पावर (Stability)'}</span>
-                  <span className="text-base font-bold font-mono text-indigo-700">
-                    {reviewState?.stability ? `${reviewState.stability.toFixed(1)} ${language === 'en' ? 'days' : 'दिन'}` : (language === 'en' ? '3.5 days' : '3.5 दिन')}
-                  </span>
+            {/* Kid-Friendly Memory Strength Banner (Cognitive Load Audit UX-01) */}
+            <div className="p-4 sm:p-5 bg-gradient-to-r from-indigo-50/80 via-purple-50/50 to-pink-50/40 border border-indigo-200/90 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-indigo-100 border border-indigo-200 flex items-center justify-center text-xl shrink-0">
+                  🧠
                 </div>
-
-                <div className="p-3.5 bg-gradient-to-b from-emerald-50/80 via-white to-white border border-emerald-200/90 rounded-2xl space-y-1 shadow-2xs">
-                  <span className="text-[11px] font-semibold text-slate-500 block">{language === 'en' ? 'Retention Chance' : 'याद रहने का चांस (Recall)'}</span>
-                  <span className="text-base font-bold font-mono text-emerald-700">
-                    {reviewState?.stability
-                      ? `${calculateRetention(reviewState.stability, 0)}%`
-                      : '95%'}
-                  </span>
-                </div>
-
-                <div className="p-3.5 bg-gradient-to-b from-amber-50/80 via-white to-white border border-amber-200/90 rounded-2xl space-y-1 shadow-2xs">
-                  <span className="text-[11px] font-semibold text-slate-500 block">{language === 'en' ? 'Difficulty Level' : 'चुनौती स्तर (Level)'}</span>
-                  <span className="text-base font-bold font-mono text-amber-700">
-                    {reviewState?.difficulty ? `${reviewState.difficulty.toFixed(1)} / 10` : '4.5 / 10'}
-                  </span>
-                </div>
-
-                <div className="p-3.5 bg-gradient-to-b from-purple-50/80 via-white to-white border border-purple-200/90 rounded-2xl space-y-1 shadow-2xs">
-                  <span className="text-[11px] font-semibold text-slate-500 block">{language === 'en' ? 'Practice Reps' : 'प्रैक्टिस राउंड्स (Reps)'}</span>
-                  <span className="text-base font-bold font-mono text-purple-700">
-                    {reviewState?.reps ?? 1} {language === 'en' ? 'reps' : 'बार'}
-                  </span>
+                <div>
+                  <div className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+                    {language === 'en' ? 'Memory Power Level' : 'याददाश्त मजबूती स्तर'}
+                  </div>
+                  <div className="text-base sm:text-lg font-extrabold text-indigo-950 flex items-center gap-1.5">
+                    <span className="text-amber-500">
+                      {reviewState?.stability && reviewState.stability >= 10
+                        ? '⭐⭐⭐⭐⭐'
+                        : reviewState?.stability && reviewState.stability >= 5
+                        ? '⭐⭐⭐⭐'
+                        : reviewState?.stability && reviewState.stability >= 2
+                        ? '⭐⭐⭐'
+                        : '⭐⭐'}
+                    </span>
+                    <span className="text-xs sm:text-sm font-bold text-slate-700">
+                      {reviewState?.stability && reviewState.stability >= 10
+                        ? (language === 'en' ? '(Ultra Strong)' : '(अत्यंत मजबूत)')
+                        : reviewState?.stability && reviewState.stability >= 5
+                        ? (language === 'en' ? '(Very Strong)' : '(काफी मजबूत)')
+                        : reviewState?.stability && reviewState.stability >= 2
+                        ? (language === 'en' ? '(Good)' : '(अच्छा स्तर)')
+                        : (language === 'en' ? '(Building up)' : '(बन रही है)')}
+                    </span>
+                  </div>
                 </div>
               </div>
+
+              {/* Optional Toggle to view raw mathematical FSRS metrics */}
+              <button
+                type="button"
+                onClick={() => setShowAdvancedStats(!showAdvancedStats)}
+                className="text-xs font-semibold text-indigo-700 hover:text-indigo-900 bg-white/90 hover:bg-white border border-indigo-200 px-3 py-1.5 rounded-xl transition-all cursor-pointer self-start sm:self-center shadow-2xs flex items-center gap-1.5"
+              >
+                <span>📊</span>
+                <span>
+                  {showAdvancedStats
+                    ? (language === 'en' ? 'Hide Details' : 'विवरण छुपाएँ')
+                    : (language === 'en' ? 'Show Algorithm Stats' : 'तकनीकी विवरण देखें')}
+                </span>
+              </button>
             </div>
+
+            {/* Optional Advanced FSRS Cognitive Metrics Grid (Collapsible for students) */}
+            {showAdvancedStats && (
+              <div className="space-y-2 pt-1">
+                <h3 className="text-xs font-bold text-slate-600 flex items-center gap-1.5 uppercase tracking-wide">
+                  <Clock className="w-3.5 h-3.5 text-indigo-500" />
+                  <span>{language === 'en' ? 'Advanced FSRS Algorithm Parameters:' : 'उन्नत FSRS एल्गोरिदम पैरामीटर्स:'}</span>
+                </h3>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                  <div className="p-3.5 bg-gradient-to-b from-indigo-50/80 via-white to-white border border-indigo-200/90 rounded-2xl space-y-1 shadow-2xs">
+                    <span className="text-xs font-semibold text-slate-500 block">{language === 'en' ? 'Memory Power' : 'मेमोरी पावर (Stability)'}</span>
+                    <span className="text-base font-bold font-mono text-indigo-700">
+                      {reviewState?.stability ? `${reviewState.stability.toFixed(1)} ${language === 'en' ? 'days' : 'दिन'}` : (language === 'en' ? '3.5 days' : '3.5 दिन')}
+                    </span>
+                  </div>
+
+                  <div className="p-3.5 bg-gradient-to-b from-emerald-50/80 via-white to-white border border-emerald-200/90 rounded-2xl space-y-1 shadow-2xs">
+                    <span className="text-xs font-semibold text-slate-500 block">{language === 'en' ? 'Retention Chance' : 'याद रहने का चांस (Recall)'}</span>
+                    <span className="text-base font-bold font-mono text-emerald-700">
+                      {reviewState?.stability
+                        ? `${calculateRetention(reviewState.stability, 0)}%`
+                        : '95%'}
+                    </span>
+                  </div>
+
+                  <div className="p-3.5 bg-gradient-to-b from-amber-50/80 via-white to-white border border-amber-200/90 rounded-2xl space-y-1 shadow-2xs">
+                    <span className="text-xs font-semibold text-slate-500 block">{language === 'en' ? 'Difficulty Level' : 'चुनौती स्तर (Level)'}</span>
+                    <span className="text-base font-bold font-mono text-amber-700">
+                      {reviewState?.difficulty ? `${reviewState.difficulty.toFixed(1)} / 10` : '4.5 / 10'}
+                    </span>
+                  </div>
+
+                  <div className="p-3.5 bg-gradient-to-b from-purple-50/80 via-white to-white border border-purple-200/90 rounded-2xl space-y-1 shadow-2xs">
+                    <span className="text-xs font-semibold text-slate-500 block">{language === 'en' ? 'Practice Reps' : 'प्रैक्टिस राउंड्स (Reps)'}</span>
+                    <span className="text-base font-bold font-mono text-purple-700">
+                      {reviewState?.reps ?? 1} {language === 'en' ? 'reps' : 'बार'}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* Interactive Self-Rating Buttons */}
             <div className="p-5 bg-gradient-to-r from-slate-50 via-indigo-50/20 to-purple-50/20 border border-indigo-100/90 rounded-2xl space-y-3 shadow-2xs">
